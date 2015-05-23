@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
@@ -5,6 +6,9 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'LULLGREE.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-
-    url(r'^admin/', include(admin.site.urls)),
+    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^l3admin$', 'back.views.l3admin'),
+    url(r'^regist$', 'back.viwes.regist'),
+    url(r'^login$', 'back.viwes.login'),
+    url(r'^getCAPTCHA', 'back.views.getCAPTCHA'),
 )

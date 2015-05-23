@@ -1,0 +1,374 @@
+@charset "UTF-8";
+	*{margin:0;padding:0;font-family:"微软雅黑"}
+	body{overflow-x:hidden;}
+	ul{list-style-type:none;}
+	td{}
+	.clear{clear:both;}
+	#left{
+		position:fixed;
+		width:140px;
+		height:100%;
+		background-color:rgba(65,65,65,0.3);
+		z-index:1;
+	}
+	#left p{
+		padding-top:12px;
+		color:white;
+		font-size:25px;
+	}
+	#left>div:first-child{
+		height:60px;
+		background-color:#226ddd;
+		text-align:center;
+	}
+	#left img{
+		margin-top:5px;
+		width:30px;
+		height:30px;
+	}
+	#list{
+		margin-top:-1px;
+	}
+	#list ul{
+		padding-top:32px;
+	}
+	#list li{
+		width:100%;
+		font-size:15px;
+		padding:10px 0;
+		text-indent:30px;
+		color:#f1f1f1;
+		cursor:default;
+	}
+	#right{
+		margin-left:140px;
+		min-width:700px;
+	}
+	#top{
+		position:fixed;
+		width:100%;
+		height:60px;
+		background-color:rgb(197,197,197);
+	}
+	#top>div{
+		float:right;
+		width:70px;
+		height:60px;
+	}
+	#top>div:hover{
+		background-color:#a1a1a1;
+	}
+	#top>div>div{
+		text-align:center;
+		margin-top:5px;
+		height:50px;
+	}
+	#top img{
+		margin-top:10px;
+		width:30px;
+		height:30px;
+	}
+	#content{
+		padding-top:60px;
+	}
+	#function{
+		position:fixed;
+		width:100%;
+		background-color:#f1f1f1;
+	}
+	#function ul{
+		display:none;
+		margin-left:40px;
+	}
+	#function ul li:first-child{
+		border-left:1px solid #e1e1e1;
+	}
+	#function li{
+		float:left;
+		padding:6px 12px;
+		font-size:14px;
+		text-align:center;
+		color:#34333f;
+		border-right:1px solid #e1e1e1;
+		cursor:default;
+	}
+	/*---------------------主内容块---------------------*/
+	/*编辑框*/
+	.edit_box{
+		min-width:500px;
+		border:1px solid;
+	}
+	.edit_function{
+		background-color:#e1e1e1;
+	}
+	.edit_function span{
+		display:inline-block;
+		padding:3px 5px;
+		background-color:#e1e1e1;
+		text-align:center;
+	}
+	.edit_function span:last-child{
+		float:right;
+	}
+	.text_box{
+		height:300px;
+	}
+	/*---------------------------------------*/
+	#details{
+		padding-top:32px;
+		font-size:14px;
+	}
+	#details>div{
+		padding-top:40px;
+		padding-left:40px;
+		display:none;
+	}
+	#details>div>div{
+		margin-bottom:40px;
+	}
+	#details>div>div>table>tbody>tr>td{
+		vertical-align:top;
+		padding-bottom:40px;
+	}
+	#details>div>div>table>tbody>tr>td:first-child{
+		text-align:right;
+	}
+	div.index_pic img,div.products_pic img,div.news_pic img{
+		width:400px;
+	}
+	.button{
+		padding:2px 6px 3px 6px;
+		font-size:14px;
+		border:1px solid #34333f;
+		cursor:pointer;
+	}
+	/*------------------welcome_phrase-------------------*/
+	div.welcome_phrase{
+		text-align:center;
+	}
+	div.welcome_phrase p{
+		padding-top:40px;
+		font-size:46px;
+		color:#226ddd;
+	}
+	/*------------------account_manage-------------------*/
+	div.account_manage table table td{
+		padding-left:20px;
+		padding-right:50px;
+		padding-bottom:10px;
+	}
+	div.account_manage table table tr td{
+		text-align:center;
+	}
+	div.account_manage .button{
+		margin:0px 5px;
+	}
+	div.account_manage td p{
+		margin-bottom:15px;
+	}
+	/*------------------my_account-------------------*/
+	div.my_account table{
+		margin:0 auto;
+	}
+	div.my_account table td{
+		padding:0 30px;
+	}
+	div.my_account img{
+		margin-top:20px;
+		width:100px;
+		height:30px;
+	}
+	/*-------------------------------------*/
+	div.index_pic{}
+	div.index_pic div{
+	}
+	/*-------------------------------------*/
+	div.index_phrase div{
+	}
+	div.index_phrase div span:first-child{
+		display:inline-block;
+		width:80px;
+		text-align:right;
+	}
+	#new_phrase{
+		width:200px;
+	}
+	#phrase_confirm{
+		margin-left:5px;
+		padding:0 5px;
+	}
+	/*-------------------products_type------------------*/
+	div.products_type input{
+		width:200px;
+	}
+	div.products_type .button{
+		margin-left:10px;
+	}
+	/*------------------products_edit-------------------*/
+	div.products_edit table table td{
+		padding-left:20px;
+		padding-bottom:10px;
+	}
+	div.products_edit table table tr td{
+		text-align:center;
+	}
+	div.products_edit .button{
+		margin:0px 5px;
+	}
+	/*------------------products_details-------------------*/
+	#products_pics{
+	}
+	#products_pics div{
+		display:inline-block;
+		width:100px;
+		text-align:center;
+	}
+	#products_pics div img{
+		width:100%;
+		height:100px;
+	}
+	#products_pics div input{
+	}
+	div.products_details table table{
+		padding-top:20px;
+	}
+	div.products_details table table td{
+		padding-right:20px;
+		padding-bottom:10px;
+		text-align:center;
+	}
+	div.products_details .button{
+		margin-right:10px;
+	}
+	/*
+	div.products_details table table{
+		border:white;
+		border-collapse:collapse;
+		width:450px;
+		text-align:center;
+	}
+	div.products_details table table td{
+		height:25px;
+		font-size:15px;
+	}
+	.table_child td:first-child{
+		background-color:#e1e1e1;
+		cursor:default;
+	}
+	.table_child td:last-child{
+		text-align:left;
+		text-indent:30px;
+	}
+	.table_title{
+		color:white;
+		cursor:default;
+	}
+	*/
+	/*------------------products_type_susume-------------------*/
+	div.products_type_susume input{
+		width:200px;
+	}
+	div.products_type_susume .button{
+		margin-left:10px;
+	}
+	/*------------------products_susume-------------------*/
+	div.products_susume table table td{
+		padding-left:20px;
+		padding-bottom:10px;
+	}
+	div.products_susume table table tr td{
+		text-align:center;
+	}
+	div.products_susume .button{
+		margin:0px 5px;
+	}
+	/*------------------news_pic-------------------*/
+	/*------------------news_edit-------------------*/
+	div.news_edit table table td{
+		padding-left:20px;
+		padding-bottom:10px;
+	}
+	div.news_edit table table tr:first-child td{
+		text-align:center;
+	}
+	div.news_edit table table tr td:first-child{
+		text-align:center;
+	}
+	div.news_edit .button{
+		margin:0px 5px;
+	}
+	#page{
+		text-align:center;
+	}
+	#page div{
+		display:inline-block;
+		border:1px solid;
+		padding:1px 3px;
+		margin:0 3px;
+		width:24px;
+		text-align:center;
+		cursor:pointer;
+	}
+	/*------------------recruitment_type-------------------*/
+	div.recruitment_type input{
+		width:200px;
+	}
+	div.recruitment_type .button{
+		margin-left:10px;
+	}
+	/*------------------recruitment_require-------------------*/
+	#rr_table input{
+		display:none;
+	}
+	div.recruitment_require table table td{
+		padding-left:20px;
+		padding-bottom:10px;
+	}
+	div.recruitment_require table table td{
+		text-align:center;
+	}
+	#rr_table .button{
+		margin:0px 5px;
+	}
+	/*------------------culture_summary-------------------*/
+	#intro{
+		font-size:12px;
+		color:#34333f;
+		line-height:35px;
+		text-align:center;
+	}
+	/*------------------culture_spirit-------------------*/
+	#spirit p{
+		width:400px;
+		font-size:15px;
+		color:#34333f;
+		line-height:35px;
+	}
+	#spirit p span:first-child{
+		display:inline-block;
+		width:100px;
+		font-weight:bold;
+		text-align:right;
+	}
+	#spirit p span:last-child{
+		display:inline-block;
+		text-indent:50px;
+	}
+	/*------------------culture_speech-------------------*/
+	#speech{
+		width:800px;
+		text-indent:30px;
+		font-size:15px;
+		color:#34333f;
+		line-height:35px;
+	}
+	/*------------------culture_honor-------------------*/
+	#honor_pics div{
+		display:inline-block;
+		width:100px;
+		text-align:center;
+	}
+	#honor_pics div img{
+		width:100%;
+		height:100px;
+	}

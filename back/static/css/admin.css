@@ -1,0 +1,103 @@
+@charset "UTF-8";
+*{margin:0;padding:0;}
+body{}
+#view{
+	-webkit-perspective:1000;
+	position:relative;
+}
+#lr_box{
+	position:absolute;
+	top:50%;
+	left:50%;
+	padding-bottom:20px;
+	border:1px solid #a1a1a1;
+	border-radius:20px;
+	background-color:white;
+	overflow:hidden;
+}
+@-webkit-keyframes rotate{
+	from {-webkit-transform:rotateY(0deg)}
+	to {-webkit-transform:rotateY(90deg)}
+}
+@-webkit-keyframes rotate2{
+	from {-webkit-transform:rotateY(-90deg)}
+	to {-webkit-transform:rotateY(0deg)}
+}
+@-webkit-keyframes rotate3{
+	from {-webkit-transform:rotateY(0deg)}
+	to {-webkit-transform:rotateY(-90deg)}
+}
+@-webkit-keyframes rotate4{
+	from {-webkit-transform:rotateY(90deg)}
+	to {-webkit-transform:rotateY(0deg)}
+}
+#title{
+	background-color:#226ddd;
+	height:40px;
+	color:white;
+}
+#title p{
+	padding:8px 0;
+	font-size:20px;
+	text-indent:20px;
+}
+.input{
+	padding:0 62px;
+	text-align:center;
+	margin-top:20px;
+}
+.input div{
+	border:1px solid #a1a1a1;
+	display:inline-block;
+	border-radius:5px;
+}
+.input img{
+	vertical-align:top;
+	width:30px;
+	height:30px;
+}
+.input input{
+	font-size:16px;
+}
+.input input:focus{
+	outline:none;
+}
+#account input,#password input,#n_password input{
+	padding:5px 0;
+	width:180px;
+	border:none;
+	background-color:transparent;
+}
+#n_password{
+	display:none;
+}
+#icode input,#icode img{
+	width:103px;
+}
+#icode input{
+	height:28px;
+	text-indent:10px;
+	border-radius:5px;
+	border:1px solid #a1a1a1;
+}
+#lr{
+	text-align:right;
+}
+#lr span{
+	float:left;
+	font-size:13px;
+	text-indent:2px;
+	color:red;
+	cursor:pointer;
+}
+#lr input{
+	margin-right:2px;
+	padding:2px 10px;
+	font-size:16px;
+	background-color:white;
+	border:1px solid #a1a1a1;
+	cursor:pointer;
+}
+#go_l,#regis{
+	display:none;
+}
