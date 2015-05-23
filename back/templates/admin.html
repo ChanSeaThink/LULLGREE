@@ -20,26 +20,26 @@
     	<div id="account" class="input">
     		<div>
     			<img src="{% static "img/admin/user.png" %}">
-    			<input type="text" placeholder="帐号">
+    			<input type="text" placeholder="帐号" maxlength="10">
     		</div>
             <p></p>
     	</div>
     	<div id="password" class="input">
     		<div>
     			<img src="{% static "img/admin/lock.png" %}">
-    			<input type="text" placeholder="密码">
+    			<input type="text" placeholder="密码"maxlength="10">
     		</div>
             <p></p>
     	</div>
     	<div id="n_password" class="input">
     		<div>
     			<img src="{% static "img/admin/lock.png" %}">
-    			<input type="text" placeholder="再输入一次密码">
+    			<input type="text" placeholder="再输入一次密码"maxlength="10">
     		</div>
             <p></p>
     	</div>
-    	<div id="icode" class="input">
-    		<input type="text" placeholder="验证码">
+    	<div id="validcode" class="input">
+    		<input type="text" placeholder="验证码" maxlength="4">
     		<img src="/getCAPTCHA">
             <p></p>
     	</div>

@@ -84,13 +84,13 @@ body{}
 #account p,#password p,#n_password p{
 	text-indent:40px;
 }
-#icode p{
+#validcode p{
 	text-indent:15px;
 }
-#icode input,#icode img{
+#validcode input,#validcode img{
 	width:103px;
 }
-#icode input{
+#validcode input{
 	height:28px;
 	text-indent:10px;
 	border-radius:5px;

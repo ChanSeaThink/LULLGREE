@@ -2,29 +2,29 @@ window.onload=function(){
 	$("#go_r").click(function(){
 		$("#lr_box").css("-webkit-animation","rotate 0.5s linear 0 1");
 		setTimeout(function(){
-		$("#icode img").click();
+		$("#validcode img").click();
 		$("#n_password,#go_l,#regis").show();
 		$("#go_r,#login").hide();
 		$(".input p").text("");
-		$(".input div input,#icode input").val("");
+		$(".input div input,#validcode input").val("");
 		$("#lr_box").css("-webkit-animation","rotate2 0.5s linear 0 1");
 		},500);
 	});
 	$("#go_l").click(function(){
 		$("#lr_box").css("-webkit-animation","rotate3 0.5s linear 0 1");
 		setTimeout(function(){
-		$("#icode img").click();
+		$("#validcode img").click();
 		$("#go_r,#login").show();
 		$("#n_password,#go_l,#regis").hide();
 		$(".input p").text("");
-		$(".input div input,#icode input").val("");
+		$(".input div input,#validcode input").val("");
 			$("#lr_box").css("-webkit-animation","rotate4 0.5s linear 0 1");
 		},500);
 	});
 
 	//验证码
-	$("#icode img").click(function(){
-		$("#icode img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
+	$("#validcode img").click(function(){
+		$("#validcode img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
 	});
 
 	
@@ -32,7 +32,7 @@ window.onload=function(){
 	$("#login").click(function(){
 		var account=$("#account input").val();
 		var password=$("#password input").val();
-		var icode=$("#icode input").val();
+		var validcode=$("#validcode input").val();
 		if(!(account)){
 			$("#account p").text("值为空！");
 			flag[0]=0;
@@ -41,15 +41,15 @@ window.onload=function(){
 			$("#password p").text("值为空！");
 			flag[1]=0;
 		}
-		if(icode.length!=4){
-			$("#icode p").text("位数不够！");
+		if(validcode.length!=4){
+			$("#validcode p").text("位数不够！");
 			flag[3]=0;
 		}
 		if(flag[0]==1&&flag[1]==1&&flag[3]==1){
 			var xmlhttp=new XMLHttpRequest();
 			xmlhttp.open("POST","/login",false);
 			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-			xmlhttp.send("account="+account+"&password="+password+"&icode="+code);
+			xmlhttp.send("account="+account+"&password="+password+"&validcode="+validcode);
 			if(xmlhttp.responseText.charAt(0)=="{"){
 				var AjaxObj=eval("("+xmlhttp.responseText+")");
 				if(AjaxObj.account){
@@ -58,8 +58,8 @@ window.onload=function(){
 				else if(AjaxObj.password){
 					$("#password p").text(AjaxObj.password);
 				}
-				else if(AjaxObj.icode){
-					$("#icode p").text(AjaxObj.icode);
+				else if(AjaxObj.validcode){
+					$("#validcode p").text(AjaxObj.validcode);
 				}
 				else if(AjaxObj.status=="success"){
 					window.location.reload();
@@ -71,7 +71,7 @@ window.onload=function(){
 		var account=$("#account input").val();
 		var password=$("#password input").val();
 		var n_password=$("#n_password input").val();
-		var icode=$("#icode input").val();
+		var validcode=$("#validcode input").val();
 		if(!(account)){
 			$("#account p").text("值为空！");
 			flag[0]=0;
@@ -84,15 +84,15 @@ window.onload=function(){
 			$("#n_password p").text("值为空！");
 			flag[2]=0;
 		}
-		if(icode.length!=4){
-			$("#icode p").text("位数不够！");
+		if(validcode.length!=4){
+			$("#validcode p").text("位数不够！");
 			flag[3]=0;
 		}
 		if(flag[0]==1&&flag[1]==1&&flag[2]==1&&flag[3]==1){
 			var xmlhttp=new XMLHttpRequest();
 			xmlhttp.open("POST","/regist",false);
 			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-			xmlhttp.send("account="+account+"&passworde="+username+"&n_password="+password+"&validcode="+code);
+			xmlhttp.send("account="+account+"&password="+password+"&validcode="+validcode);
 			if(xmlhttp.responseText.charAt(0)=="{"){
 				var AjaxObj=eval("("+xmlhttp.responseText+")");
 				if(AjaxObj.account){
@@ -101,11 +101,8 @@ window.onload=function(){
 				else if(AjaxObj.password){
 					$("#password p").text(AjaxObj.password);
 				}
-				else if(AjaxObj.n_password){
-					$("#n_password p").text(AjaxObj.n_password);
-				}
-				else if(AjaxObj.icode){
-					$("#validcode p").text(AjaxObj.icode);
+				else if(AjaxObj.validcode){
+					$("#validcode p").text(AjaxObj.validcode);
 				}
 				else if(AjaxObj.status=="success"){
 					window.location.reload();
@@ -135,11 +132,14 @@ window.onload=function(){
 	$("#password input").on({
 		"input":function(){
 			var str=$(this).val();
+			var str2=$("#n_password input").val();
 			if(pattern1.test(str)){
 				$("#password p").text("字符有误");
 				flag[1]=0;
 			}
 			else {
+				if(str==str2&&$("#n_password p").text()=="两次密码不同！")
+					$("#n_password p").text("");
 				$("#password p").text("");
 				flag[1]=1;
 			}
@@ -181,22 +181,22 @@ window.onload=function(){
 			}
 		}
 	});
-	$("#icode input").on({
+	$("#validcode input").on({
 		"input":function(){
 			var str=$(this).val();
 			if(pattern4.test(str)){
-				$("#icode p").text("字符有误");
+				$("#validcode p").text("字符有误");
 				flag[3]=0;
 			}
 			else {
-				$("#icode p").text("");
+				$("#validcode p").text("");
 				flag[3]=1;
 			}
 		},
 		"blur":function(){
 			var str=$(this).val();
 			if(str.length!=4){
-				$("#icode p").text("位数不够！");
+				$("#validcode p").text("位数不够！");
 				flag[3]=0;
 			}
 			else{
