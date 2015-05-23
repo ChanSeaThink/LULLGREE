@@ -6,9 +6,10 @@
 <title>Backup</title>
 <meta name="description" content="">
 <meta name="keywords" content="">
-<link href="./css/backup.css" rel="stylesheet">
+{% load staticfiles %}
+<link href="{% static "css/backup.css" %}" rel="stylesheet">
 <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
-<script src="./js/backup.js"></script>
+<script src="{% static "js/backup.js" %}"></script>
 </head>
 <body>
 	<div id="left">
@@ -29,17 +30,17 @@
 		<div id="top">
 			<div class="account_manage">
 				<div>
-					<img src="./img/backup/users.png">
+					<img src="{% static "img/backup/users.png" %}">
 				</div>
 			</div>
 			<div class="my_account">
 				<div>
-					<img src="./img/backup/settings.png">
+					<img src="{% static "img/backup/settings.png" %}">
 				</div>
 			</div>
 			<div>
 				<div>
-					<img src="./img/backup/exit.png">
+					<img src="{% static "img/backup/exit.png" %}">
 				</div>
 			</div>
 		</div>
@@ -224,7 +225,7 @@
 				<div class="index_pic">
 					<div>
 						<span>当前图片：</span>
-						<img src="./img/index/bgpic4.jpg" align="top">
+						<img src="{% static "img/index/bgpic4.jpg" align="top">
 					</div>
 					<div>
 						<span>上传图片：</span>
@@ -249,7 +250,7 @@
 				<div class="products_pic">
 					<div>
 						<span>当前图片：</span>
-						<img src="./img/index/bgpic4.jpg" align="top">
+						<img src="{% static "img/index/bgpic4.jpg" align="top">
 					</div>
 					<div>
 						<span>上传图片：</span>
@@ -953,7 +954,7 @@
 				<div class="news_pic">
 					<div>
 						<span>当前图片：</span>
-						<img src="./img/index/bgpic4.jpg" align="top">
+						<img src="{% static "img/index/bgpic4.jpg" align="top">
 					</div>
 					<div>
 						<span>上传图片：</span>

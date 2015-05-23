@@ -69,7 +69,7 @@ window.onload=function(){
 	});
 	$("#regis").click(function(){
 		var account=$("#account input").val();
-		var password=$("#passord input").val();
+		var password=$("#password input").val();
 		var n_password=$("#n_password input").val();
 		var icode=$("#icode input").val();
 		if(!(account)){
@@ -92,7 +92,7 @@ window.onload=function(){
 			var xmlhttp=new XMLHttpRequest();
 			xmlhttp.open("POST","/regist",false);
 			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-			xmlhttp.send("account="+account+"&passworde="+username+"&n_password="+password+"&icode="+code);
+			xmlhttp.send("account="+account+"&passworde="+username+"&n_password="+password+"&validcode="+code);
 			if(xmlhttp.responseText.charAt(0)=="{"){
 				var AjaxObj=eval("("+xmlhttp.responseText+")");
 				if(AjaxObj.account){
@@ -105,7 +105,7 @@ window.onload=function(){
 					$("#n_password p").text(AjaxObj.n_password);
 				}
 				else if(AjaxObj.icode){
-					$("#icode p").text(AjaxObj.icode);
+					$("#validcode p").text(AjaxObj.icode);
 				}
 				else if(AjaxObj.status=="success"){
 					window.location.reload();

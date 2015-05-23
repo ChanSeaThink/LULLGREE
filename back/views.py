@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
+from back.models import User
 import Image, ImageDraw, ImageFont, ImageFilter, random#PIL插件的文件
 from hashlib import sha1
 from datetime import datetime
@@ -73,3 +74,22 @@ def getCAPTCHA(request):
     #print code
     #print request.session['CAPTCHA']
     return HttpResponse(buf.getvalue(), 'image/gif')
+
+def regist(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    validcode = request.POST['validcode']
+
+    if validcode != request.session['CAPTCHA']:
+        jsonObject = json.dumps({'validcode':'验证码错误!'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+
+
+    return HttpResponse(request.POST)
+
+#后台登录注册页和后台管理的分割线-----------------------------------------------------------------------------
+
+def l3back(request):
+    return render_to_response('gree_backup.html')
+
