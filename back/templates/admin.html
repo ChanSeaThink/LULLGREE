@@ -22,22 +22,26 @@
     			<img src="{% static "img/admin/user.png" %}">
     			<input type="text" placeholder="帐号">
     		</div>
+            <p></p>
     	</div>
     	<div id="password" class="input">
     		<div>
     			<img src="{% static "img/admin/lock.png" %}">
     			<input type="text" placeholder="密码">
     		</div>
+            <p></p>
     	</div>
     	<div id="n_password" class="input">
     		<div>
     			<img src="{% static "img/admin/lock.png" %}">
     			<input type="text" placeholder="再输入一次密码">
     		</div>
+            <p></p>
     	</div>
     	<div id="icode" class="input">
     		<input type="text" placeholder="验证码">
-    		<img onclick="this.setAttribute('src','/getCAPTCHA/?nocache='+Math.random());" src="/getCAPTCHA">
+    		<img src="/getCAPTCHA">
+            <p></p>
     	</div>
     	<div id="lr" class="input">
     		<span id="go_r">点击这里注册</span>
@@ -47,5 +51,11 @@
     	</div>
     </div>
     </div>
+    <script>
+        $("#view").height(window.innerHeight);
+        var w=$("#lr_box").width();
+        var h=$("#lr_box").height();
+        $("#lr_box").css({"margin-top":"-"+h/2+"px","margin-left":"-"+w/2+"px"});
+    </script>
 </body>
 </html>
