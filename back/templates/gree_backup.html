@@ -28,11 +28,13 @@
 		</div>
 	</div>
 		<div id="top">
+			{% if permission %}
 			<div class="account_manage">
 				<div>
 					<img src="{% static "img/backup/users.png" %}">
 				</div>
 			</div>
+			{% endif %}
 			<div class="my_account">
 				<div>
 					<img src="{% static "img/backup/settings.png" %}">
@@ -86,6 +88,7 @@
 				<div class="welcome_phrase">
 					<p>欢迎光临忠胜格力后台中心</p>
 				</div>
+				{% if permission %}
 				<div class="account_manage">
 					<div>
 						<table>
@@ -169,6 +172,7 @@
 						</table>
 					</div>
 				</div>
+				{% endif %}
 				<div class="my_account">
 					<div>
 						<table>
@@ -225,7 +229,7 @@
 				<div class="index_pic">
 					<div>
 						<span>当前图片：</span>
-						<img src="{% static "img/index/bgpic4.jpg" align="top">
+						<img src="{% static "img/index/bgpic4.jpg" %}" align="top">
 					</div>
 					<div>
 						<span>上传图片：</span>
@@ -250,7 +254,7 @@
 				<div class="products_pic">
 					<div>
 						<span>当前图片：</span>
-						<img src="{% static "img/index/bgpic4.jpg" align="top">
+						<img src="{% static "img/index/bgpic4.jpg" %}" align="top">
 					</div>
 					<div>
 						<span>上传图片：</span>
@@ -954,7 +958,7 @@
 				<div class="news_pic">
 					<div>
 						<span>当前图片：</span>
-						<img src="{% static "img/index/bgpic4.jpg" align="top">
+						<img src="{% static "img/index/bgpic4.jpg" %}" align="top">
 					</div>
 					<div>
 						<span>上传图片：</span>

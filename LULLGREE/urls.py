@@ -11,5 +11,7 @@ urlpatterns = patterns('',
     url(r'^l3back$', 'back.views.l3back'),
     url(r'^regist$', 'back.views.regist'),
     url(r'^login$', 'back.views.login'),
+    url(r'^logout$', 'back.views.logout'),
+    url(r'^permission$', 'back.views.permission'),
     url(r'^getCAPTCHA', 'back.views.getCAPTCHA'),
 )

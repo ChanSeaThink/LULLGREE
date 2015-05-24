@@ -151,9 +151,10 @@ class Migration(migrations.Migration):
             name='User',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('UserNmae', models.CharField(max_length=50)),
+                ('UserName', models.CharField(max_length=50)),
                 ('PassWord', models.CharField(max_length=200)),
                 ('Permission', models.IntegerField(default=0)),
+                ('Time', models.DateTimeField()),
             ],
             options={
             },

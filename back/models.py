@@ -8,10 +8,12 @@ class User(models.Model):
     UserName:用户名，用于登陆；
     PassWord:登陆密码，以hash值保存；
     Permission:用户权限，整数；
+    Time:注册时间；
     '''
-    UserNmae = models.CharField(max_length = 50)
+    UserName = models.CharField(max_length = 50)
     PassWord = models.CharField(max_length = 200)
     Permission = models.IntegerField(default = 0)
+    Time = models.DateTimeField()
 
 class ClassOne(models.Model):
     '''
@@ -150,9 +152,9 @@ class ShowPic(models.Model):
     '''
     店面图片。
 
-    Show:店面。
-    Picture:图片。
-    Thumbnail:压缩图片。
+    Show:店面；
+    Picture:图片；
+    Thumbnail:压缩图片；
     '''
     Show = models.ForeignKey('Show')
     Picture = models.ImageField(upload_to='show_picture')

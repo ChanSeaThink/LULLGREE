@@ -62,7 +62,7 @@ window.onload=function(){
 					$("#validcode p").text(AjaxObj.validcode);
 				}
 				else if(AjaxObj.status=="success"){
-					window.location.reload();
+					window.open("/permission","_self");
 				}
 			}
 		}
@@ -105,7 +105,7 @@ window.onload=function(){
 					$("#validcode p").text(AjaxObj.validcode);
 				}
 				else if(AjaxObj.status=="success"){
-					window.location.reload();
+					window.open("/permission","_self");
 				}
 			}
 		}

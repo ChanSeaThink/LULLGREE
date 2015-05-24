@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from back.models import User
 import Image, ImageDraw, ImageFont, ImageFilter, random#PIL插件的文件
 from hashlib import sha1
@@ -76,7 +76,7 @@ def getCAPTCHA(request):
     return HttpResponse(buf.getvalue(), 'image/gif')
 
 def regist(request):
-    username = request.POST['username']
+    username = request.POST['account']
     password = request.POST['password']
     validcode = request.POST['validcode']
 
@@ -85,11 +85,89 @@ def regist(request):
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
 
+    user_exist = User.objects.filter(UserName__exact=username)
+    if user_exist:
+        jsonObject = json.dumps({'account':'账号已存在!'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
 
-    return HttpResponse(request.POST)
+    del request.session['CAPTCHA']
+    nt = datetime.now()
+    shpw = sha1()
+    shpw.update(password + str(nt)[0:19])
+    pw = shpw.hexdigest()
+    userobj = User()
+    userobj.UserName = username
+    userobj.PassWord = pw
+    userobj.Permission = 0
+    userobj.Time = nt
+    userobj.save()
+    request.session['userid'] = userobj.id
+    request.session['permission']= 0
+    jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def login(request):
+    username = request.POST['account']
+    password = request.POST['password']
+    validcode = request.POST['validcode']
+    
+    if validcode != request.session['CAPTCHA']:
+        jsonObject = json.dumps({'validcode':'验证码错误!'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+
+    try:
+        user_data = User.objects.get(UserName = username)
+    except User.DoesNotExist:
+        jsonObject = json.dumps({'account':'账号不存在，请确认!'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+
+    shpw = sha1()
+    shpw.update(password + str(user_data.Time)[0:19])
+    spw = shpw.hexdigest()
+    if spw != user_data.PassWord:
+        jsonObject = json.dumps({'password':'密码错误请重新输入!'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        del request.session['CAPTCHA']
+        request.session['userid'] = user_data.id
+        request.session['permission'] = user_data.Permission
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+
+def logout(request):
+    del request.session['userid']
+    del request.session['permission']
+    return HttpResponseRedirect('/')
+
+def permission(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        del request.session['userid']
+        del request.session['permission']
+        return HttpResponse('请等待管理员授权。')
+    elif userPermission == '':
+        return HttpResponseRedirect('/l3admin')
+    else:
+        return HttpResponseRedirect('/l3back')
 
 #后台登录注册页和后台管理的分割线-----------------------------------------------------------------------------
 
 def l3back(request):
-    return render_to_response('gree_backup.html')
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponseRedirect('/l3admin')
+    elif userPermission == 1:
+        return render_to_response('gree_backup.html', {'permission':''})
+    elif userPermission == 2:
+        return render_to_response('gree_backup.html', {'permission':'Y'})
+    else:
+        return HttpResponseRedirect('/l3admin')
+
+
 
