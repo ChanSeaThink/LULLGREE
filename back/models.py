@@ -53,18 +53,14 @@ class Products(models.Model):
     ClassOne：隶属的第一级别的类；
     ClassTwo：隶属的第二级别的类；
     ProductName：产品的名字；
-    ProductInfoBody:产品主体；
-    ProductInfoFeature:产品功能；
-    ProductInfoSize:产品规格；
+    ProductInfo:产品属性；
     ProductInfoContent:产品详细介绍；
     Sequence：产品在该类下的排列顺序；
     '''
     ClassOne = models.ForeignKey('ClassOne')
     ClassTwo = models.ForeignKey('ClassTwo')
     ProductName = models.CharField(max_length = 250)
-    ProductInfoBody = models.TextField()
-    ProductInfoFeature = models.TextField()
-    ProductInfoSize = models.TextField()
+    ProductInfo = models.TextField()
     ProductInfoContent = models.TextField()
     Sequence = models.IntegerField()
 
