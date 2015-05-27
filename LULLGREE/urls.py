@@ -14,4 +14,6 @@ urlpatterns = patterns('',
     url(r'^logout$', 'back.views.logout'),
     url(r'^permission$', 'back.views.permission'),
     url(r'^getCAPTCHA', 'back.views.getCAPTCHA'),
+    url(r'^getAccount$', 'back.views.getAccount'),
+    url(r'^manageAccount$', 'back.views.manageAccount'),
 )

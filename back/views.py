@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from back.models import User
+from back.models import *
 import Image, ImageDraw, ImageFont, ImageFilter, random#PIL插件的文件
 from hashlib import sha1
 from datetime import datetime
@@ -9,7 +9,7 @@ import cStringIO#用于把生成的图片写入内存
 import platform#用于判断操作系统
 import json
 # Create your views here.
-def l3admin(requerst):
+def l3admin(request):
     return render_to_response('admin.html')
 
 def getCAPTCHA(request):
@@ -156,7 +156,9 @@ def permission(request):
     else:
         return HttpResponseRedirect('/l3back')
 
-#后台登录注册页和后台管理的分割线-----------------------------------------------------------------------------
+#==================================================================================
+#后台登录注册页和后台管理的分割线
+#==================================================================================
 
 def l3back(request):
     userPermission = request.session.get('permission', '')
@@ -169,5 +171,32 @@ def l3back(request):
     else:
         return HttpResponseRedirect('/l3admin')
 
+#+----------+
+#|账号处理模块|
+#+----------+
+def getAccount(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 2:
+        return HttpResponse('Without Permission')
 
+    userinfo = []
+    userobjs = User.objects.all()
+    for userobj in userobjs:
+        userinfo.append(dict(account = userobj.UserName, permission = userobj.Permission))
+    jsonObject = json.dumps({'userinfo':userinfo},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
 
+def manageAccount(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 2:
+        return HttpResponse('Without Permission')
+
+    manage = request.POST['manage']
+    if manage == 'delete':
+        account = request.POST['account']
+        
+    elif manage == 'edit':
+        pass
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。')
