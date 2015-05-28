@@ -5,6 +5,7 @@ from back.models import *
 import Image, ImageDraw, ImageFont, ImageFilter, random#PIL插件的文件
 from hashlib import sha1
 from datetime import datetime
+from django.conf import settings
 import cStringIO#用于把生成的图片写入内存
 import platform#用于判断操作系统
 import json
@@ -247,13 +248,20 @@ def manageClassOne(request):
         return HttpResponse(jsonObject,content_type="application/json")
     elif manage == 'delete':
         classname = request.POST['classname']
-        classoneobj = Products.objects.get(ClassName = classname)
+        classoneobj = ClassOne.objects.get(ClassName = classname)
         BestProduct.objects.filter(ClassOne = classoneobj).delete()
         ProductInfoPic.objects.filter(ClassOne = classoneobj).delete()
         ProductPic.objects.filter(ClassOne = classoneobj).delete()
         Products.objects.filter(ClassOne = classoneobj).delete()
         ClassTwo.objects.filter(PreClass = classoneobj).delete()
         classoneobj.delete()
+        #重新调整顺序。
+        classoneobjls = ClassOne.objects.all().order_by('Sequence')
+        i = 0
+        for classoneobj in classoneobjls:
+            classoneobj.Sequence = i
+            i += 1
+            classoneobj.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -325,6 +333,13 @@ def manageClassTwo(request):
         Products.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).delete()
         classoneobj.save()
         classtwoobj.delete()
+        #重新调整二级类的顺序
+        classtwoobjls = ClassTwo.objects.filter(PreClass = classoneobj).order_by('Sequence')
+        i = 0
+        for classtwoobj in classtwoobjls:
+            classtwoobj.Sequence = i
+            i += 1
+            classtwoobj.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -432,6 +447,13 @@ def manageProduct(request):
         productobj.delete()
         classoneobj.save()
         classtwoobj.save()
+        #对产品重新排序。
+        productobjls = Products.objects.filter(ClassOne = classoneobj, ClassTwo= classtwoobj).order_by('Sequence')
+        i = 0
+        for productobj in productobjls:
+            productobj.Sequence = i
+            i += 1
+            productobj.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -441,7 +463,7 @@ def manageProduct(request):
         productname = request.POST['productname']
         oldname = request.POST['oldname']
         classoneobj = ClassOne.objects.get(ClassName = classone)
-        classtwoobj = ClassTwo.objects.get(ClassName = oldname, PreClass = classoneobj)
+        classtwoobj = ClassTwo.objects.get(ClassName = classtwo, PreClass = classoneobj)
         productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = oldname)
         productobj.ProductName = productname
         productobj.save()
@@ -453,7 +475,7 @@ def manageProduct(request):
         classtwo = request.POST['classtwo']
         sequence = request.POST['sequence']
         classoneobj = ClassOne.objects.get(ClassName = classone)
-        classtwoobj = ClassTwo.objects.get(ClassName = oldname, PreClass = classoneobj)
+        classtwoobj = ClassTwo.objects.get(ClassName = classtwo, PreClass = classoneobj)
         sequencels = sequence.split('#')
         i = 0
         for productname in sequencels:
@@ -476,7 +498,7 @@ def manageProductPic(request):
             productname = request.POST['productname']
             pic =request.FILES['pic']
             classoneobj = ClassOne.objects.get(ClassName = classone)
-            classtwoobj = ClassTwo.objects.get(ClassName = oldname, PreClass = classoneobj)
+            classtwoobj = ClassTwo.objects.get(ClassName = classtwo, PreClass = classoneobj)
             productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
             t = int(time.time())
             rn = random.randrange(1,10000)
@@ -490,14 +512,55 @@ def manageProductPic(request):
             productpicobj.ClassTwo = classtwoobj
             productpicobj.Product = productobj
             productpicobj.Sequence = len(ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj))
-            productpicobj.Picture = models.ImageField(upload_to='product_picture')
-            productpicobj.ImageName = models.CharField(max_length= 150)
+            productpicobj.Picture = pic
+            productpicobj.ImageName = pic.name
+            productpicobj.save()
+            path = '/getPic/' + pic.name
+            jsonObject = json.dumps({'picname':'path'},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
         else:
             return HttpResponse('图片上传错误。或者系统出错，稍后再试。')
     elif manage == 'delete':
-        pass
+        classone = request.POST['classone']
+        classtwo = request.POST['classtwo']
+        productname = request.POST['productname']
+        picnamels = request.POST['picname']
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(ClassName = classtwo, PreClass = classoneobj)
+        productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
+        for picname in picnamels:
+            productobj = ProductPic.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj, ImageName = picname)
+            os.remove(os.path.join(settings.MEDIA_ROOT, productobj.Picture.name))
+            productobj.delete()
+        #重新调整顺序.
+        productpicobjls = ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).order_by('Sequence')
+        i = 0
+        for productpicobj in productpicobjls:
+            productpicobj.Sequence = i
+            i += 1
+            productpicobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
     elif manage == 'sort':
-        pass
+        classone = request.POST['classone']
+        classtwo = request.POST['classtwo']
+        productname = request.POST['productname']
+        sequence = request.POST['sequence']
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(ClassName = classtwo, PreClass = classoneobj)
+        productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
+        sequencels = sequence.split('#')
+        i = 0
+        for picname in sequencels:
+            productpicobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj, ImageName = picname)
+            productpicobj.Sequence = i
+            i += 1
+            productpicobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
     else:
         return HttpResponse('操作有误！或者系统出错，稍后再试。') 
 
