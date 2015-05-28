@@ -19,4 +19,8 @@ urlpatterns = patterns('',
     url(r'^getClassOne$', 'back.views.getClassOne'),
     url(r'^manageClassOne$', 'back.views.manageClassOne'),
     url(r'^getClassTwo$', 'back.views.getClassTwo'),
+    url(r'^getProduct$', 'back.views.getProduct'),
+    url(r'^getProductInfo$', 'back.views.getProductInfo'),
+    url(r'^manageProduct$', 'back.views.manageProduct'),
+    url(r'^manageProductPic$', 'back.views.manageProductPic'),
 )

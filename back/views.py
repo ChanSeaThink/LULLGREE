@@ -221,7 +221,7 @@ def getClassOne(request):
         return HttpResponse('Without Permission')
 
     classonels = []
-    classoneobjls = ClassOne.objects.all()
+    classoneobjls = ClassOne.objects.all().order_by('Sequence')
     for classoneobj in classoneobjls:
         classonels.append(classoneobj.ClassName)
     jsonObject = json.dumps({'classone':classonels},ensure_ascii = False)
@@ -260,12 +260,21 @@ def manageClassOne(request):
     elif manage == 'edit':
         classname = request.POST['classname']
         oldname = request.POST['oldname']
-        classoneobj = Products.objects.get(ClassName = oldname)
+        classoneobj = ClassOne.objects.get(ClassName = oldname)
         classoneobj.ClassName = classname
         classoneobj.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'sort':
+        sequence = request.POST['sequence']
+        sequencels = sequence.split('#')
+        i = 0
+        for classname in sequencels:
+            classoneobj = ClassOne.objects.get(ClassName = classname)
+            classoneobj.Sequence = i
+            classoneobj.save()
+            i += 1
     else:
         return HttpResponse('操作有误！或者系统出错，稍后再试。')
 
@@ -277,7 +286,7 @@ def getClassTwo(request):
     classone = request.POST['classone']
     classoneobj = ClassOne.objects.get(ClassName = classone)
     classtwols = []
-    classtwoobjls = ClassTwo.objects.filter(ClassOne = classoneobj)
+    classtwoobjls = ClassTwo.objects.filter(ClassOne = classoneobj).order_by('Sequence')
     for classtwoobj in classtwoobjls:
         classtwols.append(classtwoobj.ClassName)
     jsonObject = json.dumps({'classtwo':classtwols},ensure_ascii = False)
@@ -293,7 +302,7 @@ def manageClassTwo(request):
     if manage == 'add':
         classone = request.POST['classone']
         classname = request.POST['classname']
-        classoneobj = ClassOne.objcets.get(ClassName = classone)
+        classoneobj = ClassOne.objects.get(ClassName = classone)
         classoneobj.SubClassNum += 1
         classtwoobj = ClassTwo()
         classtwoobj.PreClass = classoneobj
@@ -305,25 +314,193 @@ def manageClassTwo(request):
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
     elif manage == 'delete':
+        classone = request.POST['classone']
         classname = request.POST['classname']
-        classoneobj = Products.objects.get(ClassName = classname)
-        BestProduct.objects.filter(ClassOne = classoneobj).delete()
-        ProductInfoPic.objects.filter(ClassOne = classoneobj).delete()
-        ProductPic.objects.filter(ClassOne = classoneobj).delete()
-        Products.objects.filter(ClassOne = classoneobj).delete()
-        ClassTwo.objects.filter(PreClass = classoneobj).delete()
-        classoneobj.delete()
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classoneobj.SubClassNum -= 1
+        classtwoobj = ClassTwo.objects.get(ClassName = classname)
+        BestProduct.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).delete()
+        ProductInfoPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).delete()
+        ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).delete()
+        Products.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).delete()
+        classoneobj.save()
+        classtwoobj.delete()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
     elif manage == 'edit':
+        classone = request.POST['classone']
         classname = request.POST['classname']
         oldname = request.POST['oldname']
-        classoneobj = Products.objects.get(ClassName = oldname)
-        classoneobj.ClassName = classname
-        classoneobj.save()
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(ClassName = oldname, PreClass = classoneobj)
+        classtwoobj.ClassName = classname
+        classtwoobj.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'sort':
+        classone = request.POST['classone']
+        sequence = request.POST['sequence']
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        sequencels = sequence.split('#')
+        i = 0
+        for classname in sequencels:
+            classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classname)
+            classtwoobj.Sequence = i
+            classtwoobj.save()
+            i += 1
     else:
         return HttpResponse('操作有误！或者系统出错，稍后再试。') 
+
+def getProduct(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    classone = request.POST['classone']
+    classtwo = request.POST['classtwo']
+    classoneobj = ClassOne.objects.get(ClassName = classone)
+    classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
+    productls = []
+    productobjls = Products.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).order_by('Sequence')
+    for productobj in productobjls:
+        productls.append(productobj.ProductName)
+    jsonObject = json.dumps({'products':productls},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def getProductInfo(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+    
+    classone = request.POST['classone']
+    classtwo = request.POST['classtwo']
+    product = request.POST['product']
+
+    classoneobj = ClassOne.objects.get(ClassName = classone)
+    classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
+    productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = product)
+    productpicls = []
+    productpicobjls = ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).order_by('Sequence')
+    for productpicobj in productpicobjls:
+        productpicls.append(productpicobj.ImageName)
+    jsonObject = json.dumps({'productpic':productpicls, 'content':productobj.ProductInfo, 'productinfo':productobj.ProductInfoContent},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def manageProduct(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    manage = request.POST['manage']
+    if manage == 'add':
+        classone = request.POST['classone']
+        classtwo = request.POST['classtwo']
+        name = request.POST['name']
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
+        classoneobj.ProductCount += 1
+        classtwoobj.ProductCount += 1
+        productobj = Products()
+        productobj.ClassOne = classoneobj
+        productobj.ClassTwo = classtwoobj
+        productobj.ProductName = name
+        productobj.ProductInfo = ''
+        productobj.ProductInfoContent = ''
+        productobj.Sequence = len(Products.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj))
+        productobj.save()
+        classoneobj.save()
+        classtwoobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'delete':
+        classone = request.POST['classone']
+        classtwo = request.POST['classtwo']
+        name = request.POST['name']
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
+        classoneobj.ProductCount -= 1
+        classtwoobj.ProductCount -= 1
+        productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = name)
+        BestProduct.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).delete()
+        ProductInfoPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).delete()
+        ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).delete()
+        productobj.delete()
+        classoneobj.save()
+        classtwoobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'edit':
+        classone = request.POST['classone']
+        classtwo = request.POST['classtwo']
+        name = request.POST['name']
+        oldname = request.POST['oldname']
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(ClassName = oldname, PreClass = classoneobj)
+        productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = oldname)
+        productobj.ProductName = name
+        productobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'sort':
+        classone = request.POST['classone']
+        classtwo = request.POST['classtwo']
+        sequence = request.POST['sequence']
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(ClassName = oldname, PreClass = classoneobj)
+        sequencels = sequence.split('#')
+        i = 0
+        for productname in sequencels:
+            productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
+            productobj.Sequence = i
+            productobj.save()
+            i += 1
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。') 
+
+def manageProductPic(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    if manage == 'add':
+        if 'pic' in request.FILES:
+            t = int(time.time())
+            rn = random.randrange(1,10000)
+            addName = 'pp_' + str(t) + str(rn)#pp_用于区分图片
+            image =request.FILES['pic']
+            picName = image.name
+            #以下代码替换掉文件名中的空格，改为下划线，有空格的文件名在存入mysql时会自动转化为下划线。
+            picName = picName.replace(' ', '_')
+            image.name = addName + picName
+            p = ProductPic()
+        else:
+            return HttpResponse('图片上传错误。或者系统出错，稍后再试。')
+    elif manage == 'delete':
+        pass
+    elif manage == 'sort':
+        pass
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。') 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
