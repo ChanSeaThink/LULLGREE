@@ -27,7 +27,7 @@ class ClassOne(models.Model):
     Sequence:显示的顺序；
     ProductCount:该类下的产品数量；
     '''
-    ClassName = models.CharField(max_length = 50)
+    ClassName = models.CharField(max_length = 150)
     SubClassNum = models.IntegerField()
     Sequence = models.IntegerField()
     ProductCount = models.IntegerField()
@@ -42,7 +42,7 @@ class ClassTwo(models.Model):
     ProductCount:该类下的产品数量；
     '''
     PreClass = models.ForeignKey('ClassOne')
-    ClassName = models.CharField(max_length = 50)
+    ClassName = models.CharField(max_length = 150)
     Sequence = models.IntegerField()
     ProductCount = models.IntegerField()
 
@@ -68,12 +68,16 @@ class ProductPic(models.Model):
     '''
     产品展示图片表格。
 
+    ClassOne：隶属的第一级别的类；
+    ClassTwo：隶属的第二级别的类；
     Product:隶属产品；
     Sequence:图片顺序；
     Picture:图片路径；
     Thumbnail:压缩图片路径；
     ImageName：图片名称。
     '''
+    ClassOne = models.ForeignKey('ClassOne')
+    ClassTwo = models.ForeignKey('ClassTwo')
     Product = models.ForeignKey('Products')
     Sequence = models.IntegerField()
     Picture = models.ImageField(upload_to='product_picture')
@@ -84,10 +88,14 @@ class ProductInfoPic(models.Model):
     '''
     产品详细介绍图片表格。
 
+    ClassOne：隶属的第一级别的类；
+    ClassTwo：隶属的第二级别的类；
     Product:隶属产品；
     Picture:图片路径；
     ImageName：图片名称；
     '''
+    ClassOne = models.ForeignKey('ClassOne')
+    ClassTwo = models.ForeignKey('ClassTwo')
     Product = models.ForeignKey('Products')
     Picture = models.ImageField(upload_to='product_info_picture')
     ImageName = models.CharField(max_length= 150)

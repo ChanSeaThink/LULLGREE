@@ -171,9 +171,9 @@ def l3back(request):
     else:
         return HttpResponseRedirect('/l3admin')
 
-#+----------+
-#|账号处理模块|
-#+----------+
+#+----------+=====================================================================
+#|账号处理模块|=====================================================================
+#+----------+=====================================================================
 def getAccount(request):
     userPermission = request.session.get('permission', '')
     if userPermission < 2:
@@ -184,7 +184,7 @@ def getAccount(request):
     for userobj in userobjs:
         userinfo.append(dict(account = userobj.UserName, permission = userobj.Permission))
     jsonObject = json.dumps({'userinfo':userinfo},ensure_ascii = False)
-        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
     return HttpResponse(jsonObject,content_type="application/json")
 
 def manageAccount(request):
@@ -195,8 +195,135 @@ def manageAccount(request):
     manage = request.POST['manage']
     if manage == 'delete':
         account = request.POST['account']
-        
+        userobj = User.objects.get(UserName = account)
+        userobj.delete()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
     elif manage == 'edit':
-        pass
+        account = request.POST['account']
+        permission = request.POST['permission']
+        userobj = User.objects.get(UserName = account)
+        userobj.Permission = int(permission)
+        userobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
     else:
         return HttpResponse('操作有误！或者系统出错，稍后再试。')
+
+#+----------+=====================================================================
+#|产品处理模块|=====================================================================
+#+----------+=====================================================================
+def getClassOne(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    classonels = []
+    classoneobjls = ClassOne.objects.all()
+    for classoneobj in classoneobjls:
+        classonels.append(classoneobj.ClassName)
+    jsonObject = json.dumps({'classone':classonels},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def manageClassOne(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    manage = request.POST['manage']
+    if manage == 'add':
+        classname = request.POST['classname']
+        classoneobj = ClassOne()
+        classoneobj.ClassName = classname
+        classoneobj.SubClassNum = 0
+        classoneobj.Sequence = len(ClassOne.objects.all())
+        classoneobj.ProductCount = 0
+        classoneobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'delete':
+        classname = request.POST['classname']
+        classoneobj = Products.objects.get(ClassName = classname)
+        BestProduct.objects.filter(ClassOne = classoneobj).delete()
+        ProductInfoPic.objects.filter(ClassOne = classoneobj).delete()
+        ProductPic.objects.filter(ClassOne = classoneobj).delete()
+        Products.objects.filter(ClassOne = classoneobj).delete()
+        ClassTwo.objects.filter(PreClass = classoneobj).delete()
+        classoneobj.delete()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'edit':
+        classname = request.POST['classname']
+        oldname = request.POST['oldname']
+        classoneobj = Products.objects.get(ClassName = oldname)
+        classoneobj.ClassName = classname
+        classoneobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。')
+
+def getClassTwo(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    classone = request.POST['classone']
+    classoneobj = ClassOne.objects.get(ClassName = classone)
+    classtwols = []
+    classtwoobjls = ClassTwo.objects.filter(ClassOne = classoneobj)
+    for classtwoobj in classtwoobjls:
+        classtwols.append(classtwoobj.ClassName)
+    jsonObject = json.dumps({'classtwo':classtwols},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def manageClassTwo(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    manage = request.POST['manage']
+    if manage == 'add':
+        classone = request.POST['classone']
+        classname = request.POST['classname']
+        classoneobj = ClassOne.objcets.get(ClassName = classone)
+        classoneobj.SubClassNum += 1
+        classtwoobj = ClassTwo()
+        classtwoobj.PreClass = classoneobj
+        classtwoobj.Sequence = len(ClassTwo.objects.filter(PreClass = classoneobj))
+        classtwoobj.ProductCount = 0
+        classoneobj.save()
+        classtwoobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'delete':
+        classname = request.POST['classname']
+        classoneobj = Products.objects.get(ClassName = classname)
+        BestProduct.objects.filter(ClassOne = classoneobj).delete()
+        ProductInfoPic.objects.filter(ClassOne = classoneobj).delete()
+        ProductPic.objects.filter(ClassOne = classoneobj).delete()
+        Products.objects.filter(ClassOne = classoneobj).delete()
+        ClassTwo.objects.filter(PreClass = classoneobj).delete()
+        classoneobj.delete()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'edit':
+        classname = request.POST['classname']
+        oldname = request.POST['oldname']
+        classoneobj = Products.objects.get(ClassName = oldname)
+        classoneobj.ClassName = classname
+        classoneobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。') 

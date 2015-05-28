@@ -16,4 +16,7 @@ urlpatterns = patterns('',
     url(r'^getCAPTCHA', 'back.views.getCAPTCHA'),
     url(r'^getAccount$', 'back.views.getAccount'),
     url(r'^manageAccount$', 'back.views.manageAccount'),
+    url(r'^getClassOne$', 'back.views.getClassOne'),
+    url(r'^manageClassOne$', 'back.views.manageClassOne'),
+    url(r'^getClassTwo$', 'back.views.getClassTwo'),
 )
