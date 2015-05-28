@@ -471,16 +471,28 @@ def manageProductPic(request):
 
     if manage == 'add':
         if 'pic' in request.FILES:
+            classone = request.POST['classone']
+            classtwo = request.POST['classtwo']
+            productname = request.POST['productname']
+            pic =request.FILES['pic']
+            classoneobj = ClassOne.objects.get(ClassName = classone)
+            classtwoobj = ClassTwo.objects.get(ClassName = oldname, PreClass = classoneobj)
+            productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
             t = int(time.time())
             rn = random.randrange(1,10000)
             addName = 'pp_' + str(t) + str(rn)#pp_用于区分图片
-            image =request.FILES['pic']
-            picName = image.name
+            picName = pic.name
             #以下代码替换掉文件名中的空格，改为下划线，有空格的文件名在存入mysql时会自动转化为下划线。
             picName = picName.replace(' ', '_')
-            image.name = addName + picName
-            p = ProductPic()
-
+            pic.name = addName + picName
+            productpicobj = ProductPic()
+            productpicobj.ClassOne = classoneobj
+            productpicobj.ClassTwo = classtwoobj
+            productpicobj.Product = productobj
+            productpicobj.Sequence = len(ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj))
+            productpicobj.Picture = models.ImageField(upload_to='product_picture')
+            productpicobj.Thumbnail = models.ImageField(upload_to='product_thumbnail')
+            productpicobj.ImageName = models.CharField(max_length= 150)
         else:
             return HttpResponse('图片上传错误。或者系统出错，稍后再试。')
     elif manage == 'delete':
