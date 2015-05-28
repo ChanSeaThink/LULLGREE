@@ -399,7 +399,7 @@ def manageProduct(request):
     if manage == 'add':
         classone = request.POST['classone']
         classtwo = request.POST['classtwo']
-        name = request.POST['name']
+        productname = request.POST['productname']
         classoneobj = ClassOne.objects.get(ClassName = classone)
         classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
         classoneobj.ProductCount += 1
@@ -407,7 +407,7 @@ def manageProduct(request):
         productobj = Products()
         productobj.ClassOne = classoneobj
         productobj.ClassTwo = classtwoobj
-        productobj.ProductName = name
+        productobj.ProductName = productname
         productobj.ProductInfo = ''
         productobj.ProductInfoContent = ''
         productobj.Sequence = len(Products.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj))
@@ -420,12 +420,12 @@ def manageProduct(request):
     elif manage == 'delete':
         classone = request.POST['classone']
         classtwo = request.POST['classtwo']
-        name = request.POST['name']
+        productname = request.POST['productname']
         classoneobj = ClassOne.objects.get(ClassName = classone)
         classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
         classoneobj.ProductCount -= 1
         classtwoobj.ProductCount -= 1
-        productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = name)
+        productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
         BestProduct.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).delete()
         ProductInfoPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).delete()
         ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).delete()
@@ -438,12 +438,12 @@ def manageProduct(request):
     elif manage == 'edit':
         classone = request.POST['classone']
         classtwo = request.POST['classtwo']
-        name = request.POST['name']
+        productname = request.POST['productname']
         oldname = request.POST['oldname']
         classoneobj = ClassOne.objects.get(ClassName = classone)
         classtwoobj = ClassTwo.objects.get(ClassName = oldname, PreClass = classoneobj)
         productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = oldname)
-        productobj.ProductName = name
+        productobj.ProductName = productname
         productobj.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
@@ -480,6 +480,7 @@ def manageProductPic(request):
             picName = picName.replace(' ', '_')
             image.name = addName + picName
             p = ProductPic()
+
         else:
             return HttpResponse('图片上传错误。或者系统出错，稍后再试。')
     elif manage == 'delete':
