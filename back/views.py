@@ -491,7 +491,6 @@ def manageProductPic(request):
             productpicobj.Product = productobj
             productpicobj.Sequence = len(ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj))
             productpicobj.Picture = models.ImageField(upload_to='product_picture')
-            productpicobj.Thumbnail = models.ImageField(upload_to='product_thumbnail')
             productpicobj.ImageName = models.CharField(max_length= 150)
         else:
             return HttpResponse('图片上传错误。或者系统出错，稍后再试。')

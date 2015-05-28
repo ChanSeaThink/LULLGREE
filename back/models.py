@@ -73,7 +73,6 @@ class ProductPic(models.Model):
     Product:隶属产品；
     Sequence:图片顺序；
     Picture:图片路径；
-    Thumbnail:压缩图片路径；
     ImageName：图片名称。
     '''
     ClassOne = models.ForeignKey('ClassOne')
@@ -81,7 +80,6 @@ class ProductPic(models.Model):
     Product = models.ForeignKey('Products')
     Sequence = models.IntegerField()
     Picture = models.ImageField(upload_to='product_picture')
-    Thumbnail = models.ImageField(upload_to='product_thumbnail')
     ImageName = models.CharField(max_length= 150)
 
 class ProductInfoPic(models.Model):
