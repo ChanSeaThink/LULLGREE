@@ -23,4 +23,7 @@ urlpatterns = patterns('',
     url(r'^getProductInfo$', 'back.views.getProductInfo'),
     url(r'^manageProduct$', 'back.views.manageProduct'),
     url(r'^manageProductPic$', 'back.views.manageProductPic'),
+    url(r'^manageProductInfo$', 'back.views.manageProductInfo'),#此处处理的是产品属性
+    url(r'^saveProductInfoPic$', 'back.views.saveProductInfoPic'),
+    url(r'^saveProductInfo$', 'back.views.saveProductInfo'),#此处处理的是产品详细介绍
 )

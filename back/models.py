@@ -105,10 +105,12 @@ class CacheProductInfoPic(models.Model):
     Picture：保存图片的路径。
     UserID：写作者的ID。
     ImageName：图片名称。
+    CreateTime：保留缓存图片创建的时间，用于判断清除。
     '''
     Picture = models.ImageField(upload_to='product_info_picture')
     UserID = models.IntegerField()
     ImageName = models.CharField(max_length= 150)
+    CreateTime = models.DateTimeField()
 
 class BestProduct(models.Model):
     '''

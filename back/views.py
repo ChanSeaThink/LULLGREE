@@ -564,7 +564,62 @@ def manageProductPic(request):
     else:
         return HttpResponse('操作有误！或者系统出错，稍后再试。') 
 
+def manageProductInfo(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+    #此响应函数管理的是产品的属性表格。命名跟接口有些区别。请注意不要混乱。
+    classone = request.POST['classone']
+    classtwo = request.POST['classtwo']
+    productname = request.POST['productname']
+    content = request.POST['content']
 
+    productobj = Products.objects.get(ClassOne = classone, ClassTwo = classtwo, ProductName = productname)
+    productobj.ProductInfo = content
+    productobj.save()
+
+    jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def saveProductInfoPic(request):
+    userPermission = request.session.get('permission', '')
+    userID = request.session.get('userid', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+    
+    classone = request.POST['classone']
+    classtwo = request.POST['classtwo']
+    productname = request.POST['productname']
+    pic = request.FILES['pic']
+    t = int(time.time())
+    rn = random.randrange(1,10000)
+    addName = 'pip_' + str(t) + str(rn)#pip_用于区分图片
+    picName = pic.name
+    #以下代码替换掉文件名中的空格，改为下划线，有空格的文件名在存入mysql时会自动转化为下划线。
+    picName = picName.replace(' ', '_')
+    pic.name = addName + picName
+    cacheproductinfopicobj = CacheProductInfoPic()
+    cacheproductinfopicobj.Picture = pic
+    cacheproductinfopicobj.UserID = userID
+    cacheproductinfopicobj.ImageName = pic.name
+    cacheproductinfopicobj.CreateTime = datetime.now()
+    cacheproductinfopicobj.save()
+    path = '/getPic/' + pic.name
+    jsonObject = json.dumps({'picname':'path'},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def saveProductInfo(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+    #此响应函数管理的是产品的详细介绍，即属性表下面的文章。命名跟接口有些区别。请注意不要混乱。
+    classone = request.POST['classone']
+    classtwo = request.POST['classtwo']
+    productname = request.POST['productname']
+    productinfo = request.POST['productinfo']
+    
 
 
 
