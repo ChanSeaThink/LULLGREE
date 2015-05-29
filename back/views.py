@@ -188,8 +188,26 @@ def managePassword(request):
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
     elif manage == 'change':
-        password = request.POST['password']
-        
+        oldpassword = request.POST['oldpassword']
+        newpassword = request.POST['newpassword']
+        userobj = User.objects.get(id = userID)
+        shpw = sha1()
+        shpw.update(oldpassword + str(userobj.Time)[0:19])
+        spw = shpw.hexdigest()
+        if spw != userobj.PassWord:
+            jsonObject = json.dumps({'password':'密码错误!'},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
+        else:
+            shpw1 = sha1()
+            shpw1.update(newpassword + str(userobj.Time)[0:19])
+            spw1 = shpw1.hexdigest()
+            userobj = User.objects.get(id = userID)
+            userobj.PassWord = spw1
+            userobj.save()
+            jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
     else:
         return HttpResponse('操作有误！或者系统出错，稍后再试。')
 
@@ -745,6 +763,18 @@ def manageBestProducts(request):
         return HttpResponse(jsonObject,content_type="application/json")
     else:
         return HttpResponse('操作有误！或者系统出错，稍后再试。') 
+
+#+----------+=====================================================================
+#|新闻处理模块|=====================================================================
+#+----------+=====================================================================
+def manageNews(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    
+
+
 
 
 
