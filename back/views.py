@@ -175,6 +175,24 @@ def l3back(request):
 #+----------+=====================================================================
 #|账号处理模块|=====================================================================
 #+----------+=====================================================================
+def managePassword(request):
+    userID = request.session.get('userid', '')
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    manage = request.POST['manage']
+    if manage == 'get':
+        userobj = User.objects.get(id = userID)
+        jsonObject = json.dumps({'username':userobj.UserName},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'change':
+        password = request.POST['password']
+        
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。')
+
 def getAccount(request):
     userPermission = request.session.get('permission', '')
     if userPermission < 2:
