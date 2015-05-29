@@ -28,5 +28,7 @@ urlpatterns = patterns('',
     url(r'^saveProductInfoPic$', 'back.views.saveProductInfoPic'),
     url(r'^saveProductInfo$', 'back.views.saveProductInfo'),#此处处理的是产品详细介绍
     url(r'^manageBestProducts$', 'back.views.manageBestProducts'),
+    url(r'^saveNewsPic$', 'back.views.saveNewsPic'),
     url(r'^manageNews$', 'back.views.manageNews'),
+    url(r'^manageJob$', 'back.views.manageNews'),
 )

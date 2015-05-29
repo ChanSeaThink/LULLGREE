@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from back.models import *
 import Image, ImageDraw, ImageFont, ImageFilter, random#PIL插件的文件
 from hashlib import sha1
-from datetime import datetime
+from datetime import datetime, date
 from django.conf import settings
 import cStringIO#用于把生成的图片写入内存
 import platform#用于判断操作系统
@@ -552,7 +552,7 @@ def manageProductPic(request):
             productpicobj.ImageName = pic.name
             productpicobj.save()
             path = '/getPic/' + pic.name
-            jsonObject = json.dumps({'picname':'path'},ensure_ascii = False)
+            jsonObject = json.dumps({'picname':path},ensure_ascii = False)
             #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
             return HttpResponse(jsonObject,content_type="application/json")
         else:
@@ -642,7 +642,7 @@ def saveProductInfoPic(request):
     cacheproductinfopicobj.CreateTime = datetime.now()
     cacheproductinfopicobj.save()
     path = '/getPic/' + pic.name
-    jsonObject = json.dumps({'picname':'path'},ensure_ascii = False)
+    jsonObject = json.dumps({'picname':path},ensure_ascii = False)
     #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
     return HttpResponse(jsonObject,content_type="application/json")
 
@@ -767,12 +767,198 @@ def manageBestProducts(request):
 #+----------+=====================================================================
 #|新闻处理模块|=====================================================================
 #+----------+=====================================================================
-def manageNews(request):
+def saveNewsPic(request):
     userPermission = request.session.get('permission', '')
+    userID = request.session.get('userid', '')
     if userPermission < 1:
         return HttpResponse('Without Permission')
 
-    
+    pic = request.FILES['pic']
+    t = int(time.time())
+    rn = random.randrange(1,10000)
+    addName = 'np_' + str(t) + str(rn)#pip_用于区分图片
+    picName = pic.name
+    #以下代码替换掉文件名中的空格，改为下划线，有空格的文件名在存入mysql时会自动转化为下划线。
+    picName = picName.replace(' ', '_')
+    pic.name = addName + picName
+    userobj = User.objects.get(id = userID)
+    cachenewspicobj = CacheNewsPic()
+    cachenewspicobj.ImageName = pic.name
+    cachenewspicobj.UserID = userobj
+    cachenewspicobj.Picture = pic
+    cachenewspicobj.save()
+    path = '/getPic/' + pic.name
+    jsonObject = json.dumps({'picname':path},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def manageNews(request):
+    userPermission = request.session.get('permission', '')
+    userID = request.session.get('userid', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    manage = request.POST['manage']
+    if manage == 'get':
+        newsobjls = News.objects.all()
+        news = []
+        for newsobj in newsobjls:
+            news.append(newsobj.Title + '#' + newsobj.CreateDate)
+        jsonObject = json.dumps({'newscount':len(newsobjls), 'news':news},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'delete':
+        newstitle = request.POST('newstitle')
+        time = request.POST('time')
+        newsobj = News.objects.get(Title = newstitle)
+        NewsPic.objects.filter(News = newsobj).delete()
+        newsobj.delete()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'edit':
+        newstitle = request.POST('newstitle')
+        time = request.POST('time')
+        newsobj = News.objects.get(Title = newstitle)
+        jsonObject = json.dumps({'newstitle':newsobj.Title, 'content':newsobj.LongContent, 'id':newsobj.id},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'update':
+        newstitle = request.POST['newstitle']
+        content = request.POST['content']
+        newsid = request.POST['id']
+        contentnohtml = re.sub('<[^>]*?>','',content)
+        if len(contentnohtml) < 40:
+            shortcontent = contentnohtml + '......'
+        else:
+            shortcontent = contentnohtml[0:40] + '......'
+        newsobj = News.objects.get(id = int(newsid))
+        userobj = User.objects.get(id = userID)
+        newsobj.Title = newstitle
+        newsobj.ShortContent = shortcontent
+        newsobj.LongContent = content
+        newsobj.save()
+        #提取出新闻里面的所有图片的src的值
+        picturesrcls = re.findall('<img src="(.*?)">',content)
+        picturenamels = []
+        for picturesrc in picturesrcls:
+            if picturesrc[0:8]=='/getPic/':
+                picNameLs.append(pss[8:])
+            else:
+                continue
+        #提取出已保存在数据表中的图片。
+        newspicobjls = NewsPic.objects.filter(News = newsobj)
+        newspicnamels[]
+        for newspicobj in newspicobjls:
+            newspicnamels.append(newspicobj.ImageName)
+        #‘已保存图片’和‘新上传图片’做交集运算。‘已保存图片’不在此交集的就删除，‘新上传图片’在此交集的删除。
+        nochangepicturenamels = []
+        newspicnamedeletels = []#用于保存‘已保存图片’中需要删除的图片名。
+        for newspicname in newspicnamels:
+            if newspicname in picturenamels:
+                nochangepicturenamels.append(newspicname)
+            else:
+                newspicnamedeletels.append(newspicname)
+        #‘新上传图片’在此交集的删除
+        for nochangepicturename in nochangepicturenamels:
+            if nochangepicturename in picturenamels:
+                picturenamels.remove(nochangepicturename)
+            else:
+                continue
+        #‘已保存图片’不在此交集的就删除
+        for newspicname in newspicnamedeletels:
+            newspicobj = NewsPic.objects.get(ImageName = newspicname)
+            os.remove(os.path.join(settings.MEDIA_ROOT, newspicobj.Picture.name))
+            newspicobj.delete()
+        #把新图片从缓存移到储存表中
+        for picturename in picturenamels:
+            cachenewspicobj = CacheNewsPic.objects.get(ImageName = picturename)
+            newspicobj = NewsPic()
+            newspicobj.News = newsobj
+            newspicobj.Picture = newspicobj.Picture
+            newspicobj.ImageName = picturename
+            newspicobj.save()
+            cachenewspicobj.delete()
+        #清除缓存表中该用户ID下的缓存。
+        cachenewspicobjls = CacheNewsPic.objects.filter(UserID = userobj)
+        for cachenewspicobj in cachenewspicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, cachenewspicobj.Picture.name))
+            cachenewspicobj.delete()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'add':
+        newstitle = request.POST['newstitle']
+        content = request.POST['content']
+        contentnohtml = re.sub('<[^>]*?>','',content)
+        if len(contentnohtml) < 40:
+            shortcontent = contentnohtml + '......'
+        else:
+            shortcontent = contentnohtml[0:40] + '......'
+        newsobj = News()
+        userobj = User.objects.get(id = userID)
+        newsobj.Title = newstitle
+        newsobj.ShortContent = shortcontent
+        newsobj.LongContent = content
+        newsobj.CreateTime = datetime.now()
+        newsobj.CreateDate = date.today()
+        newsobj.save()
+        #提取出新闻里面的所有图片的src的值
+        picturesrcls = re.findall('<img src="(.*?)">',content)
+        picturenamels = []
+        for picturesrc in picturesrcls:
+            if picturesrc[0:8]=='/getPic/':
+                picNameLs.append(pss[8:])
+            else:
+                continue
+        #提取出已保存在数据表中的图片。
+        newspicobjls = NewsPic.objects.filter(News = newsobj)
+        newspicnamels[]
+        for newspicobj in newspicobjls:
+            newspicnamels.append(newspicobj.ImageName)
+        #‘已保存图片’和‘新上传图片’做交集运算。‘已保存图片’不在此交集的就删除，‘新上传图片’在此交集的删除。
+        nochangepicturenamels = []
+        newspicnamedeletels = []#用于保存‘已保存图片’中需要删除的图片名。
+        for newspicname in newspicnamels:
+            if newspicname in picturenamels:
+                nochangepicturenamels.append(newspicname)
+            else:
+                newspicnamedeletels.append(newspicname)
+        #‘新上传图片’在此交集的删除
+        for nochangepicturename in nochangepicturenamels:
+            if nochangepicturename in picturenamels:
+                picturenamels.remove(nochangepicturename)
+            else:
+                continue
+        #‘已保存图片’不在此交集的就删除
+        for newspicname in newspicnamedeletels:
+            newspicobj = NewsPic.objects.get(ImageName = newspicname)
+            os.remove(os.path.join(settings.MEDIA_ROOT, newspicobj.Picture.name))
+            newspicobj.delete()
+        #把新图片从缓存移到储存表中
+        for picturename in picturenamels:
+            cachenewspicobj = CacheNewsPic.objects.get(ImageName = picturename)
+            newspicobj = NewsPic()
+            newspicobj.News = newsobj
+            newspicobj.Picture = newspicobj.Picture
+            newspicobj.ImageName = picturename
+            newspicobj.save()
+            cachenewspicobj.delete()
+        #清除缓存表中该用户ID下的缓存。
+        cachenewspicobjls = CacheNewsPic.objects.filter(UserID = userobj)
+        for cachenewspicobj in cachenewspicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, cachenewspicobj.Picture.name))
+            cachenewspicobj.delete()
+        #重新发送新闻的所有数据到终端。
+        newsobjls = News.objects.all()
+        news = []
+        for newsobj in newsobjls:
+            news.append(newsobj.Title + '#' + newsobj.CreateDate)
+        jsonObject = json.dumps({'newscount':len(newsobjls), 'news':news},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。') 
 
 
 

@@ -167,7 +167,7 @@ class CacheNewsPic(models.Model):
     Picture:新闻图片；
     '''
     ImageName = models.CharField(max_length= 150)
-    UserID = models.IntegerField()
+    UserID = models.ForeignKey()
     Picture = models.ImageField(upload_to='news_picture')
 
 #人才招聘相关的数据表格=========================================================
@@ -266,7 +266,7 @@ class CacheCasePic(models.Model):
     Picture = models.ImageField(upload_to='case_picture')
 
 #店铺展示相关的数据表格=========================================================
-class Show(models.Model):
+class Shop(models.Model):
     '''
     店面展示。
 
@@ -278,35 +278,35 @@ class Show(models.Model):
     Content = models.TextField()
     Sequence = models.IntegerField()
 
-class ShowFirstPic(models.Model):
+class ShopFirstPic(models.Model):
     '''
     每个店面的封面图片。
 
-    Show:店面；
+    Shop:店面；
     Title:店面标题；
     Thumbnail:压缩图片；
     Picture:图片；
     ImageName:图片名称；
     '''
-    Show = models.ForeignKey('Show')
+    Shop = models.ForeignKey('Shop')
     Title = models.CharField(max_length = 200)
-    Thumbnail = models.ImageField(upload_to='show_first_thumbnail')
-    Picture = models.ImageField(upload_to='show_first_picture')
+    Thumbnail = models.ImageField(upload_to='shop_first_thumbnail')
+    Picture = models.ImageField(upload_to='shop_first_picture')
     ImageName = models.CharField(max_length= 150)
 
-class ShowPic(models.Model):
+class ShopPic(models.Model):
     '''
     店面图片。
 
-    Show:店面；
+    Shop:店面；
     Picture:图片；
     ImageName:图片名称；
     '''
-    Show = models.ForeignKey('Show')
-    Picture = models.ImageField(upload_to='show_picture')
+    Show = models.ForeignKey('Shop')
+    Picture = models.ImageField(upload_to='shop_picture')
     ImageName = models.CharField(max_length= 150)
 
-class CacheShowPic(models.Model):
+class CacheShopPic(models.Model):
     '''
     店面图片缓存。
 
@@ -316,4 +316,4 @@ class CacheShowPic(models.Model):
     '''
     ImageName = models.CharField(max_length= 150)
     UserID = models.IntegerField()
-    Picture = models.ImageField(upload_to='show_picture')
+    Picture = models.ImageField(upload_to='shop_picture')
