@@ -573,11 +573,11 @@ def manageProductInfo(request):
     classtwo = request.POST['classtwo']
     productname = request.POST['productname']
     content = request.POST['content']
-
-    productobj = Products.objects.get(ClassOne = classone, ClassTwo = classtwo, ProductName = productname)
+    classoneobj = ClassOne.objects.get(ClassName = classone)
+    classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
+    productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
     productobj.ProductInfo = content
     productobj.save()
-
     jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
     #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
     return HttpResponse(jsonObject,content_type="application/json")
@@ -601,7 +601,7 @@ def saveProductInfoPic(request):
     pic.name = addName + picName
     cacheproductinfopicobj = CacheProductInfoPic()
     cacheproductinfopicobj.Picture = pic
-    cacheproductinfopicobj.UserID = userID
+    cacheproductinfopicobj.UserID = User.objects.get(id = userID)
     cacheproductinfopicobj.ImageName = pic.name
     cacheproductinfopicobj.CreateTime = datetime.now()
     cacheproductinfopicobj.save()
@@ -612,6 +612,7 @@ def saveProductInfoPic(request):
 
 def saveProductInfo(request):
     userPermission = request.session.get('permission', '')
+    userID = request.session.get('userid', '')
     if userPermission < 1:
         return HttpResponse('Without Permission')
     #此响应函数管理的是产品的详细介绍，即属性表下面的文章。命名跟接口有些区别。请注意不要混乱。
@@ -619,16 +620,113 @@ def saveProductInfo(request):
     classtwo = request.POST['classtwo']
     productname = request.POST['productname']
     productinfo = request.POST['productinfo']
-    
+    userobj = User.objects.get(id = userID)
+    classoneobj = ClassOne.objects.get(ClassName = classone)
+    classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
+    productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
+    #保存产品详细介绍。
+    productobj.ProductInfoContent = productinfo
+    productobj.save()
+    #提取出详细产品介绍里面的所有图片的src的值
+    picturesrcls = re.findall('<img src="(.*?)">',productinfo)
+    picturenamels = []
+    for picturesrc in picturesrcls:
+        if picturesrc[0:8]=='/getPic/':
+            picNameLs.append(pss[8:])
+        else:
+            continue
+    #提取出已保存在数据表中的图片。
+    productinfopicobjls = ProductInfoPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Products = productobj)
+    productinfopicnamels[]
+    for productinfopicobj in productinfopicobjls:
+        productinfopicnamels.append(productinfopicobj.ImageName)
+    #‘已保存图片’和‘新上传图片’做交集运算。‘已保存图片’不在此交集的就删除，‘新上传图片’在此交集的删除。
+    nochangepicturenamels = []
+    productinfopicnamedeletels = []#用于保存‘已保存列表’中需要删除的图片名。
+    for productinfopicname in productinfopicnamels:
+        if productinfopicname in picturenamels:
+            nochangepicturenamels.append(productinfopicname)
+        else:
+            productinfopicnamedeletels.append(productinfopicname)
+    #‘新上传图片’在此交集的删除
+    for nochangepicturename in nochangepicturenamels:
+        if nochangepicturename in picturenamels:
+            picturenamels.remove(nochangepicturename)
+        else:
+            continue
+    #‘已保存图片’不在此交集的就删除
+    for productinfopicname in productinfopicnamedeletels:
+        productinfopicobj = ProductInfoPic.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, Products = productobj, ImageName = productinfopicname)
+        os.remove(os.path.join(settings.MEDIA_ROOT, productinfopicobj.Picture.name))
+        productinfopicobj.delete()
+    #把新图片从缓存移到储存表中
+    for picturename in picturenamels:
+        cacheproductinfopicobj = CacheProductInfoPic.objects.get(UserID = userobj, ImageName = picturename)
+        productinfopicobj = ProductInfoPic()
+        productinfopicobj.ClassOne = classoneobj
+        productinfopicobj.ClassTwo = classtwoobj
+        productinfopicobj.Product = productobj
+        productinfopicobj.Picture = cacheproductinfopicobj.Picture
+        productinfopicobj.ImageName = picturename
+        productinfopicobj.save()
+        cacheproductinfopicobj.delete()
+    #清除缓存表中该用户ID下的缓存。
+    cacheproductinfopicobjls = CacheProductInfoPic.objects.filter(UserID = userobj)
+    for cacheproductinfopicobj in cacheproductinfopicobjls:
+        os.remove(os.path.join(settings.MEDIA_ROOT, cacheproductinfopicobj.Picture.name))
+        cacheproductinfopicobj.delete()
+    jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
 
+def manageBestProducts(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
 
-
-
-
-
-
-
-
+    manage = request.POST['manage']
+    if manage == 'get':
+        classone = request.POST['classone']
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        bestproductobjls = BestProduct.objects.filter(ClassOne = classoneobj)
+        products = []
+        classtwo = []
+        for bestproductobj in bestproductobjls:
+            classtwo.append(bestproductobj.ClassTwo.ClassName)
+            products.append(bestproductobj.ClassTwo.ClassName + '#' + bestproductobj.ProductName)
+        jsonObject = json.dumps({'products':products, 'classtwo':classtwo},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'add':
+        classone = request.POST['classone']
+        classtwo = request.POST['classtwo']
+        productname = request.POST['productname']
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
+        productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
+        bestproductobj = BestProduct()
+        bestproductobj.Product = productobj
+        bestproductobj.ClassOne = classoneobj
+        bestproductobj.ClassTwo = classtwoobj
+        bestproductobj.ProductName = productname
+        bestproductobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'delete':
+        classone = request.POST['classone']
+        classtwo = request.POST['classtwo']
+        productname = request.POST['productname']
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
+        productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
+        bestproductobj = BestProduct.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj, ProductName = productname)
+        bestproductobj.delete()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。') 
 
 
 

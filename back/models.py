@@ -108,7 +108,7 @@ class CacheProductInfoPic(models.Model):
     CreateTime：保留缓存图片创建的时间，用于判断清除。
     '''
     Picture = models.ImageField(upload_to='product_info_picture')
-    UserID = models.IntegerField()
+    UserID = models.ForeignKey('User')
     ImageName = models.CharField(max_length= 150)
     CreateTime = models.DateTimeField()
 
