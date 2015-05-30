@@ -229,14 +229,10 @@ class CaseFirstPic(models.Model):
     每个项目的封面图片。
 
     Case:项目；
-    Title:项目标题；
-    Thumbnail:压缩图片；
     Picture:图片；
     ImageName:图片名称；
     '''
     Case = models.ForeignKey('Case')
-    Title = models.CharField(max_length = 200)
-    Thumbnail = models.ImageField(upload_to='case_first_thumbnail')
     Picture = models.ImageField(upload_to='case_first_picture')
     ImageName = models.CharField(max_length= 150)
 
@@ -284,13 +280,11 @@ class ShopFirstPic(models.Model):
 
     Shop:店面；
     Title:店面标题；
-    Thumbnail:压缩图片；
     Picture:图片；
     ImageName:图片名称；
     '''
     Shop = models.ForeignKey('Shop')
     Title = models.CharField(max_length = 200)
-    Thumbnail = models.ImageField(upload_to='shop_first_thumbnail')
     Picture = models.ImageField(upload_to='shop_first_picture')
     ImageName = models.CharField(max_length= 150)
 

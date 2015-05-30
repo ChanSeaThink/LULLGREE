@@ -940,7 +940,7 @@ def manageNews(request):
             cachenewspicobj = CacheNewsPic.objects.get(ImageName = picturename)
             newspicobj = NewsPic()
             newspicobj.News = newsobj
-            newspicobj.Picture = newspicobj.Picture
+            newspicobj.Picture = cachenewspicobj.Picture
             newspicobj.ImageName = picturename
             newspicobj.save()
             cachenewspicobj.delete()
@@ -960,9 +960,620 @@ def manageNews(request):
     else:
         return HttpResponse('操作有误！或者系统出错，稍后再试。') 
 
+#+----------+=====================================================================
+#|招聘处理模块|=====================================================================
+#+----------+=====================================================================
+def manageJob(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
 
+    manage = request.POST['manage']
+    if manage == 'class':
+        jobobjls = Job.objects.all()
+        jobclass = []
+        for jobobj in jobobjls:
+            jobclass.append(jobobj.Title)
+        jsonObject = json.dumps({'class':jobclass},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'addclass':
+        name = request.POST['name']
+        jobobj = Job()
+        jobobj.Title = name
+        jobobj.Content = ''
+        jobobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'deleteclass':
+        name = request.POST['name']
+        jobobj = Job.objects.get(Title = name)
+        jobobj.delete()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'editclass':
+        oldname = request.POST['oldname']
+        newname = request.POST['newname']
+        jobobj = Job.objects.get(Title = oldname)
+        jobobj.Title = newname
+        jobobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'get':
+        name = request.POST['name']
+        jobobj = Job.objects.get(Title = name)
+        info = jobobj.Content
+        jsonObject = json.dumps({'info':info},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'edit':
+        name = request.POST['name']
+        content = request.POST['content']
+        jobobj = Job.objects.get(Title = name)
+        jobobj.Content = content
+        jobobj.save()
+        jsonObject = json.dumps({'info':content},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。') 
 
+#+--------------+=====================================================================
+#|企业文化处理模块|=====================================================================
+#+--------------+=====================================================================
+def manageCompanyCulture(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
 
+    part = request.POST['part']
+    manage = request.POST['']
+    if part = 'companyinfo' and manage = 'get':
+        cultureobj = Culture.objects.get(Part = part)
+        content = cultureobj.Content
+        jsonObject = json.dumps({'content':content},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif part = 'companyinfo' and manage = 'edit':
+        content = request.POST['content']
+        cultureobj = Culture.objects.get(Part = part)
+        cultureobj.Content = content
+        cultureobj.save()
+        jsonObject = json.dumps({'content':content},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif part = 'greemind' and manage = 'get':
+        cultureobj = Culture.objects.get(Part = part)
+        content = cultureobj.Content
+        jsonObject = json.dumps({'content':content},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif part = 'greemind' and manage = 'edit':
+        content = request.POST['content']
+        cultureobj = Culture.objects.get(Part = part)
+        cultureobj.Content = content
+        cultureobj.save()
+        jsonObject = json.dumps({'content':content},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif part = 'leaderword' and manage = 'get':
+        cultureobj = Culture.objects.get(Part = part)
+        content = cultureobj.Content
+        jsonObject = json.dumps({'content':content},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif part = 'leaderword' and manage = 'edit':
+        content = request.POST['content']
+        cultureobj = Culture.objects.get(Part = part)
+        cultureobj.Content = content
+        cultureobj.save()
+        jsonObject = json.dumps({'content':content},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif part = 'companyCompanyCulture' and manage = 'get':
+        honorpicobjls = HonorPic.objects.all()
+        honorpic = []
+        for honorpicobj in honorpicobjls:
+            honorpin.append('/getPic/' + honorpicobj.ImageName)
+        jsonObject = json.dumps({'honorpic':honorpic},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif part = 'companyCompanyCulture' and manage = 'add':
+        pic = request.FILES['pic']
+        t = int(time.time())
+        rn = random.randrange(1,10000)
+        addName = 'hp_' + str(t) + str(rn)#hp_用于区分图片
+        picName = pic.name
+        #以下代码替换掉文件名中的空格，改为下划线，有空格的文件名在存入mysql时会自动转化为下划线。
+        picName = picName.replace(' ', '_')
+        pic.name = addName + picName
+        honorpicobj = HonorPic()
+        honorpicobj.Picture = pic
+        honorpicobj.ImageName = pic.name
+        honorpicobj.save()
+        path = '/getPic/' + pic.name
+        jsonObject = json.dumps({'picname':path},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif part = 'companyCompanyCulture' and manage = 'delete':
+        picnamels = request.POST['pic']
+        for picname in picnamels:
+            honorpicobj = HonorPic.objects.get(ImageName = picname)
+            honorpicobj.delete()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。') 
+
+#+--------------+=====================================================================
+#|联系我们处理模块|=====================================================================
+#+--------------+=====================================================================
+def manageContactUs(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    manage = request.POST('manage')
+    if manage == 'get':
+        contactusobj = ContactUs.objects.all()[0]
+        jsonObject = json.dumps({'content':contactusobj.Content},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage == 'edit':
+        content = request.POST['content']
+        contactusobj = ContactUs.objects.all()[0]
+        contactusobj.Content = content
+        contactusobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。') 
+
+#+--------------+=====================================================================
+#|工程案例处理模块|=====================================================================
+#+--------------+=====================================================================
+def manageCase(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    manage = request.POST('manage')
+    if manage == 'get':
+        casename = request.POST.get('casename','')
+        if casename == '':
+            caseobjls = Case.objects.all().order_by('Sequence')
+            case = []
+            for caseobj in caseobjls:
+                case.append(caseobj.Title)
+            jsonObject = json.dumps({'case':case},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
+        else:
+            caseobj = Case.objects.get(Title = casename)
+            casefirstpicobj = CaseFirstPic.objects.get(Case = caseobj)
+            path = '/getPic/' + casefirstpicobj.ImageName
+            jsonObject = json.dumps({'pic':path, 'casename':caseobj.Title, 'content':caseobj.Content},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
+    elif manage =='add':
+        casename = request.POST['casename']
+        caseobj = Case()
+        caseobj.Title = casename
+        caseobj.Content = ''
+        caseobj.Sequence = len(Case.objects.all())
+        caseobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage =='delete':
+        casename = request.POST['casename']
+        caseobj = Case.objects.get(Title = casename)
+        CaseFirstPic.objects.filter(Case = caseobj).delete()
+        CasePic.objects.filter(Case = caseobj).delete()
+        caseobj.delete()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage =='edit':
+        oldname = request.POST['oldname']
+        casename = request.POST['casename']
+        caseobj = Case.objects.get(Title = oldname)
+        caseobj.Title = casename
+        caseobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage =='sort':
+        sequence = request.POST['Sequence']
+        sequencels = sequence.split('#')
+        i = 0
+        for casename in sequencels:
+            caseobj = Case.objects.get(Title = casename)
+            caseobj.Sequence = i
+            i += 1
+            caseobj.svae()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。') 
+
+def saveCaseFirstPic(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    casename = request.POST['casename']
+    pic = request.FILES['pic']
+    t = int(time.time())
+    rn = random.randrange(1,10000)
+    addName = 'cfp_' + str(t) + str(rn)#cfp_用于区分图片
+    picName = pic.name
+    #以下代码替换掉文件名中的空格，改为下划线，有空格的文件名在存入mysql时会自动转化为下划线。
+    picName = picName.replace(' ', '_')
+    pic.name = addName + picName
+    caseobj = Case.objects.get(Title = casename)
+    casefirstpicobj = CaseFirstPic()
+    casefirstpicobj.Case = caseobj
+    casefirstpicobj.ImageName = pic.name
+    casefirstpicobj.Picture = pic
+    casefirstpicobj.save()
+    path = '/getPic/' + pic.name
+    jsonObject = json.dumps({'picname':path},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def saveCasePic(request):
+    userPermission = request.session.get('permission', '')
+    userID = request.session.get('userid', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    casename = request.POST['casename']
+    pic = request.FILES['pic']
+    t = int(time.time())
+    rn = random.randrange(1,10000)
+    addName = 'cp_' + str(t) + str(rn)#cp_用于区分图片
+    picName = pic.name
+    #以下代码替换掉文件名中的空格，改为下划线，有空格的文件名在存入mysql时会自动转化为下划线。
+    picName = picName.replace(' ', '_')
+    pic.name = addName + picName
+    userobj = User.objects.get(id = userID)
+    cachecasepicobj = CacheCasePic()
+    cachecasepicobj.ImageName = pic.name
+    cachecasepicobj.UserID
+    cachecasepicobj.Picture = pic
+    cachecasepicobj.save()
+    path = '/getPic/' + pic.name
+    jsonObject = json.dumps({'picname':path},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def saveCaseInfo(request):
+    userPermission = request.session.get('permission', '')
+    userID = request.session.get('userid', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')   
+    
+    casename = request.POST['casename']
+    content = request.POST['content']
+    caseobj = Case.objects.get(Title = casename)
+    caseobj.content = content
+    caseobj.save()
+    userobj = User.objects.get(id = userID)
+    #提取出新闻里面的所有图片的src的值
+    picturesrcls = re.findall('<img src="(.*?)">',content)
+    picturenamels = []
+    for picturesrc in picturesrcls:
+        if picturesrc[0:8]=='/getPic/':
+            picNameLs.append(pss[8:])
+        else:
+            continue
+    #提取出已保存在数据表中的图片。
+    casepicobjls = CasePic.objects.filter(Case = caseobj)
+    casepicnamels[]
+    for casepicobj in casepicobjls:
+        casepicnamels.append(casepicobj.ImageName)
+    #‘已保存图片’和‘新上传图片’做交集运算。‘已保存图片’不在此交集的就删除，‘新上传图片’在此交集的删除。
+    nochangepicturenamels = []#此变量表示交集
+    casepicnamedeletels = []#用于保存‘已保存图片’中需要删除的图片名。
+    for casepicname in casepicnamels:
+        if newspicname in picturenamels:
+            nochangepicturenamels.append(newspicname)
+        else:
+            casepicnamedeletels.append(newspicname)
+    #‘新上传图片’在此交集的删除
+    for nochangepicturename in nochangepicturenamels:
+        if nochangepicturename in picturenamels:
+            picturenamels.remove(nochangepicturename)
+        else:
+            continue
+    #‘已保存图片’不在此交集的就删除
+    for casepicname in casepicnamedeletels:
+        casepicobj = CasePic.objects.get(ImageName = casepicname)
+        os.remove(os.path.join(settings.MEDIA_ROOT, casepicobj.Picture.name))
+        casepicobj.delete()
+    #把新图片从缓存移到储存表中
+    for picturename in picturenamels:
+        cachecasepicobj = CacheCasePic.objects.get(ImageName = picturename)
+        casepicobj = NewsPic()
+        casepicobj.News = newsobj
+        casepicobj.Picture = cachecasepicobj.Picture
+        casepicobj.ImageName = picturename
+        casepicobj.save()
+        cachecasepicobj.delete()
+    #清除缓存表中该用户ID下的缓存。
+    cachecasepicobjls = CacheCasePic.objects.filter(UserID = userobj)
+    for cachecasepicobj in cachecasepicobjls:
+        os.remove(os.path.join(settings.MEDIA_ROOT, cachecasepicobj.Picture.name))
+        cachecasepicobj.delete()
+    jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+#+--------------+=====================================================================
+#|店铺展示处理模块|=====================================================================
+#+--------------+=====================================================================
+def manageShop(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    manage = request.POST('manage')
+    if manage == 'get':
+        shopname = request.POST.get('shopname','')
+        if shopname == '':
+            shopobjls = Shop.objects.all().order_by('Sequence')
+            shop = []
+            for shopobj in shopobjls:
+                shop.append(shopobj.Title)
+            jsonObject = json.dumps({'shop':shop},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
+        else:
+            shopobj = Shop.objects.get(Title = shopname)
+            shopfirstpicobj = ShopFirstPic.objects.get(Shop = shopobj)
+            path = '/getPic/' + shopfirstpicobj.ImageName
+            jsonObject = json.dumps({'pic':path, 'shopname':shopobj.Title, 'content':shopobj.Content},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
+    elif manage =='add':
+        shopname = request.POST['shopname']
+        shopobj = Shop()
+        shopobj.Title = shopname
+        shopobj.Content = ''
+        shopobj.Sequence = len(Shop.objects.all())
+        shopobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage =='delete':
+        shopname = request.POST['shopname']
+        shopobj = Shop.objects.get(Title = shopname)
+        ShopFirstPic.objects.filter(Shop = shopobj).delete()
+        ShopPic.objects.filter(Shop = shopobj).delete()
+        shopobj.delete()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage =='edit':
+        oldname = request.POST['oldname']
+        shopname = request.POST['shopname']
+        shopobj = Shop.objects.get(Title = oldname)
+        shopobj.Title = shopname
+        shopobj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif manage =='sort':
+        sequence = request.POST['Sequence']
+        sequencels = sequence.split('#')
+        i = 0
+        for shopname in sequencels:
+            shopobj = Shop.objects.get(Title = shopname)
+            shopobj.Sequence = i
+            i += 1
+            shopobj.svae()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        return HttpResponse('操作有误！或者系统出错，稍后再试。') 
+
+def saveShopFirstPic(request):
+    userPermission = request.session.get('permission', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    shopname = request.POST['shopname']
+    pic = request.FILES['pic']
+    t = int(time.time())
+    rn = random.randrange(1,10000)
+    addName = 'sfp_' + str(t) + str(rn)#cfp_用于区分图片
+    picName = pic.name
+    #以下代码替换掉文件名中的空格，改为下划线，有空格的文件名在存入mysql时会自动转化为下划线。
+    picName = picName.replace(' ', '_')
+    pic.name = addName + picName
+    shopobj = Shop.objects.get(Title = shopname)
+    shopfirstpicobj = ShopFirstPic()
+    shopfirstpicobj.Shop = shopobj
+    shopfirstpicobj.ImageName = pic.name
+    shopfirstpicobj.Picture = pic
+    shopfirstpicobj.save()
+    path = '/getPic/' + pic.name
+    jsonObject = json.dumps({'picname':path},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def saveShopPic(request):
+    userPermission = request.session.get('permission', '')
+    userID = request.session.get('userid', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')
+
+    shopname = request.POST['shopname']
+    pic = request.FILES['pic']
+    t = int(time.time())
+    rn = random.randrange(1,10000)
+    addName = 'sp_' + str(t) + str(rn)#cp_用于区分图片
+    picName = pic.name
+    #以下代码替换掉文件名中的空格，改为下划线，有空格的文件名在存入mysql时会自动转化为下划线。
+    picName = picName.replace(' ', '_')
+    pic.name = addName + picName
+    userobj = User.objects.get(id = userID)
+    cacheshoppicobj = CacheShopPic()
+    cacheshoppicobj.ImageName = pic.name
+    cacheshoppicobj.UserID
+    cacheshoppicobj.Picture = pic
+    cacheshoppicobj.save()
+    path = '/getPic/' + pic.name
+    jsonObject = json.dumps({'picname':path},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+def saveShopInfo(request):
+    userPermission = request.session.get('permission', '')
+    userID = request.session.get('userid', '')
+    if userPermission < 1:
+        return HttpResponse('Without Permission')   
+    
+    shopname = request.POST['shopname']
+    content = request.POST['content']
+    shopobj = Shop.objects.get(Title = shopname)
+    shopobj.content = content
+    shopobj.save()
+    userobj = User.objects.get(id = userID)
+    #提取出新闻里面的所有图片的src的值
+    picturesrcls = re.findall('<img src="(.*?)">',content)
+    picturenamels = []
+    for picturesrc in picturesrcls:
+        if picturesrc[0:8]=='/getPic/':
+            picNameLs.append(pss[8:])
+        else:
+            continue
+    #提取出已保存在数据表中的图片。
+    shoppicobjls = ShopPic.objects.filter(Shop = shopobj)
+    shoppicnamels[]
+    for shoppicobj in shoppicobjls:
+        shoppicnamels.append(shoppicobj.ImageName)
+    #‘已保存图片’和‘新上传图片’做交集运算。‘已保存图片’不在此交集的就删除，‘新上传图片’在此交集的删除。
+    nochangepicturenamels = []#此变量表示交集
+    shoppicnamedeletels = []#用于保存‘已保存图片’中需要删除的图片名。
+    for shoppicname in shoppicnamels:
+        if newspicname in picturenamels:
+            nochangepicturenamels.append(newspicname)
+        else:
+            shoppicnamedeletels.append(newspicname)
+    #‘新上传图片’在此交集的删除
+    for nochangepicturename in nochangepicturenamels:
+        if nochangepicturename in picturenamels:
+            picturenamels.remove(nochangepicturename)
+        else:
+            continue
+    #‘已保存图片’不在此交集的就删除
+    for shoppicname in shoppicnamedeletels:
+        shoppicobj = ShopPic.objects.get(ImageName = shoppicname)
+        os.remove(os.path.join(settings.MEDIA_ROOT, shoppicobj.Picture.name))
+        shoppicobj.delete()
+    #把新图片从缓存移到储存表中
+    for picturename in picturenamels:
+        cacheshoppicobj = CacheShopPic.objects.get(ImageName = picturename)
+        shoppicobj = NewsPic()
+        shoppicobj.News = newsobj
+        shoppicobj.Picture = cacheshoppicobj.Picture
+        shoppicobj.ImageName = picturename
+        shoppicobj.save()
+        cacheshoppicobj.delete()
+    #清除缓存表中该用户ID下的缓存。
+    cacheshoppicobjls = CacheShopPic.objects.filter(UserID = userobj)
+    for cacheshoppicobj in cacheshoppicobjls:
+        os.remove(os.path.join(settings.MEDIA_ROOT, cacheshoppicobj.Picture.name))
+        cacheshoppicobj.delete()
+    jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+
+#+--------------+=====================================================================
+#|初始化网站的配置|=====================================================================
+#+--------------+=====================================================================
+def initialise(request):
+    userPermission = request.session.get('permission', '')
+    userID = request.session.get('userid', '')
+    if userPermission < 2:
+        return HttpResponse('Without Permission')
+
+    if len(ContactUs.objects.all()) == 0:
+        contactusobj = ContactUs()
+        contactusobj.Content = ''
+        contactusobj.save() 
+
+    if len(Culture.objects.all()) == 0:
+        cultureobj1 = Culture()
+        cultureobj1.Part = 'companyinfo'
+        cultureobj1.Content = ''
+        cultureobj1.save()
+        cultureobj2 = Culture()
+        cultureobj2.Part = 'greemind'
+        cultureobj2.Content = ''
+        cultureobj2.save()
+        cultureobj3 = Culture()
+        cultureobj3.Part = 'leaderword'
+        cultureobj3.Content = ''
+        cultureobj3.save()
+    return HttpResponse('数据库初始化成功～')
+
+#+--------------+=====================================================================
+#|显示图片！！！！|=====================================================================
+#+--------------+=====================================================================
+def getPic(request, ImgName):
+    item = ImgName.split('_')[0]
+    if item == 'pp':#ProductPic
+        productpicobj = ProductPic.objects.get(ImgName = ImgName)
+        return HttpResponse(productpicobj.Picture, 'image')
+    elif item == 'pip':#ProductInfoPic
+        productinfopicobjls = ProductInfoPic.objects.filter(ImgName = ImgName)
+        if len(productinfopicobjls) == 1:
+            return HttpResponse(productinfopicobjls[0].Picture, 'image')
+        else:
+            cacheproductinfopicobj = CacheProductInfoPic.objects.get(ImgName = ImgName)
+            return HttpResponse(cacheproductinfopicobj.Picture, 'image')
+    elif item == 'np':#NewsPic
+        newspicobjls = NewsPic.objects.filter(ImgName = ImgName)
+        if len(newspicobjls) == 1:
+            return HttpResponse(newspicobjls[0].Picture, 'image')
+        else:
+            cachenewspicobj = CacheNewsPic.objects.get(ImgName = ImgName)
+            return HttpResponse(cachenewspicobj.Picture, 'image')
+    elif item == 'hp':#HonorPic
+        honorpicobj = HonorPic.objects.get(ImgName = ImageName)
+        return HttpResponse(honorpicobj.Picture, 'image')
+    elif item == 'cfp':#CaseFirstPic
+        casefirstpicobj = CaseFirstPic.objects.get(ImgName = ImgName)
+        return HttpResponse(casefirstpicobj.Picture, 'image')
+    elif item == 'cp':#CasePic
+        casepicobjls = CasePic.objects.filter(ImgName = ImgName)
+        if len(casepicobjls) == 1:
+            return HttpResponse(casepicobjls[0].Picture, 'image')
+        else:
+            cachecasepicobj = CacheCasePic.objects.get(ImgName = ImgName)
+            return HttpResponse(cachecasepicobj.Picture, 'image')
+    elif item == 'sfp':#ShopFirstPic
+        shopfirstpicobj = ShopFirstPic.objects.get(ImgName = ImgName)
+        return HttpResponse(shopfirstpicobj.Picture, 'image')
+    elif item == 'sp':#ShopPic
+        shoppicobjls = ShopPic.objects.filter(ImgName = ImgName)
+        if len(shoppicobjls) == 1:
+            return HttpResponse(shoppicobjls[0].Picture, 'image')
+        else:
+            cacheshoppicobj = CacheShopPic.objects.get(ImgName = ImgName)
+            return HttpResponse(cacheshoppicobj.Picture, 'image')
+    else:
+        return HttpResponse('errer')
 
 
 
