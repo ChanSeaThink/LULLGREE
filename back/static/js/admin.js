@@ -88,7 +88,10 @@ window.onload=function(){
 			$("#validcode p").text("位数不够！");
 			flag[3]=0;
 		}
-		if(flag[0]==1&&flag[1]==1&&flag[2]==1&&flag[3]==1){
+		if(n_password&&password!=n_password){
+			$("#n_password p").text("两次密码不同！");
+		}
+		else if(flag[0]==1&&flag[1]==1&&flag[2]==1&&flag[3]==1){
 			var xmlhttp=new XMLHttpRequest();
 			xmlhttp.open("POST","/regist",false);
 			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -146,13 +149,12 @@ window.onload=function(){
 		},
 		"blur":function(){
 			var str=$(this).val();
-			var str2=$("#n_password input").val();
-			if(str2&&str!=str2){
-				$("#n_password p").text("两次密码不同！");
+			if(str.length<8){
+				$("#password p").text("密码至少为8位");
 				flag[1]=0;
 			}
 			else{
-				$("#n_password p").text("");
+				$("#password p").text("");
 				flag[1]=1;
 			}
 		}
@@ -171,9 +173,8 @@ window.onload=function(){
 		},
 		"blur":function(){
 			var str=$(this).val();
-			var str2=$("#password input").val();
-			if(str!=str2){
-				$("#n_password p").text("两次密码不同！");
+			if(str.length<8){
+				$("#n_password p").text("密码至少为8位");
 				flag[2]=0;
 			}
 			else{
