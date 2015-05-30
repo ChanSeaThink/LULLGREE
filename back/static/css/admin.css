@@ -57,13 +57,18 @@ body{}
 	height:30px;
 }
 .input input{
-	font-size:16px;
+	font-size:15px;
 }
 .input input:focus{
 	outline:none;
 }
+.input p{
+	position:absolute;
+	font-size:13px;
+	color:red;
+}
 #account input,#password input,#n_password input{
-	padding:5px 0;
+	padding-top:7px;
 	width:180px;
 	border:none;
 	background-color:transparent;
@@ -71,10 +76,21 @@ body{}
 #n_password{
 	display:none;
 }
-#icode input,#icode img{
+#account img,#password img,#n_password img{
+	position:relative;
+	left:2px;
+	border-right:1px solid #a1a1a1;
+}
+#account p,#password p,#n_password p{
+	text-indent:40px;
+}
+#validcode p{
+	text-indent:15px;
+}
+#validcode input,#validcode img{
 	width:103px;
 }
-#icode input{
+#validcode input{
 	height:28px;
 	text-indent:10px;
 	border-radius:5px;
