@@ -80,7 +80,6 @@ def regist(request):
     username = request.POST['account']
     password = request.POST['password']
     validcode = request.POST['validcode']
-    print username
     if validcode != request.session['CAPTCHA']:
         jsonObject = json.dumps({'validcode':'验证码错误!'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
