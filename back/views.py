@@ -673,7 +673,7 @@ def saveProductInfo(request):
             continue
     #提取出已保存在数据表中的图片。
     productinfopicobjls = ProductInfoPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Products = productobj)
-    productinfopicnamels[]
+    productinfopicnamels = []
     for productinfopicobj in productinfopicobjls:
         productinfopicnamels.append(productinfopicobj.ImageName)
     #‘已保存图片’和‘新上传图片’做交集运算。‘已保存图片’不在此交集的就删除，‘新上传图片’在此交集的删除。
@@ -848,7 +848,7 @@ def manageNews(request):
                 continue
         #提取出已保存在数据表中的图片。
         newspicobjls = NewsPic.objects.filter(News = newsobj)
-        newspicnamels[]
+        newspicnamels = []
         for newspicobj in newspicobjls:
             newspicnamels.append(newspicobj.ImageName)
         #‘已保存图片’和‘新上传图片’做交集运算。‘已保存图片’不在此交集的就删除，‘新上传图片’在此交集的删除。
@@ -913,7 +913,7 @@ def manageNews(request):
                 continue
         #提取出已保存在数据表中的图片。
         newspicobjls = NewsPic.objects.filter(News = newsobj)
-        newspicnamels[]
+        newspicnamels = []
         for newspicobj in newspicobjls:
             newspicnamels.append(newspicobj.ImageName)
         #‘已保存图片’和‘新上传图片’做交集运算。‘已保存图片’不在此交集的就删除，‘新上传图片’在此交集的删除。
@@ -1031,13 +1031,13 @@ def manageCompanyCulture(request):
 
     part = request.POST['part']
     manage = request.POST['']
-    if part = 'companyinfo' and manage = 'get':
+    if part == 'companyinfo' and manage == 'get':
         cultureobj = Culture.objects.get(Part = part)
         content = cultureobj.Content
         jsonObject = json.dumps({'content':content},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
-    elif part = 'companyinfo' and manage = 'edit':
+    elif part == 'companyinfo' and manage == 'edit':
         content = request.POST['content']
         cultureobj = Culture.objects.get(Part = part)
         cultureobj.Content = content
@@ -1045,13 +1045,13 @@ def manageCompanyCulture(request):
         jsonObject = json.dumps({'content':content},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
-    elif part = 'greemind' and manage = 'get':
+    elif part == 'greemind' and manage == 'get':
         cultureobj = Culture.objects.get(Part = part)
         content = cultureobj.Content
         jsonObject = json.dumps({'content':content},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
-    elif part = 'greemind' and manage = 'edit':
+    elif part == 'greemind' and manage == 'edit':
         content = request.POST['content']
         cultureobj = Culture.objects.get(Part = part)
         cultureobj.Content = content
@@ -1059,13 +1059,13 @@ def manageCompanyCulture(request):
         jsonObject = json.dumps({'content':content},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
-    elif part = 'leaderword' and manage = 'get':
+    elif part == 'leaderword' and manage == 'get':
         cultureobj = Culture.objects.get(Part = part)
         content = cultureobj.Content
         jsonObject = json.dumps({'content':content},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
-    elif part = 'leaderword' and manage = 'edit':
+    elif part == 'leaderword' and manage == 'edit':
         content = request.POST['content']
         cultureobj = Culture.objects.get(Part = part)
         cultureobj.Content = content
@@ -1073,7 +1073,7 @@ def manageCompanyCulture(request):
         jsonObject = json.dumps({'content':content},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
-    elif part = 'companyCompanyCulture' and manage = 'get':
+    elif part == 'companyCompanyCulture' and manage == 'get':
         honorpicobjls = HonorPic.objects.all()
         honorpic = []
         for honorpicobj in honorpicobjls:
@@ -1081,7 +1081,7 @@ def manageCompanyCulture(request):
         jsonObject = json.dumps({'honorpic':honorpic},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
-    elif part = 'companyCompanyCulture' and manage = 'add':
+    elif part == 'companyCompanyCulture' and manage == 'add':
         pic = request.FILES['pic']
         t = int(time.time())
         rn = random.randrange(1,10000)
@@ -1098,7 +1098,7 @@ def manageCompanyCulture(request):
         jsonObject = json.dumps({'picname':path},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
-    elif part = 'companyCompanyCulture' and manage = 'delete':
+    elif part == 'companyCompanyCulture' and manage == 'delete':
         picnamels = request.POST['pic']
         for picname in picnamels:
             honorpicobj = HonorPic.objects.get(ImageName = picname)
@@ -1276,7 +1276,7 @@ def saveCaseInfo(request):
             continue
     #提取出已保存在数据表中的图片。
     casepicobjls = CasePic.objects.filter(Case = caseobj)
-    casepicnamels[]
+    casepicnamels = []
     for casepicobj in casepicobjls:
         casepicnamels.append(casepicobj.ImageName)
     #‘已保存图片’和‘新上传图片’做交集运算。‘已保存图片’不在此交集的就删除，‘新上传图片’在此交集的删除。
@@ -1458,7 +1458,7 @@ def saveShopInfo(request):
             continue
     #提取出已保存在数据表中的图片。
     shoppicobjls = ShopPic.objects.filter(Shop = shopobj)
-    shoppicnamels[]
+    shoppicnamels = []
     for shoppicobj in shoppicobjls:
         shoppicnamels.append(shoppicobj.ImageName)
     #‘已保存图片’和‘新上传图片’做交集运算。‘已保存图片’不在此交集的就删除，‘新上传图片’在此交集的删除。

@@ -92,11 +92,71 @@
 		border-right:1px solid #e1e1e1;
 		cursor:default;
 	}
+	/*----------------------full------------------------*/
+	#full{
+		text-align:center;
+	}
+	#bottom,#waiting{
+		display:none;
+		position:fixed;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		background-color:rgba(255,255,255,0.5);
+		z-index:8;
+	}
+	#waiting p{
+		position:absolute;
+		top:50%;
+		left:50%;
+		margin-left:-80px;
+	}
+	#full .box{
+		position:fixed;
+		top:50%;
+		left:50%;
+		min-width:300px;
+		margin-left:-150px;
+		z-index:9;
+	}
+	#full>div>div{
+		display:none;
+		border:1px solid #a1a1a1;
+		padding:20px 20px;
+		background-color:white;
+	}
+	#full>div>div p{
+		font-size:16px;
+		margin-bottom:20px;
+	}
+	#full>div>div p span{
+		font-weight:bold;
+	}
+	#full .button{
+		margin:0 10px;
+	}
+	#full input{
+		margin-right:15px;
+	}
+	.up,.down,.left,.right{
+		display:inline-block;
+		border:1px solid #a1a1a1;
+		margin:0 10px;
+		padding:5px 10px;
+		font-weight:bold;
+		cursor:pointer;
+	}
+	#full .data{
+		display:none;
+	}
 	/*---------------------主内容块---------------------*/
 	/*编辑框*/
 	.edit_box{
 		min-width:500px;
-		border:1px solid;
+		max-width:900px;
+		border:1px solid #a1a1a1;
+		overflow-x:hidden;
 	}
 	.edit_function{
 		background-color:#e1e1e1;
@@ -106,12 +166,56 @@
 		padding:3px 5px;
 		background-color:#e1e1e1;
 		text-align:center;
+		cursor:pointer;
 	}
-	.edit_function span:last-child{
+	.pub{
 		float:right;
 	}
-	.text_box{
-		height:300px;
+	#file{
+		position:absolute;
+		top:-9999px;
+	}
+	#news_title{
+		display:none;
+		margin-left:-1px;
+		padding:10px 0;
+		width:100%;
+		text-indent:20px;
+		font-size:20px;
+		white-space:nowrap;
+	}
+	#text_box:focus {
+		outline:none;
+	}
+	#text_box {
+		padding:20px 20px;
+		min-height:300px;
+		line-height:26px;
+		font-size:16px;
+		border:none;
+		overflow-y:hidden;
+	}
+	#text_box p:first-child{
+		border:none;
+	}
+	#text_box>p{
+		border:none;
+		margin-bottom:1px;
+		word-break:break-all;
+	}
+	#text_box>div{
+		border:none;
+	}
+	#text_box img{
+		max-width:500px;
+	}
+	/*--------------------隐藏的编辑框-------------------*/
+	.edit{
+		display:none;
+	}
+	.edit_input{
+		display:inline-block;
+		text-align:center;
 	}
 	/*---------------------------------------*/
 	#details{
@@ -133,7 +237,7 @@
 	#details>div>div>table>tbody>tr>td:first-child{
 		text-align:right;
 	}
-	div.index_pic img,div.products_pic img,div.news_pic img{
+	#details .index_pic img,#details .products_pic img,#details .news_pic img{
 		width:400px;
 	}
 	.button{
@@ -143,111 +247,127 @@
 		cursor:pointer;
 	}
 	/*------------------welcome_phrase-------------------*/
-	div.welcome_phrase{
+	#details .welcome_phrase{
 		text-align:center;
 	}
-	div.welcome_phrase p{
+	#details .welcome_phrase p{
 		padding-top:40px;
 		font-size:46px;
 		color:#226ddd;
 	}
 	/*------------------account_manage-------------------*/
-	div.account_manage table table td{
+	#details .account_manage .title{
+		padding-bottom:20px;
+		margin-right:40px;
+		font-size:30px;
+		color:#34333f;
+		border-bottom:1px solid #34333f;
+	}
+	#details .account_manage table table td{
 		padding-left:20px;
 		padding-right:50px;
 		padding-bottom:10px;
 	}
-	div.account_manage table table tr td{
+	#details .account_manage table table tr td{
 		text-align:center;
 	}
-	div.account_manage .button{
+	#details .account_manage .button{
 		margin:0px 5px;
 	}
-	div.account_manage td p{
+	#details .account_manage td p{
 		margin-bottom:15px;
 	}
 	/*------------------my_account-------------------*/
-	div.my_account table{
+	#details .my_account .title{
+		text-align:center;
+		padding-bottom:20px;
+		margin-right:40px;
+		font-size:30px;
+		color:#34333f;
+		border-bottom:1px solid #34333f;
+	}
+	#details .my_account table{
 		margin:0 auto;
 	}
-	div.my_account table td{
-		padding:0 30px;
+	#details .my_account table td{
+		padding:20px 30px;
 	}
-	div.my_account img{
+	#details .my_account img{
 		margin-top:20px;
 		width:100px;
 		height:30px;
 	}
-	/*-------------------------------------*/
-	div.index_pic{}
-	div.index_pic div{
+	#details .my_account p{
+		position:absolute;
+		color:red;
 	}
 	/*-------------------------------------*/
-	div.index_phrase div{
+	#details .index_pic{}
+	#details .index_pic div{
 	}
-	div.index_phrase div span:first-child{
-		display:inline-block;
-		width:80px;
-		text-align:right;
-	}
-	#new_phrase{
-		width:200px;
-	}
-	#phrase_confirm{
-		margin-left:5px;
-		padding:0 5px;
-	}
-	/*-------------------products_type------------------*/
-	div.products_type input{
-		width:200px;
-	}
-	div.products_type .button{
+	/*-----------------index_phrase--------------------*/
+	#details .index_phrase .button{
 		margin-left:10px;
 	}
-	/*------------------products_edit-------------------*/
-	div.products_edit table table td{
-		padding-left:20px;
-		padding-bottom:10px;
+	/*-------------------products_type------------------*/
+	#details .products_type input{
+		width:200px;
 	}
-	div.products_edit table table tr td{
-		text-align:center;
-	}
-	div.products_edit .button{
-		margin:0px 5px;
+	#details .products_type .button{
+		margin-left:10px;
 	}
 	/*------------------products_details-------------------*/
-	#products_pics{
+	.products_pics{
 	}
-	#products_pics div{
+	.products_pics div{
 		display:inline-block;
 		width:100px;
 		text-align:center;
 	}
-	#products_pics div img{
+	.products_pics div img{
 		width:100%;
 		height:100px;
 	}
-	#products_pics div input{
+	.products_pics div input{
 	}
-	div.products_details table table{
+	#details .products_details table table{
 		padding-top:20px;
 	}
-	div.products_details table table td{
+	#details .products_details table table td{
 		padding-right:20px;
 		padding-bottom:10px;
 		text-align:center;
 	}
-	div.products_details .button{
-		margin-right:10px;
+	#details .products_details select{
+	}
+	#details .products_details .details{
+		display:none;
+	}
+	#details .products_details .button{
+		margin:0 5px;
+	}
+	#select_spec{
+		margin-right:48px;
+	}
+	#details .products_details .spec_table{
+		display:none;
+	}
+	#details .products_details .spec_table .spec2{
+		display:none;
+	}
+	#details .products_details .article>div:first-child{
+		border:1px solid #a1a1a1;
+		padding:20px;
+		margin-bottom:20px;
 	}
 	/*
-	div.products_details table table{
+	#details .products_details table table{
 		border:white;
 		border-collapse:collapse;
 		width:450px;
 		text-align:center;
 	}
-	div.products_details table table td{
+	#details .products_details table table td{
 		height:25px;
 		font-size:15px;
 	}
@@ -264,37 +384,39 @@
 		cursor:default;
 	}
 	*/
-	/*------------------products_type_susume-------------------*/
-	div.products_type_susume input{
-		width:200px;
-	}
-	div.products_type_susume .button{
-		margin-left:10px;
-	}
 	/*------------------products_susume-------------------*/
-	div.products_susume table table td{
+	#details .products_susume table table td{
 		padding-left:20px;
 		padding-bottom:10px;
 	}
-	div.products_susume table table tr td{
+	#details .products_susume table table tr td{
 		text-align:center;
 	}
-	div.products_susume .button{
+	#details .products_susume .details{
+		display:none;
+	}
+	#details .products_susume .details .add1{
+		display:none;
+	}
+	#details .products_susume .details .add2{
+		display:none;
+	}
+	#details .products_susume .button{
 		margin:0px 5px;
 	}
 	/*------------------news_pic-------------------*/
 	/*------------------news_edit-------------------*/
-	div.news_edit table table td{
+	#details .news_edit table table td{
 		padding-left:20px;
 		padding-bottom:10px;
 	}
-	div.news_edit table table tr:first-child td{
+	#details .news_edit table table tr:first-child td{
 		text-align:center;
 	}
-	div.news_edit table table tr td:first-child{
+	#details .news_edit table table tr td:first-child{
 		text-align:center;
 	}
-	div.news_edit .button{
+	#details .news_edit .button{
 		margin:0px 5px;
 	}
 	#page{
@@ -310,21 +432,21 @@
 		cursor:pointer;
 	}
 	/*------------------recruitment_type-------------------*/
-	div.recruitment_type input{
+	#details .recruitment_type input{
 		width:200px;
 	}
-	div.recruitment_type .button{
+	#details .recruitment_type .button{
 		margin-left:10px;
 	}
 	/*------------------recruitment_require-------------------*/
 	#rr_table input{
 		display:none;
 	}
-	div.recruitment_require table table td{
+	#details .recruitment_require table table td{
 		padding-left:20px;
 		padding-bottom:10px;
 	}
-	div.recruitment_require table table td{
+	#details .recruitment_require table table td{
 		text-align:center;
 	}
 	#rr_table .button{
@@ -371,4 +493,52 @@
 	#honor_pics div img{
 		width:100%;
 		height:100px;
+	}
+	#details .culture_honor .button{
+		margin-left:10px;
+	}
+	/*--------------------stores_show-------------------*/
+	#details .stores_show .details{
+		display:none;
+	}
+	#details .stores_show .button{
+		margin-left:10px;
+	}
+	#details .stores_show .c_pic img{
+		max-width:400px;
+		min-width:200px;
+		max-height:100px;
+	}
+	/*--------------------engineering_show-------------------*/
+	#details .engineering_show .details{
+		display:none;
+	}
+	#details .engineering_show .button{
+		margin-left:10px;
+	}
+	#details .engineering_show .c_pic img{
+		max-width:400px;
+		min-width:200px;
+		max-height:100px;
+	}
+	/*--------------------contact_details--------------------*/
+	#contact_way{
+		width:900px;
+		margin:0 auto;
+	}
+	#contact_way div:first-child{
+		font-size:25px;
+	}
+	#contact_way div:last-child{
+		padding-top:10px;
+		width:400px;
+		margin-top:30px;
+		margin-left:60px;
+		border:2px solid #a1a1a1;
+		color:#616161;
+	}
+	#contact_way p{
+		padding-left:30px;
+		font-size:16px;
+		margin-top:15px;
 	}

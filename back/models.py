@@ -167,7 +167,7 @@ class CacheNewsPic(models.Model):
     Picture:新闻图片；
     '''
     ImageName = models.CharField(max_length= 150)
-    UserID = models.ForeignKey()
+    UserID = models.ForeignKey('User')
     Picture = models.ImageField(upload_to='news_picture')
 
 #人才招聘相关的数据表格=========================================================
@@ -258,7 +258,7 @@ class CacheCasePic(models.Model):
     Picture:项目图片；
     '''
     ImageName = models.CharField(max_length= 150)
-    UserID = models.IntegerField()
+    UserID = models.IntegerField('User')
     Picture = models.ImageField(upload_to='case_picture')
 
 #店铺展示相关的数据表格=========================================================
@@ -309,5 +309,5 @@ class CacheShopPic(models.Model):
     Picture:项目图片；
     '''
     ImageName = models.CharField(max_length= 150)
-    UserID = models.IntegerField()
+    UserID = models.IntegerField('User')
     Picture = models.ImageField(upload_to='shop_picture')

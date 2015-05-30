@@ -10,6 +10,7 @@
 <link href="{% static "css/backup.css" %}" rel="stylesheet">
 <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
 <script src="{% static "js/backup.js" %}"></script>
+<!--<script src="{% static "js/jquery-1.11.2.js"></script>-->
 </head>
 <body>
 	<div id="left">
@@ -18,23 +19,23 @@
 		</div>
 		<div id="list">
 			<ul>
-				<li class="index">主页</li>
+				<!--<li class="index">主页</li>-->
 				<li class="products">产品中心</li>
 				<li class="news">新闻中心</li>
 				<li class="recruitment">人才招聘</li>
 				<li class="culture">企业文化</li>
+				<li class="stores">店面展示</li>
+				<li class="engineering">工程案例</li>
 				<li class="contact">联系我们</li>
 			</ul>
 		</div>
 	</div>
 		<div id="top">
-			{% if permission %}
 			<div class="account_manage">
 				<div>
 					<img src="{% static "img/backup/users.png" %}">
 				</div>
 			</div>
-			{% endif %}
 			<div class="my_account">
 				<div>
 					<img src="{% static "img/backup/settings.png" %}">
@@ -49,24 +50,26 @@
 	<div id="right">
 		<div id="content">
 			<div id="function">
+				<!--
 				<ul class="index">
 					<li class="index_pic">背景图片</li>
 					<li class="index_phrase">宣传标语</li>
-					<!--
 					<li class="index_products">产品展示栏</li>
 					<li class="index_news">新闻展示栏</li>
-					-->
 				</ul>
+				-->
 				<ul class="products">
+					<!--
 					<li class="products_pic">背景图片</li>
+					-->
 					<li class="products_type">产品分类</li>
-					<li class="products_edit">产品编辑</li>
 					<li class="products_details">产品详情</li>
-					<li class="products_type_susume">推荐分类</li>
 					<li class="products_susume">推荐产品</li>
 				</ul>
 				<ul class="news">
+					<!--
 					<li class="news_pic">背景图片</li>
+					-->
 					<li class="news_edit">新闻编辑</li>
 				</ul>
 				<ul class="recruitment">
@@ -82,14 +85,20 @@
 				<ul class="contact">
 					<li class="contact_details">联系详情</li>
 				</ul>
+				<ul class="stores">
+					<li class="stores_show">店面展示</li>
+				</ul>
+				<ul class="engineering">
+					<li class="engineering_show">工程案例</li>
+				</ul>
 				<p class="clear"></p>
 			</div>
 			<div id="details">
 				<div class="welcome_phrase">
 					<p>欢迎光临忠胜格力后台中心</p>
 				</div>
-				{% if permission %}
 				<div class="account_manage">
+					<div class="title">权限管理</div>
 					<div>
 						<table>
 							<tr>
@@ -99,59 +108,14 @@
 								<td>
 									<table>
 										<tr>
-											<td>
-												<span>序号</span>
-											</td>
-											<td>
+											<td class="account">
 												<span>帐号</span>
 											</td>
-											<td>
+											<td class="permission">
 												<span>权限</span>
 											</td>
-											<td>
+											<td class="operation">
 												<span>操作</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>0</span>
-											</td>
-											<td>
-												<span>Admin</span>
-											</td>
-											<td>
-												<span>∞</span>
-											</td>
-											<td>
-												<span class="button">无法修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>1</span>
-											</td>
-											<td>
-												<span>Trzinory</span>
-											</td>
-											<td>
-												<span>3</span>
-											</td>
-											<td>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>2</span>
-											</td>
-											<td>
-												<span>ChanSea</span>
-											</td>
-											<td>
-												<span>3</span>
-											</td>
-											<td>
-												<span class="button">修改</span>
 											</td>
 										</tr>
 									</table>
@@ -172,8 +136,8 @@
 						</table>
 					</div>
 				</div>
-				{% endif %}
 				<div class="my_account">
+					<div class="title">个人帐号管理</div>
 					<div>
 						<table>
 							<tr>
@@ -181,7 +145,7 @@
 									<span>我的帐号：</span>
 								</td>
 								<td>
-									<span>Trzinory</span>
+									<span class="account"></span>
 								</td>
 							</tr>
 							<tr>
@@ -189,7 +153,8 @@
 									<span>我的密码：</span>
 								</td>
 								<td>
-									<input type="password" value="password">
+									<input type="password">
+									<p></p>
 								</td>
 							</tr>
 							<tr>
@@ -198,6 +163,7 @@
 								</td>
 								<td>
 									<input type="password">
+									<p></p>
 								</td>
 							</tr>
 							<tr>
@@ -206,15 +172,7 @@
 								</td>
 								<td>
 									<input type="password">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>验证码：</span>
-								</td>
-								<td>
-									<input type="text">
-									<div><img src=""></div>
+									<p></p>
 								</td>
 							</tr>
 							<tr>
@@ -226,10 +184,11 @@
 						</table>
 					</div>
 				</div>
+				<!--
 				<div class="index_pic">
 					<div>
 						<span>当前图片：</span>
-						<img src="{% static "img/index/bgpic4.jpg" %}" align="top">
+						<img src="{% static "img/index/bgpic4.jpg" align="top">
 					</div>
 					<div>
 						<span>上传图片：</span>
@@ -238,16 +197,21 @@
 				</div>
 				<div class="index_phrase">
 					<div>
-						<span>当前标语：</span>
-						<span>核心科技 世界水准</span>
-					</div>
-					<div>
-						<span>新标语：</span>
-						<input id="new_phrase" type="text">
-						<input  id="phrase_confirm" type="button" value="确定">
+						<table>
+							<tr>
+								<td><span>当前标语：</span></td>
+								<td><span>核心科技 世界水准</span></td>
+							</tr>
+							<tr>
+								<td><span>新标语：</span></td>
+								<td>
+									<input id="new_phrase" type="text">
+									<span class="button">确定</span>
+								</td>
+							</tr>
+						</table>
 					</div>
 				</div>
-				<!--
 				<div class="index_products">3</div>
 				<div class="index_news">4</div>
 				-->
@@ -264,30 +228,22 @@
 				<div class="products_type">
 					<div>
 						<table>
-							<tr>
+							<tr class="first_class">
 								<td>
-									<span>一级分类：</span>
+									<span>产品一级分类：</span>
 								</td>
-								<td>
+								<td class="first_class">
 									<select>
-										<option>家用空调</option>
-										<option>生活电器</option>
-										<option>晶弘冰箱</option>
-										<option>空气能热水器</option>
-										<option>中央空调</option>
 									</select>
 								</td>
 								<td>
-									<span class="button">添加</span>
-								</td>
-								<td>
-									<span class="button">删除</span>
-								</td>
-								<td>
-									<span class="button">修改</span>
+									<span class="button details1">添加</span>
+									<span class="button details1">删除</span>
+									<span class="button details1">修改</span>
+									<span class="button details1">排序</span>
 								</td>
 							</tr>
-							<tr>
+							<tr class="edit add1">
 								<td>
 									<span>添加一级分类：</span>
 								</td>
@@ -296,9 +252,10 @@
 								</td>
 								<td>
 									<span class="button">确定</span>
+									<span class="button">取消</span>
 								</td>
 							</tr>
-							<tr>
+							<tr class="edit alter1">
 								<td>
 									<span>修改一级分类：</span>
 								</td>
@@ -307,40 +264,25 @@
 								</td>
 								<td>
 									<span class="button">确定</span>
+									<span class="button">取消</span>
 								</td>
 							</tr>
-							<tr>
-								<td>
-									<span>删除一级分类：</span>
-								</td>
-								<td>
-									<input type="text">
-								</td>
-								<td>
-									<span class="button">确定</span>
-								</td>
-							</tr>
-							<tr>
+							<tr class="second_class">
 								<td>
 									<span>二级分类：</span>
 								</td>
-								<td>
+								<td class="second_class">
 									<select>
-										<option>挂机</option>
-										<option>柜机</option>
 									</select>
 								</td>
 								<td>
-									<span class="button">添加</span>
-								</td>
-								<td>
-									<span class="button">删除</span>
-								</td>
-								<td>
-									<span class="button">修改</span>
+									<span class="button details2">添加</span>
+									<span class="button details2">删除</span>
+									<span class="button details2">修改</span>
+									<span class="button details2">排序</span>
 								</td>
 							</tr>
-							<tr>
+							<tr class="edit add2">
 								<td>
 									<span>添加二级分类：</span>
 								</td>
@@ -349,9 +291,10 @@
 								</td>
 								<td>
 									<span class="button">确定</span>
+									<span class="button">取消</span>
 								</td>
 							</tr>
-							<tr>
+							<tr class="edit alter2">
 								<td>
 									<span>修改二级分类：</span>
 								</td>
@@ -360,23 +303,13 @@
 								</td>
 								<td>
 									<span class="button">确定</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>删除二级分类：</span>
-								</td>
-								<td>
-									<input type="text">
-								</td>
-								<td>
-									<span class="button">确定</span>
+									<span class="button">取消</span>
 								</td>
 							</tr>
 						</table>
 					</div>
 				</div>
-				<div class="products_edit">
+				<div class="products_details">
 					<div>
 						<table>
 							<tr>
@@ -385,129 +318,26 @@
 								</td>
 								<td>
 									<select>
-										<option>家用空调</option>
-										<option>生活电器</option>
-										<option>晶弘冰箱</option>
-										<option>空气能热水器</option>
-										<option>中央空调</option>
+										<option></option>
+									</select>
+									<select>
 									</select>
 								</td>
 							</tr>
-							<tr>
+							<tr class="series">
 								<td>
-									<span>二级分类：</span>
+									<span>系列型号：</span>
 								</td>
 								<td>
 									<select>
-										<option>挂式</option>
-										<option>柜式</option>
 									</select>
+									<span class="button details details_add">添加</span>
+									<span class="button details">删除</span>
+									<span class="button details">编辑</span>
+									<span class="button details details_add">排序</span>
 								</td>
 							</tr>
-							<tr>
-								<td>
-									<span>产品列表：</span>
-								</td>
-								<td>
-									<table>
-										<tr>
-											<td>
-												<span>序号</span>
-											</td>
-											<td>
-												<span>系列</span>
-											</td>
-											<td>
-												<span>型号</span>
-											</td>
-											<td>
-												<span>操作</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>1</span>
-											</td>
-											<td>
-												<span>Q铂</span>
-											</td>
-											<td>
-												<span>KFR-50LW</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>2</span>
-											</td>
-											<td>
-												<span>Q铂</span>
-											</td>
-											<td>
-												<span>KFR-72LW</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>3</span>
-											</td>
-											<td>
-												<span>Q铂</span>
-											</td>
-											<td>
-												<span>KFR-26GW</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>4</span>
-											</td>
-											<td>
-												<span>Q铂</span>
-											</td>
-											<td>
-												<span>KFR-32GW</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>5</span>
-											</td>
-											<td>
-												<span>Q铂</span>
-											</td>
-											<td>
-												<span>KFR-35GW</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-							<tr>
+							<tr class="edit add_product">
 								<td>
 									<span>添加产品：</span>
 								</td>
@@ -533,114 +363,83 @@
 											</td>
 											<td>
 												<span class="button">确定</span>
+												<span class="button">取消</span>
 											</td>
 										</tr>
 									</table>
 								</td>
 							</tr>
-						</table>
-					</div>
-				</div>
-				<div class="products_details">
-					<div>
-						<table>
-							<tr>
+							<tr class="edit edit_product">
 								<td>
-									<span>产品一级分类：</span>
+									<span>编辑产品：</span>
 								</td>
 								<td>
-									<select>
-										<option>家用空调</option>
-										<option>生活电器</option>
-										<option>晶弘冰箱</option>
-										<option>空气能热水器</option>
-										<option>中央空调</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>二级分类：</span>
-								</td>
-								<td>
-									<select>
-										<option>挂式</option>
-										<option>柜式</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>系列型号：</span>
-								</td>
-								<td>
-									<select>
-										<option>Q铂 KFR-50LW</option>
-										<option>Q铂 KFR-50LW</option>
-										<option>Q铂 KFR-26GW</option>
-										<option>Q铂 KFR-32GW</option>
-										<option>Q铂 KFR-35GW</option>
-									</select>
+									<table>
+										<tr>
+											<td>
+												<span>系列</span>
+											</td>
+											<td>
+												<span>型号</span>
+											</td>
+											<td>
+												<span>操作</span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="text">
+											</td>
+											<td>
+												<input type="text">
+											</td>
+											<td>
+												<span class="button">确定</span>
+												<span class="button">取消</span>
+											</td>
+										</tr>
+									</table>
 								</td>
 							</tr>
 							<tr>
 								<td>
 									<span>展示图片：</span>
 								</td>
-								<td id="products_pics">
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
+								<td class="products_pics details">
 								</td>
 							</tr>
-							<tr>
+							<tr class="edit_pic">
 								<td>
-									<span>删除图片：</span>
+									<span>图片编辑：</span>
 								</td>
-								<td>
+								<td class="details">
+									<span class="button">添加</span>
 									<span class="button">删除</span>
+									<span class="button">排序</span>
 								</td>
 							</tr>
-							<tr>
+							<tr class="edit add_pic">
 								<td>
 									<span>添加图片：</span>
 								</td>
 								<td>
-									<input type="file">
+									<input type="file" accept="image/*"><span class="button">确定</span><span class="button">取消</span>
 								</td>
 							</tr>
-							<tr>
+							<tr class="edit_spec">
 								<td>
 									<span>产品参数：</span>
 								</td>
-								<td>
-									<select>
+								<td class="details">
+									<select id="select_spec">
+										<option>选择参数分类</option>
 										<option>主体</option>
 										<option>功能</option>
 										<option>规格</option>
 									</select>
-									<table>
+									<span class="button">添加</span>
+									<span class="button">排序</span>
+									<table class="spec_table">
 										<tr>
 											<td>
 												<span>参数类型</span>
@@ -652,123 +451,23 @@
 												<span>操作</span>
 											</td>
 										</tr>
-										<tr>
-											<td>
-												<span>系列</span>
-											</td>
-											<td>
-												<span>Q铂</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">修改</span>
-												<span class="button">删除</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>型号</span>
-											</td>
-											<td>
-												<span>KFR-50LW</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">修改</span>
-												<span class="button">删除</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>类别</span>
-											</td>
-											<td>
-												<span>柜式</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">修改</span>
-												<span class="button">删除</span>
-											</td>
-										</tr>
 									</table>
 								</td>
 							</tr>
-							<tr>
+							<tr class="edit">
 								<td>
-									<span>添加参数：</span>
+									<span>存放表格代码：</span>
 								</td>
-								<td>
-									<select>
-										<option>主体</option>
-										<option>功能</option>
-										<option>规格</option>
-									</select>
-									<input type="text">
-									<span class="button">确认</span>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-				<div class="products_type_susume">
-					<div>
-						<table>
-							<tr>
-								<td>
-									<span>推荐分类：</span>
-								</td>
-								<td>
-									<select>
-										<option>热销中</option>
-										<option>家用空调</option>
-										<option>生活电器</option>
-										<option>晶弘冰箱</option>
-										<option>空气能热水器</option>
-										<option>中央空调</option>
-									</select>
-								</td>
-								<td>
-									<span class="button">添加</span>
-								</td>
-								<td>
-									<span class="button">删除</span>
-								</td>
-								<td>
-									<span class="button">修改</span>
+								<td class="save_table">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<span>添加推荐分类：</span>
+									<span>产品宣传：</span>
 								</td>
-								<td>
-									<input type="text">
-								</td>
-								<td>
-									<span class="button">确定</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>删除推荐分类：</span>
-								</td>
-								<td>
-									<input type="text">
-								</td>
-								<td>
-									<span class="button">确定</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>修改推荐分类：</span>
-								</td>
-								<td>
-									<input type="text">
-								</td>
-								<td>
-									<span class="button">确定</span>
+								<td class="details article">
+									<div></div>
+									<span class="button click_edit">点击这里编辑</span>
 								</td>
 							</tr>
 						</table>
@@ -779,16 +478,10 @@
 						<table>
 							<tr>
 								<td>
-									<span>推荐分类：</span>
+									<span>选择分类：</span>
 								</td>
 								<td>
 									<select>
-										<option>热销中</option>
-										<option>家用空调</option>
-										<option>生活电器</option>
-										<option>晶弘冰箱</option>
-										<option>空气能热水器</option>
-										<option>中央空调</option>
 									</select>
 								</td>
 							</tr>
@@ -797,174 +490,25 @@
 									<span>推荐产品：</span>
 								</td>
 								<td>
-									<table>
-										<tr>
-											<td>
-												<span>序号</span>
-											</td>
-											<td>
-												<span>一级分类</span>
-											</td>
-											<td>
-												<span>二级分类</span>
-											</td>
-											<td>
-												<span>系列</span>
-											</td>
-											<td>
-												<span>型号</span>
-											</td>
-											<td>
-												<span>操作</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>1</span>
-											</td>
-											<td>
-												<span>家用空调</span>
-											</td>
-											<td>
-												<span>柜式</span>
-											</td>
-											<td>
-												<span>Q铂</span>
-											</td>
-											<td>
-												<span>KFR-50LW</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>2</span>
-											</td>
-											<td>
-												<span>家用空调</span>
-											</td>
-											<td>
-												<span>柜式</span>
-											</td>
-											<td>
-												<span>Q铂</span>
-											</td>
-											<td>
-												<span>KFR-72LW</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>3</span>
-											</td>
-											<td>
-												<span>家用空调</span>
-											</td>
-											<td>
-												<span>挂式</span>
-											</td>
-											<td>
-												<span>Q铂</span>
-											</td>
-											<td>
-												<span>KFR-26GW</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>4</span>
-											</td>
-											<td>
-												<span>家用空调</span>
-											</td>
-											<td>
-												<span>挂式</span>
-											</td>
-											<td>
-												<span>Q铂</span>
-											</td>
-											<td>
-												<span>KFR-32GW</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>添加推荐：</span>
-								</td>
-								<td>
-									<table>
-										<tr>
-											<td>
-												<span>二级分类</span>
-											</td>
-											<td>
-												<span>系列型号</span>
-											</td>
-											<td>
-												<span>产品图片</span>
-											</td>
-											<td>
-												<span>操作</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<select>
-													<option>柜式</option>
-													<option>挂式</option>
-												</select>
-											</td>
-											<td>
-												<select>
-													<option>Q铂 KFR-50LW</option>
-													<option>Q铂 KFR-72LW</option>
-												</select>
-											</td>
-											<td>
-												<input type="file">
-											</td>
-											<td>
-												<span class="button">确定</span>
-											</td>
-										</tr>
+									<table class="details">
 									</table>
 								</td>
 							</tr>
 						</table>
 					</div>
 				</div>
+				<!--
 				<div class="news_pic">
 					<div>
 						<span>当前图片：</span>
-						<img src="{% static "img/index/bgpic4.jpg" %}" align="top">
+						<img src="{% static "img/index/bgpic4.jpg" align="top">
 					</div>
 					<div>
 						<span>上传图片：</span>
 						<input type="file">
 					</div>
 				</div>
+				-->
 				<div class="news_edit">
 					<div>
 						<table>
@@ -974,100 +518,6 @@
 								</td>
 								<td>
 									<table>
-										<tr>
-											<td>
-												<span>序号</span>
-											</td>
-											<td>
-												<span>标题</span>
-											</td>
-											<td>
-												<span>发布时间</span>
-											</td>
-											<td>
-												<span>操作</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>1</span>
-											</td>
-											<td>
-												<span>格力参展117届春季广交会 绿色科技惊艳全球</span>
-											</td>
-											<td>
-												<span>2015 4 15</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>2</span>
-											</td>
-											<td>
-												<span>2015中国制冷展今起开幕 制冷风向标格力参展看点多</span>
-											</td>
-											<td>
-												<span>2015 4 08</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>3</span>
-											</td>
-											<td>
-												<span>格力工业制品首次亮相中国制冷展</span>
-											</td>
-											<td>
-												<span>2015 4 08</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>4</span>
-											</td>
-											<td>
-												<span>格力点亮2015中国制冷展 成国内唯一获AHRI表彰企业</span>
-											</td>
-											<td>
-												<span>2015 4 08</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>5</span>
-											</td>
-											<td>
-												<span>第二届金叶轮奖暖通空调设计大赛于上海启动</span>
-											</td>
-											<td>
-												<span>2015 4 08</span>
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">删除</span>
-												<span class="button">修改</span>
-											</td>
-										</tr>
 									</table>
 								</td>
 							</tr>
@@ -1077,7 +527,15 @@
 									<div id="page"></div>
 								</td>
 							</tr>
-							<tr>
+							<tr class="alter edit">
+								<td>
+									<span>编辑新闻：</span>
+								</td>
+								<td>
+									<span class="button click_edit">点击编写新闻</span>
+								</td>
+							</tr>
+							<tr class="add">
 								<td>
 									<span>添加新闻：</span>
 								</td>
@@ -1095,19 +553,17 @@
 								<td>
 									<span>岗位类别：</span>
 								</td>
-								<td>
+								<td class="rclass">
 									<select>
-										<option>空调安装师</option>
-										<option>空调维修师</option>
 									</select>
 								</td>
 								<td>
-									<span class="button">添加</span>
-									<span class="button">删除</span>
-									<span class="button">修改</span>
+									<span class="button details">添加</span>
+									<span class="button details">删除</span>
+									<span class="button details">修改</span>
 								</td>
 							</tr>
-							<tr>
+							<tr class="edit add">
 								<td>
 									<span>添加岗位类别：</span>
 								</td>
@@ -1116,9 +572,10 @@
 								</td>
 								<td>
 									<span class="button">确定</span>
+									<span class="button">取消</span>
 								</td>
 							</tr>
-							<tr>
+							<tr class="edit alter">
 								<td>
 									<span>修改岗位类别：</span>
 								</td>
@@ -1127,17 +584,7 @@
 								</td>
 								<td>
 									<span class="button">确定</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>删除岗位类别：</span>
-								</td>
-								<td>
-									<input type="text">
-								</td>
-								<td>
-									<span class="button">确定</span>
+									<span class="button">取消</span>
 								</td>
 							</tr>
 						</table>
@@ -1150,176 +597,26 @@
 								<td>
 									<span>岗位选择：</span>
 								</td>
-								<td>
+								<td class="rclass">
 									<select>
-										<option>空调安装师</option>
-										<option>空调维修师</option>
 									</select>
 								</td>
 								<td> </td>
 							</tr>
-							<tr>
+							<tr class="info">
 								<td>
 									<span>具体要求：</span>
 								</td>
-								<td>
-									<table id="rr_table">
-										<tr>
-											<td>
-												<span>类别</span>
-											</td>
-											<td>
-												<span>具体描述</span>
-											</td>
-											<td> </td>
-											<td>
-												<span>操作</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>职业名称</span>
-											</td>
-											<td>
-												<span>空调安装师</span>
-											</td>
-											<td>
-												<input type="text">
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">修改</span>
-												<span class="button">删除</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>职业类型</span>
-											</td>
-											<td>
-												<span>全职</span>
-											</td>
-											<td>
-												<input type="text">
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">修改</span>
-												<span class="button">删除</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>工作经验</span>
-											</td>
-											<td>
-												<span>2年</span>
-											</td>
-											<td>
-												<input type="text">
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">修改</span>
-												<span class="button">删除</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>学历要求</span>
-											</td>
-											<td>
-												<span>初中毕业</span>
-											</td>
-											<td>
-												<input type="text">
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">修改</span>
-												<span class="button">删除</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>工作地区</span>
-											</td>
-											<td>
-												<span>广东</span>
-											</td>
-											<td>
-												<input type="text">
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">修改</span>
-												<span class="button">删除</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>招聘人数</span>
-											</td>
-											<td>
-												<span>20</span>
-											</td>
-											<td>
-												<input type="text">
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">修改</span>
-												<span class="button">删除</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span>月薪</span>
-											</td>
-											<td>
-												<span>面谈</span>
-											</td>
-											<td>
-												<input type="text">
-											</td>
-											<td>
-												<span class="button">添加</span>
-												<span class="button">修改</span>
-												<span class="button">删除</span>
-											</td>
-										</tr>
-									</table>
+								<td class="details">
+									<div></div>
 								</td>
 							</tr>
-							<tr>
+							<tr class="edit_require">
 								<td>
-									<span>添加要求：</span>
+									<span>编辑要求：</span>
 								</td>
 								<td>
-									<table id="rr_table2">
-										<tr>
-											<td>
-												<span>要求项</span>
-											</td>
-											<td>
-												<span>具体描述</span>
-											</td>
-											<td>
-												<span>操作</span>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input type="text">
-											</td>
-											<td>
-												<input type="text">
-											</td>
-											<td>
-												<span class="button">确定</span>
-											</td>
-										</tr>
-									</table>
+									<span class="button click_edit">点击这里编辑</span>
 								</td>
 							</tr>
 						</table>
@@ -1332,20 +629,7 @@
 								<td>
 									<span>简介正文：</span>
 								</td>
-								<td id="intro">
-									<p>东莞市忠胜格力产品销售中心成立于1992年，是一家集中央空调批发、销售、设计、安装、保养的专业化企业，本公司现有80余人。
-									</p>
-									<p>我司拥有实力雄厚、专业技术水平较高的售后队伍，全体服务人员都经过厂家严格的专业培训持证上岗。
-									</p>
-									<p>我司在塘厦、凤岗、樟木头等镇均设有服务网点，售后服务实行计算机一体化专业管理，24小时制售后跟踪服务，我司主要针对服务行业设有专门售后技术人员4小时内上门服务。
-									</p>
-									<p>我司凭借高水平、高要求、高效益的管理体制，以“用一流的技术、做一流的服务”为宗旨。经过多年的创业与发展，在同行业内已树立起良好的口碑，受到了广大客户的一致好评。
-									</p>
-									<p>我司在全体员工的共同努力和社会各界友好人士的鼎力支持下，规模和经营范围不断扩大、业务蒸蒸日上。
-									</p>
-									<p>公司重视人才，以人为本，给员工提供充分发挥才能的平台。本着诚信为本，服务至上，精进卓越，亲和共生的经营理念，给顾客提供优质的服务。
-									</p>
-								</td>
+								<td id="intro"><span> </span><p><br></p></td>
 							</tr>
 							<tr>
 								<td>
@@ -1366,12 +650,6 @@
 									<span>正文：</span>
 								</td>
 								<td id="spirit">
-									<p><span>企业精神</span><span>忠诚、友善、勤奋、进取</span></p>
-									<p><span>经营理念</span><span>制造最好的空调奉献给广大消费者</span></p>
-									<p><span>管理理念</span><span>创新永无止境</span></p>
-									<p><span>管理特色</span><span>合理化、科学化、变准化、网络化</span></p>
-									<p><span>服务理念</span><span>您的每一件小事都是格力的大事</span></p>
-									<p><span>人力资源理念</span><span>以人为本</span></p>
 								</td>
 							</tr>
 							<tr>
@@ -1393,7 +671,6 @@
 									<span>正文：</span>
 								</td>
 								<td id="speech">
-									<p>我公司自建立以来，承蒙各生产厂家和客户朋友鼎立相助，公司规模逐渐壮大，取得了较好的成绩。在此，我谨代表全体同仁发自内心地相各位致以深深的谢意！常言道：十年修得同船渡。相逢是缘，相交更是缘。公司全体员工在这十余年的路途上，本着“与人方便，自己方便”的古训为人做事，时刻与各厂家和用户朋友亲密相处，精诚合作、风雨同舟、甘苦共享。我们深以与你们同行共渡为容！我们更看重和珍惜彼此间的事业和友情。无论何时何地，我们全体员工都会不遗余力地投入到工作之中，竭尽所能为各位朋友提供满意的服务,以达到我们彼此的共赢和多赢。朋友们：闲时请来公司做客忙时电话短信问候。承蒙各生产厂家和客户朋友鼎立相助，公司规模逐渐壮大，取得了较好的成绩。在此，我谨代表全体同仁发自内心地相各位致以深深的谢意！常言道：十年修得同船渡。相逢是缘，相交更是缘。公司全体员工在这十余年的路途上，本着“与人方便，自己方便”的古训为人做事，时刻与各厂家和用户朋友亲密相处，精诚合作、风雨同舟、甘苦共享。我们深以与你们同行共渡为容！我们更看重和珍惜彼此间的事业和友情。无论何时何地，我们全体员工都会不遗余力地投入到工作之中，竭尽所能为各位朋友提供满意的服务,以达到我们彼此的共赢和多赢。朋友们：闲时请来公司做客忙时电话短信问候。</p>
 								</td>
 							</tr>
 							<tr>
@@ -1415,30 +692,6 @@
 									<span>图片：</span>
 								</td>
 								<td id="honor_pics">
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
-									<div>
-										<img src="">
-										<input type="checkbox">
-									</div>
 								</td>
 							</tr>
 							<tr>
@@ -1449,18 +702,270 @@
 									<span class="button">删除</span>
 								</td>
 							</tr>
-							<tr>
+							<tr class="add">
 								<td>
 									<span>添加图片：</span>
 								</td>
 								<td>
-									<input type="file">
+									<input type="file" accept="image/*"><span class="button">确定</span><span class="button">取消</span>
 								</td>
 							</tr>
 						</table>
 					</div>
 				</div>
-				<div class="contact_details"></div>
+				<div class="contact_details">
+					<div>
+						<table>
+							<tr>
+								<td>联系方式：</td>
+								<td id="contact_way">
+								</td>
+							</tr>
+							<tr>
+								<td>编辑联系方式：</td>
+								<td>
+									<span class="button click_edit">点击这里编辑</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="stores_show">
+					<div>
+						<table>
+							<tr class="name_edit">
+								<td>店面展示：</td>
+								<td>
+									<select></select>
+									<span class="button details details_add">添加</span>
+									<span class="button details">删除</span>
+									<span class="button details">编辑</span>
+									<span class="button details details_add">排序</span>
+								</td>
+							</tr>
+							<tr class="edit add">
+								<td>添加店铺：</td>
+								<td>
+									<input type="text"><span class="button">确定</span><span class="button">取消</span>
+								</td>
+							</tr>
+							<tr class="edit alter">
+								<td>编辑店铺：</td>
+								<td>
+									<input type="text"><span class="button">确定</span><span class="button">取消</span>
+								</td>
+							</tr>
+							<tr class="c_pic">
+								<td>封面图片：</td>
+								<td class="details">
+									<img src="">
+								</td>
+							</tr>
+							<tr class="edit_pic">
+								<td>编辑封面：</td>
+								<td class="details">
+									<input type="file" accept="image/*"><span class="button">确定</span><span class="button">取消</span>
+								</td>
+							</tr>
+							<tr class="c_detail">
+								<td>店面详情描述：</td>
+								<td class="details">
+									<div></div>
+								</td>
+							</tr>
+							<tr>
+								<td>编辑店面详情：</td>
+								<td class="details">
+									<span class="button click_edit">点击这里编辑</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="engineering_show">
+					<div>
+						<table>
+							<tr class="name_edit">
+								<td>工程案例：</td>
+								<td>
+									<select></select>
+									<span class="button details details_add">添加</span>
+									<span class="button details">删除</span>
+									<span class="button details">编辑</span>
+									<span class="button details details_add">排序</span>
+								</td>
+							</tr>
+							<tr class="edit add">
+								<td>添加工程：</td>
+								<td>
+									<input type="text"><span class="button">确定</span><span class="button">取消</span>
+								</td>
+							</tr>
+							<tr class="edit alter">
+								<td>编辑工程：</td>
+								<td>
+									<input type="text"><span class="button">确定</span><span class="button">取消</span>
+								</td>
+							</tr>
+							<tr class="c_pic">
+								<td>封面图片：</td>
+								<td class="details">
+									<img src="">
+								</td>
+							</tr>
+							<tr class="edit_pic">
+								<td>编辑封面：</td>
+								<td class="details">
+									<input type="file" accept="image/*"><span class="button">确定</span><span class="button">取消</span>
+								</td>
+							</tr>
+							<tr class="c_detail">
+								<td>详情描述：</td>
+								<td class="details">
+									<div></div>
+								</td>
+							</tr>
+							<tr>
+								<td>编辑详情：</td>
+								<td class="details">
+									<span class="button click_edit">点击这里编辑</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="full">
+		<div id="bottom"></div>
+		<div id="waiting">
+			<p>正在修改中，请稍等...</p>
+		</div>
+		<div class="account_manage box">
+			<div class="delete">
+				<p>确定删除 <span class="account"></span> 用户？</p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+		</div>
+		<div class="products_type box">
+			<div class="delete1">
+				<p>确定删除 <span class="first_class"></span> 一级分类？</p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+			<div class="delete2">
+				<p>确定删除 <span class="second_class"></span> 二级分类？</p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+			<div class="sort1">
+				<div></div>
+				<p><span class="up">↑</span><span class="down">↓</span></p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+			<div class="sort2">
+				<div></div>
+				<p><span class="up">↑</span><span class="down">↓</span></p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+		</div>
+		<div class="products_details box">
+			<div class="delete1">
+				<p>确定删除 <span class="product_name"></span> 产品？</p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+			<div class="delete2">
+				<p>确定删除 <span class="pic_name"></span> 图片？</p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+			<div class="delete3">
+				<p>确定删除 <span class="spec_name"></span> 参数？</p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+			<div class="sort1">
+				<div></div>
+				<p><span class="up">↑</span><span class="down">↓</span></p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+			<div class="sort2">
+				<div class="products_pics"></div>
+				<p><span class="left">←</span><span class="right">→</span></p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+			<div class="sort3">
+				<div></div>
+				<p><span class="up">↑</span><span class="down">↓</span></p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+		</div>
+		<div class="products_susume box">
+			<div class="delete">
+				<p>确定删除 <span class="product_name"></span> 推荐产品？</p>
+				<p class="fc data"></p>
+				<p class="sc data"></p>
+				<p class="pname data"></p>
+				<p class="number data"></p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+		</div>
+		<div class="news_edit box">
+			<div class="delete">
+				<p>确定删除 <span class="news_title"></span> 新闻？</p>
+				<p class="news_date data"></p>
+				<p class="number data"></p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+		</div>
+		<div class="recruitment_type box">
+			<div class="delete">
+				<p>确定删除 <span class="class"></span> 职业分类？</p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+		</div>
+		<div class="culture_honor box">
+			<div class="delete">
+				<p>确定删除 <span class="pic_name"></span> 图片？</p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+		</div>
+		<div class="engineering_show box">
+			<div class="delete">
+				<p>确定删除 <span class="engineering_name"></span> ？</p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+			<div class="sort">
+				<div></div>
+				<p><span class="up">↑</span><span class="down">↓</span></p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+		</div>
+		<div class="stores_show box">
+			<div class="delete">
+				<p>确定删除 <span class="store_name"></span> ？</p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
+			</div>
+			<div class="sort">
+				<div></div>
+				<p><span class="up">↑</span><span class="down">↓</span></p>
+				<span class="button">确定</span>
+				<span class="button cancel">取消</span>
 			</div>
 		</div>
 	</div>
