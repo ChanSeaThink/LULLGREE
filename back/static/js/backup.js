@@ -966,7 +966,13 @@ window.onload=function(){
 					type:"post",
 					data:{"classone":classone,"classtwo":classtwo,"product":product},
 					success:function(data){
-						$("#details .products_details .save_table").html(data.content);
+						if(data.content){
+							$("#details .products_details .save_table").html(data.content);
+						}
+						else{
+							var tablehtml="<table border='1'><tr class='table_title'><td colspan='4'>主体</td></tr><tr class='table_title'><td colspan='4'>功能</td></tr><tr class='table_title'><td colspan='4'>规格</td></tr></table>";
+							$("#details .products_details .save_table").html(tablehtml);
+						}
 						var s="";
 						for(var i=0;i<data.productpic.length;i++){
 							var div=document.createElement("div");
@@ -1087,7 +1093,7 @@ window.onload=function(){
 						if(i!=0){
 							list+=" ";
 						}
-						pic_name[i]=$("#details .products_details .products_pics").find("input:checked:eq("+i+")").prev().attr('src').replace(/.+\//,"").replace(/\..+/,"");
+						pic_name[i]=$("#details .products_details .products_pics").find("input:checked:eq("+i+")").prev().attr('src').replace(/.+\//,"");
 						list+=pic_name[i];
 					}
 					$("#full .products_details .delete2 p span").text(list);
@@ -1363,7 +1369,7 @@ window.onload=function(){
 						if(i!=0){
 							list+="#";
 						}
-						list+=$("#details .products_details .products_pics img:eq("+i+")").attr('src').replace(/.+\//,"");
+						list+=$(this).siblings("div").find("img:eq("+i+")").attr('src').replace(/.+\//,"");
 					}
 					var fc=$("#details .products_details select:eq(0) option:selected").text();
 					var sc=$("#details .products_details select:eq(1) option:selected").text();
