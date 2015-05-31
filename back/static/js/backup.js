@@ -709,9 +709,9 @@ window.onload=function(){
 				if($(this).text()=="确定"){
 					var cn=$(this).closest("tr").find("input").val().replace(/\s/g,"");
 					var fcn=$("#details .products_type tr.first_class option:selected").text();
-					var ocn=trop.find("option:selected").text();
 					//检查分类是否重复！
 					var trop=$(this).closest("table").find("tr.second_class");
+					var ocn=trop.find("option:selected").text();
 					if(!cn){
 						return;
 					}
@@ -1269,7 +1269,7 @@ window.onload=function(){
 					$.ajax({
 						url:"manageProduct",
 						type:"post",
-						data:{manage:"sort",classone:fc,classtwo:sc,productname:list},
+						data:{manage:"sort",classone:fc,classtwo:sc,sequence:list},
 						success:function(data){
 							$("#waiting").hide();
 							$("#details .products_details select:eq(2)").html(s.innerHTML);

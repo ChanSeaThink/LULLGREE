@@ -3,6 +3,7 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from back.models import *
 import Image, ImageDraw, ImageFont, ImageFilter, random#PIL插件的文件
+import time, os
 from hashlib import sha1
 from datetime import datetime, date
 from django.conf import settings
@@ -318,6 +319,9 @@ def manageClassOne(request):
             classoneobj.Sequence = i
             classoneobj.save()
             i += 1
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
     else:
         return HttpResponse('操作有误！或者系统出错，稍后再试。')
 
@@ -329,7 +333,7 @@ def getClassTwo(request):
     classone = request.POST['classone']
     classoneobj = ClassOne.objects.get(ClassName = classone)
     classtwols = []
-    classtwoobjls = ClassTwo.objects.filter(ClassOne = classoneobj).order_by('Sequence')
+    classtwoobjls = ClassTwo.objects.filter(PreClass = classoneobj).order_by('Sequence')
     for classtwoobj in classtwoobjls:
         classtwols.append(classtwoobj.ClassName)
     jsonObject = json.dumps({'classtwo':classtwols},ensure_ascii = False)
@@ -349,6 +353,7 @@ def manageClassTwo(request):
         classoneobj.SubClassNum += 1
         classtwoobj = ClassTwo()
         classtwoobj.PreClass = classoneobj
+        classtwoobj.ClassName = classname
         classtwoobj.Sequence = len(ClassTwo.objects.filter(PreClass = classoneobj))
         classtwoobj.ProductCount = 0
         classoneobj.save()
@@ -400,6 +405,9 @@ def manageClassTwo(request):
             classtwoobj.Sequence = i
             classtwoobj.save()
             i += 1
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
     else:
         return HttpResponse('操作有误！或者系统出错，稍后再试。') 
 
@@ -435,7 +443,7 @@ def getProductInfo(request):
     productpicls = []
     productpicobjls = ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).order_by('Sequence')
     for productpicobj in productpicobjls:
-        productpicls.append(productpicobj.ImageName)
+        productpicls.append('/getPic/' + productpicobj.ImageName)
     jsonObject = json.dumps({'productpic':productpicls, 'content':productobj.ProductInfo, 'productinfo':productobj.ProductInfoContent},ensure_ascii = False)
     #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
     return HttpResponse(jsonObject,content_type="application/json")
@@ -518,6 +526,9 @@ def manageProduct(request):
             productobj.Sequence = i
             productobj.save()
             i += 1
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
     else:
         return HttpResponse('操作有误！或者系统出错，稍后再试。') 
 
@@ -526,6 +537,7 @@ def manageProductPic(request):
     if userPermission < 1:
         return HttpResponse('Without Permission')
 
+    manage = request.POST['manage']
     if manage == 'add':
         if 'pic' in request.FILES:
             classone = request.POST['classone']
@@ -557,17 +569,19 @@ def manageProductPic(request):
         else:
             return HttpResponse('图片上传错误。或者系统出错，稍后再试。')
     elif manage == 'delete':
+        print request.POST
         classone = request.POST['classone']
         classtwo = request.POST['classtwo']
         productname = request.POST['productname']
-        picnamels = request.POST['picname']
+        picnamels = request.POST.getlist('picname[]')
+        print picnamels
         classoneobj = ClassOne.objects.get(ClassName = classone)
         classtwoobj = ClassTwo.objects.get(ClassName = classtwo, PreClass = classoneobj)
         productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
         for picname in picnamels:
-            productobj = ProductPic.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj, ImageName = picname)
-            os.remove(os.path.join(settings.MEDIA_ROOT, productobj.Picture.name))
-            productobj.delete()
+            productpicobj = ProductPic.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj, ImageName = picname)
+            os.remove(os.path.join(settings.MEDIA_ROOT, productpicobj.Picture.name))
+            productpicobj.delete()
         #重新调整顺序.
         productpicobjls = ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).order_by('Sequence')
         i = 0
@@ -589,10 +603,11 @@ def manageProductPic(request):
         sequencels = sequence.split('#')
         i = 0
         for picname in sequencels:
-            productpicobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj, ImageName = picname)
+            print picname
+            productpicobj = ProductPic.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj, ImageName = picname)
             productpicobj.Sequence = i
-            i += 1
             productpicobj.save()
+            i += 1
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -1532,44 +1547,44 @@ def initialise(request):
 def getPic(request, ImgName):
     item = ImgName.split('_')[0]
     if item == 'pp':#ProductPic
-        productpicobj = ProductPic.objects.get(ImgName = ImgName)
+        productpicobj = ProductPic.objects.get(ImageName = ImgName)
         return HttpResponse(productpicobj.Picture, 'image')
     elif item == 'pip':#ProductInfoPic
-        productinfopicobjls = ProductInfoPic.objects.filter(ImgName = ImgName)
+        productinfopicobjls = ProductInfoPic.objects.filter(ImageName = ImgName)
         if len(productinfopicobjls) == 1:
             return HttpResponse(productinfopicobjls[0].Picture, 'image')
         else:
-            cacheproductinfopicobj = CacheProductInfoPic.objects.get(ImgName = ImgName)
+            cacheproductinfopicobj = CacheProductInfoPic.objects.get(ImageName = ImgName)
             return HttpResponse(cacheproductinfopicobj.Picture, 'image')
     elif item == 'np':#NewsPic
-        newspicobjls = NewsPic.objects.filter(ImgName = ImgName)
+        newspicobjls = NewsPic.objects.filter(ImageName = ImgName)
         if len(newspicobjls) == 1:
             return HttpResponse(newspicobjls[0].Picture, 'image')
         else:
-            cachenewspicobj = CacheNewsPic.objects.get(ImgName = ImgName)
+            cachenewspicobj = CacheNewsPic.objects.get(ImageName = ImgName)
             return HttpResponse(cachenewspicobj.Picture, 'image')
     elif item == 'hp':#HonorPic
-        honorpicobj = HonorPic.objects.get(ImgName = ImageName)
+        honorpicobj = HonorPic.objects.get(ImageName = ImageName)
         return HttpResponse(honorpicobj.Picture, 'image')
     elif item == 'cfp':#CaseFirstPic
-        casefirstpicobj = CaseFirstPic.objects.get(ImgName = ImgName)
+        casefirstpicobj = CaseFirstPic.objects.get(ImageName = ImgName)
         return HttpResponse(casefirstpicobj.Picture, 'image')
     elif item == 'cp':#CasePic
-        casepicobjls = CasePic.objects.filter(ImgName = ImgName)
+        casepicobjls = CasePic.objects.filter(ImageName = ImgName)
         if len(casepicobjls) == 1:
             return HttpResponse(casepicobjls[0].Picture, 'image')
         else:
-            cachecasepicobj = CacheCasePic.objects.get(ImgName = ImgName)
+            cachecasepicobj = CacheCasePic.objects.get(ImageName = ImgName)
             return HttpResponse(cachecasepicobj.Picture, 'image')
     elif item == 'sfp':#ShopFirstPic
-        shopfirstpicobj = ShopFirstPic.objects.get(ImgName = ImgName)
+        shopfirstpicobj = ShopFirstPic.objects.get(ImageName = ImgName)
         return HttpResponse(shopfirstpicobj.Picture, 'image')
     elif item == 'sp':#ShopPic
-        shoppicobjls = ShopPic.objects.filter(ImgName = ImgName)
+        shoppicobjls = ShopPic.objects.filter(ImageName = ImgName)
         if len(shoppicobjls) == 1:
             return HttpResponse(shoppicobjls[0].Picture, 'image')
         else:
-            cacheshoppicobj = CacheShopPic.objects.get(ImgName = ImgName)
+            cacheshoppicobj = CacheShopPic.objects.get(ImageName = ImgName)
             return HttpResponse(cacheshoppicobj.Picture, 'image')
     else:
         return HttpResponse('errer')

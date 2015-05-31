@@ -31,11 +31,13 @@
 		</div>
 	</div>
 		<div id="top">
+			{% if permission %}
 			<div class="account_manage">
 				<div>
 					<img src="{% static "img/backup/users.png" %}">
 				</div>
 			</div>
+			{% endif %}
 			<div class="my_account">
 				<div>
 					<img src="{% static "img/backup/settings.png" %}">
