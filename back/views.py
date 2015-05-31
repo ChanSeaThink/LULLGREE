@@ -3,7 +3,7 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from back.models import *
 import Image, ImageDraw, ImageFont, ImageFilter, random#PIL插件的文件
-import time, os
+import time, os, re
 from hashlib import sha1
 from datetime import datetime, date
 from django.conf import settings
@@ -619,6 +619,7 @@ def manageProductInfo(request):
     if userPermission < 1:
         return HttpResponse('Without Permission')
     #此响应函数管理的是产品的属性表格。命名跟接口有些区别。请注意不要混乱。
+    print request.POST
     classone = request.POST['classone']
     classtwo = request.POST['classtwo']
     productname = request.POST['productname']
@@ -680,13 +681,14 @@ def saveProductInfo(request):
     #提取出详细产品介绍里面的所有图片的src的值
     picturesrcls = re.findall('<img src="(.*?)">',productinfo)
     picturenamels = []
+    print picturesrcls
     for picturesrc in picturesrcls:
         if picturesrc[0:8]=='/getPic/':
-            picNameLs.append(pss[8:])
+            picturenamels.append(picturesrc[8:])
         else:
             continue
     #提取出已保存在数据表中的图片。
-    productinfopicobjls = ProductInfoPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Products = productobj)
+    productinfopicobjls = ProductInfoPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj)
     productinfopicnamels = []
     for productinfopicobj in productinfopicobjls:
         productinfopicnamels.append(productinfopicobj.ImageName)
@@ -706,7 +708,7 @@ def saveProductInfo(request):
             continue
     #‘已保存图片’不在此交集的就删除
     for productinfopicname in productinfopicnamedeletels:
-        productinfopicobj = ProductInfoPic.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, Products = productobj, ImageName = productinfopicname)
+        productinfopicobj = ProductInfoPic.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj, ImageName = productinfopicname)
         os.remove(os.path.join(settings.MEDIA_ROOT, productinfopicobj.Picture.name))
         productinfopicobj.delete()
     #把新图片从缓存移到储存表中
@@ -857,7 +859,7 @@ def manageNews(request):
         picturenamels = []
         for picturesrc in picturesrcls:
             if picturesrc[0:8]=='/getPic/':
-                picNameLs.append(pss[8:])
+                picturenamels.append(picturesrc[8:])
             else:
                 continue
         #提取出已保存在数据表中的图片。
@@ -922,7 +924,7 @@ def manageNews(request):
         picturenamels = []
         for picturesrc in picturesrcls:
             if picturesrc[0:8]=='/getPic/':
-                picNameLs.append(pss[8:])
+                picturenamels.append(picturesrc[8:])
             else:
                 continue
         #提取出已保存在数据表中的图片。
@@ -1285,7 +1287,7 @@ def saveCaseInfo(request):
     picturenamels = []
     for picturesrc in picturesrcls:
         if picturesrc[0:8]=='/getPic/':
-            picNameLs.append(pss[8:])
+            picturenamels.append(picturesrc[8:])
         else:
             continue
     #提取出已保存在数据表中的图片。
@@ -1467,7 +1469,7 @@ def saveShopInfo(request):
     picturenamels = []
     for picturesrc in picturesrcls:
         if picturesrc[0:8]=='/getPic/':
-            picNameLs.append(pss[8:])
+            picturenamels.append(picturesrc[8:])
         else:
             continue
     #提取出已保存在数据表中的图片。
