@@ -276,7 +276,7 @@ def manageClassOne(request):
         classoneobj.SubClassNum = 0
         classoneobj.Sequence = len(ClassOne.objects.all())
         classoneobj.ProductCount = 0
-        classoneobj.save(os.path.join(settings.MEDIA_ROOT, productpicobj.Picture.name))
+        classoneobj.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")

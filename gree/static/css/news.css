@@ -1,0 +1,252 @@
+@charset "UTF-8";
+	*{margin:0;padding:0;font-family:"微软雅黑";}
+	ul{list-style-type:none;}
+	a{text-decoration:none;color:black;}
+	body{}
+	.clear{clear:both;}
+	#top{
+		padding-top:0px;
+		width:900px;
+		margin:0 auto;
+	}
+	#logo{
+		width:200px;
+		margin-left:5px;
+		margin-top:2px;
+	}
+	#title span{
+		position:relative;
+		top:-19px;
+		font-size:25px;
+	}
+	#search{
+		display:none;
+		float:right;
+		margin:17px 0px 3px 0px;
+	}
+	#search img{
+		width:30px;
+		height:30px;
+		float:right;
+		background-color:#414141;
+	}
+	#search input{
+		width:120px;
+		height:26px;
+	}
+	#nav{
+		background-color:rgba(65,65,65,0.6);
+	}
+	#nav a{
+		color:white;
+	}
+	#nav li{
+		color:white;
+		padding:10px 0px;
+		width:130px;
+		text-align:center;
+		cursor:default;
+	}
+	#nav li a{
+		display:block;
+		cursor:default;
+	}
+	#nav ul li:hover{
+		background-color:rgba(65,65,65,0.6);
+	}
+	#first_ul{
+		position:relative;
+		left:-10px;
+		width:1050px;
+		margin:0 auto;
+	}
+	#first_ul>li{
+		float:left;
+	}
+	#first_ul>li:hover .second_ul{
+		display:block;
+	}
+	.second_ul{
+		display:none;
+		position:absolute;
+		margin-top:10px;
+		z-index:1;
+	}
+	.second_ul{
+		background-color:rgba(65,65,65,0.6);
+	}
+	#first_ul>li:hover .second_ul li:hover{
+		background-color:rgba(65,65,65,0.6);
+	}
+	/*--------------------------------------------------------------------------*/
+	#subtitle h1{
+		width:900px;
+		margin:0 auto;
+		padding-top:60px;
+		cursor:default;
+	}
+	#subtitle h1 span{
+		color:#226ddd;
+		border-left:5px solid #226ddd;
+	}
+	#n_details{
+		margin:80px auto 0 auto;
+		width:900px;
+	}
+	#news_nav{}
+	#news_nav span{
+		font-size:13px;
+	}
+	#news_nav span:last-child{
+		color:#226ddd;
+	}
+	/*-------------------------------------------------------------------------*/
+	#main
+		{
+		display:none;
+		font-size:14px;
+		color:#202020;
+		padding:40px 0;
+		}
+	#content
+		{
+		margin:0 auto;
+		list-style-type:none;
+		width:800px;
+		}
+	#content li
+		{
+		padding-bottom:10px;
+		border-bottom:dashed 2.5px #c1c1c1;
+		}
+	#content li h1
+		{
+		cursor:pointer;
+		}
+	#news img
+		{
+		max-width:600px;
+		}
+	#back{
+		padding:1px 12px 3px 12px;
+		font-size:20px;
+		color:#34333f;
+		border:1px solid #a1a1a1;
+		cursor:pointer;
+	}
+	#back:hover{
+		color:white;
+		background-color:#226ddd;
+		border:1px solid #226ddd;
+	}
+	#news_title{
+		padding:20px 0;
+		font-size:30px;
+		text-align:center;
+		word-break:break-all;
+		}
+	#news_date
+		{
+		color:#818181;
+		text-align:center;
+		}
+	#text
+		{
+		margin-top:26px;
+		}
+	#text p
+		{
+		line-height:26px;
+		margin-bottom:30px;
+		font-size:16px;
+		text-indent:33px;
+		word-break:break-all;
+		}
+	/*-------------------------------------------------------------------------*/
+	#news_list{
+		margin-top:40px;
+	}
+	.news_box{
+		padding:6px 0;
+		margin-top:6px;
+		clear:both;
+		cursor:pointer;
+	}
+	.news_box:hover{
+		color:red;
+		background-color:#f1f1f1;
+	}
+	.news_box p{
+	}
+	.date{
+		float:left;
+		padding:0 1px;
+		margin:0 10px;
+		width:60px;
+		height:60px;
+		text-align:center;
+		background-color:#226ddd;
+		color:white;
+		cursor:default;
+	}
+	.day{
+		display:block;
+		font-size:25px;
+		line-height:33px;
+		font-weight:bold;
+	}
+	.date .ym{
+	}
+	.news_title{
+		margin-top:5px;
+		font-size:18px;
+		font-weight:bold;
+		line-height:24px;
+		color:#4187F1;
+		cursor:pointer;
+	}
+	.summary{
+		width:85%;
+		margin-top:5px;
+		font-size:14px;
+		color:#22222a;
+		line-height:19px;
+		white-space:nowrap;
+		overflow-x:hidden;
+		text-overflow:ellipsis;
+	}
+	#page{
+		text-align:center;
+		margin:30px 0;
+	}
+	#page div{
+		display:inline-block;
+		border:1px solid;
+		padding:3px 3px;
+		margin:0 3px;
+		width:30px;
+		text-align:center;
+		cursor:pointer;
+	}
+	/*-------------------------------------*/
+	#foot_bar{
+		color:white;
+		padding:30px;
+		font-size:14px;
+		background-color:rgb(24,38,41);
+	}
+	#foot_bar ul{
+		display:table;
+		margin:0 auto;
+	}
+	#foot_bar li{
+		float:left;
+	}
+	#foot_bar a{
+		color:white;
+	}
+	#foot_bar p{
+		margin-top:5px;
+		text-align:center;
+		clear:both;
+	}
