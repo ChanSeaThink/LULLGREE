@@ -1871,9 +1871,6 @@ window.onload=function(){
 			function NewsShow(data,sp){
 				var mark=parseInt(sp)-1;
 				page=new Array();
-				if(data.newscount>10){
-					showPage(data.newscount,"page");
-				}
 				if(data.news){
 					var n=parseInt(data.newscount);
 					var p=Math.ceil(n/10);
@@ -1899,7 +1896,17 @@ window.onload=function(){
 						}
 						page[i]={ntitle:title,date:date};
 					}
+				}
+				if(data.newscount>10){
+					showPage(data.newscount,"page");
 					$("#page div:eq("+mark+")").click();
+				}
+				else{
+					var s="<tr><td>标题</td><td>发布时间</td><td>操作</td></tr>";
+					for(var i=0;i<page[0].ntitle.length;i++){
+						s+="<tr><td>"+page[0].ntitle[i]+"</td><td>"+page[0].date[i]+"</td><td><span class='button'>删除</span><span class='button'>修改</span></td></tr>"
+					}
+					$("#details .news_edit table table").html(s);
 				}
 			}
 		//点击进入页面时发送ajax
