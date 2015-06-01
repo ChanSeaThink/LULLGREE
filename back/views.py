@@ -73,8 +73,6 @@ def getCAPTCHA(request):
     buf = cStringIO.StringIO()
     im.save(buf, 'gif')
     request.session['CAPTCHA'] = code
-    #print code
-    #print request.session['CAPTCHA']
     return HttpResponse(buf.getvalue(), 'image/gif')
 
 def regist(request):
@@ -569,12 +567,10 @@ def manageProductPic(request):
         else:
             return HttpResponse('图片上传错误。或者系统出错，稍后再试。')
     elif manage == 'delete':
-        print request.POST
         classone = request.POST['classone']
         classtwo = request.POST['classtwo']
         productname = request.POST['productname']
         picnamels = request.POST.getlist('picname[]')
-        print picnamels
         classoneobj = ClassOne.objects.get(ClassName = classone)
         classtwoobj = ClassTwo.objects.get(ClassName = classtwo, PreClass = classoneobj)
         productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
@@ -603,7 +599,6 @@ def manageProductPic(request):
         sequencels = sequence.split('#')
         i = 0
         for picname in sequencels:
-            print picname
             productpicobj = ProductPic.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj, ImageName = picname)
             productpicobj.Sequence = i
             productpicobj.save()
@@ -619,7 +614,6 @@ def manageProductInfo(request):
     if userPermission < 1:
         return HttpResponse('Without Permission')
     #此响应函数管理的是产品的属性表格。命名跟接口有些区别。请注意不要混乱。
-    print request.POST
     classone = request.POST['classone']
     classtwo = request.POST['classtwo']
     productname = request.POST['productname']
@@ -681,7 +675,6 @@ def saveProductInfo(request):
     #提取出详细产品介绍里面的所有图片的src的值
     picturesrcls = re.findall('<img src="(.*?)">',productinfo)
     picturenamels = []
-    print picturesrcls
     for picturesrc in picturesrcls:
         if picturesrc[0:8]=='/getPic/':
             picturenamels.append(picturesrc[8:])
@@ -746,7 +739,6 @@ def manageBestProducts(request):
         classtwo = []
         for bestproductobj in bestproductobjls:
             products.append(bestproductobj.ClassTwo.ClassName + '#' + bestproductobj.ProductName)
-        print products
         for classtwoobj in classtwoobjls:
             classtwo.append(classtwoobj.ClassName)
         jsonObject = json.dumps({'products':products, 'classtwo':classtwo},ensure_ascii = False)
@@ -823,14 +815,12 @@ def manageNews(request):
         news = []
         for newsobj in newsobjls:
             news.append(newsobj.Title + '#' + str(newsobj.CreateDate))
-        print news
-        print len(newsobjls)
         jsonObject = json.dumps({'newscount':len(newsobjls), 'news':news},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
     elif manage == 'delete':
-        newstitle = request.POST('newstitle')
-        time = request.POST('time')
+        newstitle = request.POST['newstitle']
+        time = request.POST['time']
         newsobj = News.objects.get(Title = newstitle)
         NewsPic.objects.filter(News = newsobj).delete()
         newsobj.delete()
@@ -838,8 +828,8 @@ def manageNews(request):
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
     elif manage == 'edit':
-        newstitle = request.POST('newstitle')
-        time = request.POST('time')
+        newstitle = request.POST['newstitle']
+        time = request.POST['time']
         newsobj = News.objects.get(Title = newstitle)
         jsonObject = json.dumps({'newstitle':newsobj.Title, 'content':newsobj.LongContent, 'id':newsobj.id},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
@@ -1049,9 +1039,9 @@ def manageCompanyCulture(request):
     userPermission = request.session.get('permission', '')
     if userPermission < 1:
         return HttpResponse('Without Permission')
-
+    print request.POST
     part = request.POST['part']
-    manage = request.POST['']
+    manage = request.POST['manage']
     if part == 'companyinfo' and manage == 'get':
         cultureobj = Culture.objects.get(Part = part)
         content = cultureobj.Content
@@ -1094,7 +1084,7 @@ def manageCompanyCulture(request):
         jsonObject = json.dumps({'content':content},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
-    elif part == 'companyCompanyCulture' and manage == 'get':
+    elif part == 'companyhonor' and manage == 'get':
         honorpicobjls = HonorPic.objects.all()
         honorpic = []
         for honorpicobj in honorpicobjls:
@@ -1102,7 +1092,7 @@ def manageCompanyCulture(request):
         jsonObject = json.dumps({'honorpic':honorpic},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
-    elif part == 'companyCompanyCulture' and manage == 'add':
+    elif part == 'companyhonor' and manage == 'add':
         pic = request.FILES['pic']
         t = int(time.time())
         rn = random.randrange(1,10000)
@@ -1119,7 +1109,7 @@ def manageCompanyCulture(request):
         jsonObject = json.dumps({'picname':path},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
-    elif part == 'companyCompanyCulture' and manage == 'delete':
+    elif part == 'companyhonor' and manage == 'delete':
         picnamels = request.POST['pic']
         for picname in picnamels:
             honorpicobj = HonorPic.objects.get(ImageName = picname)
