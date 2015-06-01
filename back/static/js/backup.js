@@ -1294,6 +1294,18 @@ window.onload=function(){
 					if(/image/.test(file.files[0].type)){
 						if(file.files[0].name.length>=28){
 							alert("文件名过长");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+							return;
+						}
+						if(file.files[0].size/1024>1024){
+							alert("图片太大，请限制在1M以内");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+							return;
+						}
+						var s=file.files[0].name.replace(/.+\./,"");
+						if(s.toLowerCase()!=s){
+							alert("请把图片后缀名改为小写");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 							return;
 						}
 						var fc=$("#details .products_details select:eq(0) option:selected").text();
@@ -1329,6 +1341,9 @@ window.onload=function(){
 					else{
 						alert("请选择图片文件");
 					}
+				}
+				else if($(this).text()=="取消"){
+					$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 				}
 			});
 			$("#full .products_details .delete2 .button").click(function(){
@@ -2525,6 +2540,18 @@ window.onload=function(){
 					if(/image/.test(file.files[0].type)){
 						if(file.files[0].name.length>=28){
 							alert("文件名过长");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+							return;
+						}
+						if(file.files[0].size/1024>1024){
+							alert("图片太大，请限制在1M以内");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+							return;
+						}
+						var s=file.files[0].name.replace(/.+\./,"");
+						if(s.toLowerCase()!=s){
+							alert("请把图片后缀名改为小写");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 							return;
 						}
 						var formdata=new FormData();
@@ -2637,6 +2664,9 @@ window.onload=function(){
 	//-----------------------stores_show-----------------------
 		//点击进入页面时发送ajax
 			$("#function .stores_show").click(function(){
+				$("#details .stores_show .details").hide();
+				$("#details .stores_show .details1").hide();
+				$("#details .stores_show .edit").hide();
 				$("#details .stores_show .click_edit").show();
 				$("#details .edit_box").remove();
 				$.ajax({
@@ -2654,8 +2684,7 @@ window.onload=function(){
 							s.appendChild(option);
 						}
 						$("#details .stores_show select").html(s.innerHTML);
-						$("#details .stores_show select").change();
-						$("#details .stores_show .details_add").show();
+						$("#details .stores_show .details1").show();
 					},
 					error:function(){
 						//alert("页面获取失败");
@@ -2664,12 +2693,12 @@ window.onload=function(){
 			});
 		//点击选项发送ajax请求
 			$("#details .stores_show select").change(function(){
+				$("#details .stores_show .details").hide();
 				$("#details .stores_show .click_edit").show();
 				$("#details .edit_box").remove();
 				$("#details .stores_show .edit").hide();
 				var s=$("#details .stores_show select option:selected").text();
 				if(s=="请选择店铺"){
-					$("#details .stores_show .details").hide();
 					return;
 				}
 				$("#waiting").show();
@@ -2907,6 +2936,18 @@ window.onload=function(){
 					if(/image/.test(file.files[0].type)){
 						if(file.files[0].name.length>=28){
 							alert("文件名过长");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+							return;
+						}
+						if(file.files[0].size/1024>1024){
+							alert("图片太大，请限制在1M以内");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+							return;
+						}
+						var s=file.files[0].name.replace(/.+\./,"");
+						if(s.toLowerCase()!=s){
+							alert("请把图片后缀名改为小写");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 							return;
 						}
 						var s=$("#details .stores_show select option:selected").text();
@@ -2959,6 +3000,9 @@ window.onload=function(){
 	//-----------------------engineering_show-----------------------
 		//点击进入页面时发送ajax
 			$("#function .engineering_show").click(function(){
+				$("#details .engineering_show .details").hide();
+				$("#details .engineering_show .details1").hide();
+				$("#details .engineering_show .edit").hide();
 				$("#details .engineering_show .click_edit").show();
 				$("#details .edit_box").remove();
 				$.ajax({
@@ -2976,8 +3020,7 @@ window.onload=function(){
 							s.appendChild(option);
 						}
 						$("#details .engineering_show select").html(s.innerHTML);
-						$("#details .engineering_show select").change();
-						$("#details .engineering_show .details_add").show();
+						$("#details .engineering_show .details1").show();
 					},
 					error:function(){
 						//alert("页面获取失败");
@@ -2986,6 +3029,7 @@ window.onload=function(){
 			});
 		//点击选项发送ajax请求
 			$("#details .engineering_show select").change(function(){
+				$("#details .engineering_show .details").hide();
 				$("#details .engineering_show .click_edit").show();
 				$("#details .edit_box").remove();
 				$("#details .engineering_show .edit").hide();
@@ -3229,6 +3273,18 @@ window.onload=function(){
 					if(/image/.test(file.files[0].type)){
 						if(file.files[0].name.length>=28){
 							alert("文件名过长");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+							return;
+						}
+						if(file.files[0].size/1024>1024){
+							alert("图片太大，请限制在1M以内");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+							return;
+						}
+						var s=file.files[0].name.replace(/.+\./,"");
+						if(s.toLowerCase()!=s){
+							alert("请把图片后缀名改为小写");
+							$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 							return;
 						}
 						var s=$("#details .engineering_show select option:selected").text();
