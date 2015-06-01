@@ -60,82 +60,30 @@
     <div id="products">
     	<div class="subtitle">
     		<span><b>PRODUCT</b> / 产品</span>
-    		<p>包括家用空调、中央空调、电磁炉、电风扇、冰箱、热水器等</p>
+    		<p>包括：{{ classonestr }}等</p>
     		<div id="catalog">
-    			<a href="">家用空调</a>
-    			<span> | </span>
-    			<a href="">中央空调</a>
-    			<span> | </span>
-    			<a href="">生活电器</a>
-    			<span> | </span>
-    			<a href="">冰箱</a>
-    			<span> | </span>
-    			<a href="">热水器</a>
+                {% for classone in classonels %}
+                <a href="">{{ classone.ClassName }}</a>
+                <span> | </span>
+                {% endfor %}
+                {% if oneclassone %}
+                <a href="">{{ oneclassone.ClassName }}</a>
+                {% endif %}
     		</div>
     		<div id="box"></div>
     	</div>
     	<div class="details" id="p_details">
     		<div id="products_top">
+                {% for pro in productls %}
     			<div>
-    				<img src="{% static "img/index/Product_KH284000100.png" %}">
+    				<img src="{{ pro.PicPath }}">
     				<div>
-    					<p>Q铂 KFR-50LW/(50596)FNAa-A3</p>
-    					<p>变频 冷暖 2匹机 立柜式空调</p>
+    					<p>{{ pro.Title }}</p>
     				</div>
     			</div>
-    			<div>
-    				<img src="{% static "img/index/Product_A0011007200.png" %}">
-    				<div>
-    					<p>S-0502a</p>
-    					<p>空调扇 4档风速调节</p>
-    				</div>
-    			</div>
-    			<div>
-    				<img src="{% static "img/index/Product_9511355002.png" %}">
-    				<div>
-    					<p>BCD-218TGK</p>
-    					<p>三门冰箱</p>
-    				</div>
-    			</div>
-    			<div>
-    				<img src="{% static "img/index/Product_KH284000100.png" %}">
-    				<div>
-    					<p>Q铂 KFR-50LW/(50596)FNAa-A3</p>
-    					<p>变频 冷暖 2匹机 立柜式空调</p>
-    				</div>
-    			</div>
+                {% endfor %}
     			<p class="clear"></p>
     		</div>
-    		<div id="products_bottom">
-    			<div>
-    				<img src="{% static "img/index/Product_A0011007200.png" %}">
-    				<p>S-0502a</p>
-    				<p>空调扇 4档风速调节</p>
-    			</div>
-    			<div>
-    				<img src="{% static "img/index/Product_KH284000100.png" %}">
-    				<p>Q铂 KFR-50LW/(50596)FNAa-A3</p>
-    				<p>变频 冷暖 2匹机 立柜式空调</p>
-    			</div>
-    			<div>
-    				<img src="{% static "img/index/Product_A0011007200.png" %}">
-    				<p>S-0502a</p>
-    				<p>空调扇 4档风速调节</p>
-    			</div>
-    			<div>
-    				<img src="{% static "img/index/Product_9511355002.png" %}">
-    				<p>BCD-218TGK</p>
-    				<p>三门冰箱</p>
-    			</div>
-    			<p class="clear"></p>
-    		</div>
-    		<!--
-    		<div class="control">
-    			<div>＜</div>
-    			<div>＞</div>
-    		</div>
-    		<hr />
-    		-->
     	</div>
     </div>
     <div id="intro">
@@ -144,21 +92,21 @@
     		<img src="{% static "img/index/diamond.png" %}" alt="企业荣誉">
     		<p class="p1">世界名牌</p>
     		<p class="p2">
-    			<a href="{% static "gree_culture.html" %}">从这里了解我们></a>
+    			<a href="">从这里了解我们></a>
     		</p>
     	</div>
     	<div>
     		<img src="{% static "img/index/shop.png" %}" alt="店面展示">
     		<p class="p1">店面展示</p>
     		<p class="p2">
-    			<a href="{% static "gree_stores.html" %}">门店众多，给予您优质服务></a>
+    			<a href="">门店众多，给予您优质服务></a>
     		</p>
     	</div>
     	<div>
     		<img src="{% static "img/index/video.png" %}" alt="工程案例">
     		<p class="p1">工程案例</p>
     		<p class="p2">
-    			<a href="{% static "gree_engineering.html" %}">为您提供合适的工程计划></a>
+    			<a href="">为您提供合适的工程计划></a>
     		</p>
     	</div>
     	<div>
