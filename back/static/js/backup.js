@@ -1099,7 +1099,7 @@ window.onload=function(){
 						pic_name[i]=$("#details .products_details .products_pics").find("input:checked:eq("+i+")").prev().attr('src').replace(/.+\//,"");
 						list+=pic_name[i];
 					}
-					$("#full .products_details .delete2 p span").text(list);
+					$("#full .products_details .delete2 p span").text("选中的");
 					$("#bottom").show();
 					$("#full .products_details .delete2").show();
 				}
@@ -1290,6 +1290,10 @@ window.onload=function(){
 			});
 			$("#details .products_details .add_pic .button").click(function(){
 				if($(this).text()=="确定"){
+					if($("#details .products_details .products_pics img").length>7){
+						alert("一个产品最多8张图片");
+						return;
+					}
 					var file=this.previousSibling;
 					if(/image/.test(file.files[0].type)){
 						if(file.files[0].name.length>=28){
@@ -1317,6 +1321,7 @@ window.onload=function(){
 						formdata.append("classone",fc);
 						formdata.append("classtwo",sc);
 						formdata.append("productname",pname);
+						var t=this;
 						$("#waiting").show();
 						$.ajax({
 							url:"manageProductPic",
@@ -1333,7 +1338,7 @@ window.onload=function(){
 								div.appendChild(img);
 								div.appendChild(input);
 								$("#details .products_details .products_pics").append(div).append("\n");
-								$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+								$(t).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 								$("#waiting").hide();
 							},
 							error:function(){}
@@ -2535,7 +2540,7 @@ window.onload=function(){
 						pic_name[i]=$("#details .culture_honor #honor_pics").find("input:checked:eq("+i+")").prev().attr('src').replace(/.+\//,"");
 						list+=pic_name[i];
 					}
-					$("#full .culture_honor .delete p span").text(list);
+					$("#full .culture_honor .delete p span").text("选中的");
 					$("#bottom").show();
 					$("#full .culture_honor .delete").show();
 				}
@@ -2543,6 +2548,10 @@ window.onload=function(){
 		//确定取消按钮
 			$("#details .culture_honor .add .button").click(function(){
 				if($(this).text()=="确定"){
+					if($("#details .culture_honor #honor_pics img").length>7){
+						alert("最多8张图片");
+						return;
+					}
 					var file=this.previousSibling;
 					if(/image/.test(file.files[0].type)){
 						if(file.files[0].name.length>=28){
@@ -2565,6 +2574,7 @@ window.onload=function(){
 						formdata.append("part","companyhonor");
 						formdata.append("manage","add");
 						formdata.append("pic",file.files[0]);
+						var t=this;
 						$("#waiting").show();
 						$.ajax({
 							url:"manageCompanyCulture",
@@ -2581,7 +2591,7 @@ window.onload=function(){
 								div.appendChild(img);
 								div.appendChild(input);
 								$("#details .culture_honor #honor_pics").append(div).append("\n");
-								$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+								$(t).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 								$("#waiting").hide();
 							},
 							error:function(){}
@@ -2962,6 +2972,7 @@ window.onload=function(){
 						var formdata=new FormData();
 						formdata.append("pic",file.files[0]);
 						formdata.append("shopname",s);
+						var t=this;
 						$("#waiting").show();
 						$.ajax({
 							url:"saveShopFirstPic",
@@ -2971,7 +2982,7 @@ window.onload=function(){
 							data:formdata,
 							success:function(data){
 								$("#details .stores_show .c_pic img").attr({"src":data.picname});
-								$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+								$(t).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 								$("#waiting").hide();
 							},
 							error:function(){}
@@ -3300,6 +3311,7 @@ window.onload=function(){
 						var formdata=new FormData();
 						formdata.append("pic",file.files[0]);
 						formdata.append("casename",s);
+						var t=this;
 						$("#waiting").show();
 						var data={picname:"picname.jpg"};
 						$.ajax({
@@ -3310,7 +3322,7 @@ window.onload=function(){
 							data:formdata,
 							success:function(data){
 								$("#details .engineering_show .c_pic img").attr({"src":data.picname});
-								$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
+								$(t).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 								$("#waiting").hide();
 							},
 							error:function(){}
