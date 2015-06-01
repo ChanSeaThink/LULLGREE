@@ -1936,7 +1936,7 @@ window.onload=function(){
 				$("#details .news_edit table table").html(s);
 			})
 		//点击功能按钮
-		c=0;
+			c=0;
 			$("#details .news_edit").delegate(".button","click",function(){
 				if($(this).text()=="删除"){
 					var number=$("#details .news_edit table table tr").index($(this).parent().parent());
@@ -2338,7 +2338,7 @@ window.onload=function(){
 					url:"manageCompanyCulture",
 					type:"post",
 					data:{part:"companyinfo",manage:"get"},
-					success:function(data){alert(data.content)
+					success:function(data){
 						var s=data.content;
 						if(s.length==0){
 							$("#details .culture_summary #intro").html("<p> </p><p><br></p>");
@@ -2533,7 +2533,7 @@ window.onload=function(){
 						formdata.append("pic",file.files[0]);
 						$("#waiting").show();
 						$.ajax({
-							url:"manageProductPic",
+							url:"manageCompanyCulture",
 							type:"post",
 							contentType:false,
 							processData:false,
