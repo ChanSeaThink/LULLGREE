@@ -543,12 +543,17 @@ window.onload=function(){
 					}
 				});
 			});
+		//点击二级选项时清空edit框
+			$("#details .products_type").delegate("select:eq(1)","change",function(){
+				$("#details .products_type .edit").hide();
+			});
 		//点击功能按钮
 			$("#details .products_type .button").click(function(){
 				var sclass=$(this).closest("tr").find("option:selected").text();
 				if($(this).closest("tr").hasClass("first_class")){
 					$("#details .products_type .edit").hide();
 					if($(this).text()=="添加"){
+						$("#details .products_type .add1 input").val("");
 						$("#details .products_type .add1").show();
 					}
 					else if($(this).text()=="排序"){
@@ -580,6 +585,7 @@ window.onload=function(){
 				else if($(this).closest("tr").hasClass("second_class")){
 					$("#details .products_type .edit").hide();
 					if($(this).text()=="添加"){
+						$("#details .products_type .add2 input").val("");
 						$("#details .products_type .add2").show();
 					}
 					else if($(this).text()=="排序"){
@@ -1811,6 +1817,8 @@ window.onload=function(){
 			$("#details .products_susume").delegate(".button","click",function(){
 				if($(this).text()=="添加"){
 					$("#details .products_susume .details .add1").hide();
+					$("#details .products_susume select:eq(1) option:eq(0)").attr("selected","true");
+					$("#details .products_susume select:eq(1)").change();
 					$("#details .products_susume .details .add2").show();
 				}
 				else if($(this).text()=="删除"){
@@ -1837,6 +1845,15 @@ window.onload=function(){
 					if(sc=="请选择分类"||pname=="请选择产品"){
 						alert("尚未选择产品！");
 						return;
+					}
+					var len=$("#details .products_susume table table tr").length-2;
+					for(var i=1;i<len;i++){
+						var td1=$("#details .products_susume table table tr:eq("+i+") td:eq(1)").text();
+						var td2=$("#details .products_susume table table tr:eq("+i+") td:eq(2)").text().replace(/\s/,"_");
+						if(sc==td1&&pname==td2){
+							alert("产品重复！");
+							return;
+						}
 					}
 					$("#waiting").show();
 					pname=pname.replace(/\s/,"_");
@@ -2174,11 +2191,16 @@ window.onload=function(){
 					}
 				});
 			});
+		//点击选择分类时清空edit框
+			$("#details .recruitment_type").delegate("select","change",function(){
+				$("#details .recruitment_type .edit").hide();
+			})
 		//点击功能按钮
 			$("#details .recruitment_type .button").click(function(){
 				var sclass=$(this).closest("tr").find("option:selected").text();
 				if($(this).text()=="添加"){
 					$("#details .recruitment_type .edit").hide();
+					$("#details .recruitment_type .add input").val("");
 					$("#details .recruitment_type .add").show();
 				}
 				else if(sclass!="请选择分类"){
@@ -2307,6 +2329,9 @@ window.onload=function(){
 			});
 		//点击选项时发送ajax请求
 			$("#details .recruitment_require").delegate("select","change",function(){
+				$("#details .recruitment_require .click_edit").hide();
+				$("#details .recruitment_require .edit_box").hide();
+				$("#details .recruitment_require .details").hide();
 				var s=$(this).find("option:selected").text();
 				if(s=="请选择分类"){
 					return;
@@ -2743,6 +2768,7 @@ window.onload=function(){
 				var sclass=$("#details .stores_show select option:selected").text();
 				$("#details .stores_show .edit").hide();
 				if($(this).text()=="添加"){
+					$("#details .stores_show .add input").val("");
 					$("#details .stores_show .add").show();
 				}
 				else if($(this).text()=="排序"){
@@ -3082,6 +3108,7 @@ window.onload=function(){
 				var sclass=$("#details .engineering_show select option:selected").text();
 				$("#details .engineering_show .edit").hide();
 				if($(this).text()=="添加"){
+					$("#details .engineering_show .add input").val("");
 					$("#details .engineering_show .add").show();
 				}
 				else if($(this).text()=="排序"){
