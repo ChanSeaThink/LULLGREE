@@ -740,12 +740,15 @@ def manageBestProducts(request):
     if manage == 'get':
         classone = request.POST['classone']
         classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobjls = ClassTwo.objects.filter(PreClass = classoneobj)
         bestproductobjls = BestProduct.objects.filter(ClassOne = classoneobj)
         products = []
         classtwo = []
         for bestproductobj in bestproductobjls:
-            classtwo.append(bestproductobj.ClassTwo.ClassName)
             products.append(bestproductobj.ClassTwo.ClassName + '#' + bestproductobj.ProductName)
+        print products
+        for classtwoobj in classtwoobjls:
+            classtwo.append(classtwoobj.ClassName)
         jsonObject = json.dumps({'products':products, 'classtwo':classtwo},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -819,7 +822,9 @@ def manageNews(request):
         newsobjls = News.objects.all()
         news = []
         for newsobj in newsobjls:
-            news.append(newsobj.Title + '#' + newsobj.CreateDate)
+            news.append(newsobj.Title + '#' + str(newsobj.CreateDate))
+        print news
+        print len(newsobjls)
         jsonObject = json.dumps({'newscount':len(newsobjls), 'news':news},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -969,7 +974,7 @@ def manageNews(request):
         newsobjls = News.objects.all()
         news = []
         for newsobj in newsobjls:
-            news.append(newsobj.Title + '#' + newsobj.CreateDate)
+            news.append(newsobj.Title + '#' + str(newsobj.CreateDate))
         jsonObject = json.dumps({'newscount':len(newsobjls), 'news':news},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
