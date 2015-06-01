@@ -1333,6 +1333,7 @@ window.onload=function(){
 								div.appendChild(img);
 								div.appendChild(input);
 								$("#details .products_details .products_pics").append(div).append("\n");
+								$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 								$("#waiting").hide();
 							},
 							error:function(){}
@@ -1888,10 +1889,15 @@ window.onload=function(){
 				page=new Array();
 				if(data.news){
 					var n=parseInt(data.newscount);
-					var p=Math.ceil(n/10);
+					if(n==0){
+						var p=1;
+					}
+					else{
+						var p=Math.ceil(n/10);
+					}
 					if(mark+1>p){
-						//alert("该页不存在");
-						return;
+						c--;
+						mark--;
 					}
 					for(var i=0;i<p;i++){
 						var title=new Array();
@@ -1917,6 +1923,7 @@ window.onload=function(){
 					$("#page div:eq("+mark+")").click();
 				}
 				else{
+					$("#page").html("");
 					var s="<tr><td>标题</td><td>发布时间</td><td>操作</td></tr>";
 					for(var i=0;i<page[0].ntitle.length;i++){
 						s+="<tr><td>"+page[0].ntitle[i]+"</td><td>"+page[0].date[i]+"</td><td><span class='button'>删除</span><span class='button'>修改</span></td></tr>"
@@ -2574,6 +2581,7 @@ window.onload=function(){
 								div.appendChild(img);
 								div.appendChild(input);
 								$("#details .culture_honor #honor_pics").append(div).append("\n");
+								$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 								$("#waiting").hide();
 							},
 							error:function(){}
@@ -2963,6 +2971,7 @@ window.onload=function(){
 							data:formdata,
 							success:function(data){
 								$("#details .stores_show .c_pic img").attr({"src":data.picname});
+								$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 								$("#waiting").hide();
 							},
 							error:function(){}
@@ -3301,6 +3310,7 @@ window.onload=function(){
 							data:formdata,
 							success:function(data){
 								$("#details .engineering_show .c_pic img").attr({"src":data.picname});
+								$(this).siblings("input").prop("outerHTML","<input type='file' accept='image/*'>");
 								$("#waiting").hide();
 							},
 							error:function(){}
