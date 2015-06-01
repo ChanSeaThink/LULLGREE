@@ -276,7 +276,7 @@ def manageClassOne(request):
         classoneobj.SubClassNum = 0
         classoneobj.Sequence = len(ClassOne.objects.all())
         classoneobj.ProductCount = 0
-        classoneobj.save()
+        classoneobj.save(os.path.join(settings.MEDIA_ROOT, productpicobj.Picture.name))
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -284,8 +284,14 @@ def manageClassOne(request):
         classname = request.POST['classname']
         classoneobj = ClassOne.objects.get(ClassName = classname)
         BestProduct.objects.filter(ClassOne = classoneobj).delete()
-        ProductInfoPic.objects.filter(ClassOne = classoneobj).delete()
-        ProductPic.objects.filter(ClassOne = classoneobj).delete()
+        productinfopicobjls = ProductInfoPic.objects.filter(ClassOne = classoneobj)
+        for productinfopicobj in productinfopicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, productinfopicobj.Picture.name))
+            productinfopicobj.delete()
+        productpicobjls = ProductPic.objects.filter(ClassOne = classoneobj)
+        for productpicobj in productpicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, productpicobj.Picture.name))
+            productpicobj.delete()
         Products.objects.filter(ClassOne = classoneobj).delete()
         ClassTwo.objects.filter(PreClass = classoneobj).delete()
         classoneobj.delete()
@@ -366,8 +372,14 @@ def manageClassTwo(request):
         classoneobj.SubClassNum -= 1
         classtwoobj = ClassTwo.objects.get(ClassName = classname)
         BestProduct.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).delete()
-        ProductInfoPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).delete()
-        ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).delete()
+        productinfopicobjls = ProductInfoPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj)
+        for productinfopicobj in productinfopicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, productinfopicobj.Picture.name))
+            productinfopicobj.delete()
+        productpicobjls = ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj)
+        for productpicobj in productpicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, productpicobj.Picture.name))
+            productpicobj.delete()
         Products.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).delete()
         classoneobj.save()
         classtwoobj.delete()
@@ -483,8 +495,14 @@ def manageProduct(request):
         classtwoobj.ProductCount -= 1
         productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
         BestProduct.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).delete()
-        ProductInfoPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).delete()
-        ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj).delete()
+        productinfopicobjls = ProductInfoPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj)
+        for productinfopicobj in productinfopicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, productinfopicobj.Picture.name))
+            productinfopicobj.delete()
+        productpicobjls = ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj, Product = productobj)
+        for productpicobj in productpicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, productpicobj.Picture.name))
+            productpicobj.delete()
         productobj.delete()
         classoneobj.save()
         classtwoobj.save()
@@ -822,7 +840,10 @@ def manageNews(request):
         newstitle = request.POST['newstitle']
         time = request.POST['time']
         newsobj = News.objects.get(Title = newstitle)
-        NewsPic.objects.filter(News = newsobj).delete()
+        newspicobjls = NewsPic.objects.filter(News = newsobj)
+        for newspicobj in newspicobjls:
+           os.remove(os.path.join(settings.MEDIA_ROOT, newspicobj.Picture.name))
+           newspicobj.delete()
         newsobj.delete()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
@@ -1039,7 +1060,7 @@ def manageCompanyCulture(request):
     userPermission = request.session.get('permission', '')
     if userPermission < 1:
         return HttpResponse('Without Permission')
-    print request.POST
+
     part = request.POST['part']
     manage = request.POST['manage']
     if part == 'companyinfo' and manage == 'get':
@@ -1088,7 +1109,7 @@ def manageCompanyCulture(request):
         honorpicobjls = HonorPic.objects.all()
         honorpic = []
         for honorpicobj in honorpicobjls:
-            honorpin.append('/getPic/' + honorpicobj.ImageName)
+            honorpic.append('/getPic/' + honorpicobj.ImageName)
         jsonObject = json.dumps({'honorpic':honorpic},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -1110,9 +1131,10 @@ def manageCompanyCulture(request):
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
     elif part == 'companyhonor' and manage == 'delete':
-        picnamels = request.POST['pic']
+        picnamels = request.POST.getlist('pic[]')
         for picname in picnamels:
             honorpicobj = HonorPic.objects.get(ImageName = picname)
+            os.remove(os.path.join(settings.MEDIA_ROOT, honorpicobj.Picture.name))
             honorpicobj.delete()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
@@ -1128,7 +1150,7 @@ def manageContactUs(request):
     if userPermission < 1:
         return HttpResponse('Without Permission')
 
-    manage = request.POST('manage')
+    manage = request.POST['manage']
     if manage == 'get':
         contactusobj = ContactUs.objects.all()[0]
         jsonObject = json.dumps({'content':contactusobj.Content},ensure_ascii = False)
@@ -1153,9 +1175,10 @@ def manageCase(request):
     if userPermission < 1:
         return HttpResponse('Without Permission')
 
-    manage = request.POST('manage')
+    manage = request.POST['manage']
     if manage == 'get':
         casename = request.POST.get('casename','')
+        print casename
         if casename == '':
             caseobjls = Case.objects.all().order_by('Sequence')
             case = []
@@ -1166,8 +1189,11 @@ def manageCase(request):
             return HttpResponse(jsonObject,content_type="application/json")
         else:
             caseobj = Case.objects.get(Title = casename)
-            casefirstpicobj = CaseFirstPic.objects.get(Case = caseobj)
-            path = '/getPic/' + casefirstpicobj.ImageName
+            casefirstpicobjls = CaseFirstPic.objects.filter(Case = caseobj)
+            if len(casefirstpicobjls) == 0:
+                path = ''
+            else:
+                path = '/getPic/' + casefirstpicobjls[0].ImageName
             jsonObject = json.dumps({'pic':path, 'casename':caseobj.Title, 'content':caseobj.Content},ensure_ascii = False)
             #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
             return HttpResponse(jsonObject,content_type="application/json")
@@ -1184,8 +1210,14 @@ def manageCase(request):
     elif manage =='delete':
         casename = request.POST['casename']
         caseobj = Case.objects.get(Title = casename)
-        CaseFirstPic.objects.filter(Case = caseobj).delete()
-        CasePic.objects.filter(Case = caseobj).delete()
+        casefirstpicobjls = CaseFirstPic.objects.filter(Case = caseobj)
+        for casefirstpicobj in casefirstpicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, casefirstpicobj.Picture.name))
+            casefirstpicobj.delete()
+        casepicobjls = CasePic.objects.filter(Case = caseobj)
+        for casepicobj in casepicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, casepicobj.Picture.name))
+            casepicobj.delete()
         caseobj.delete()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
@@ -1200,14 +1232,14 @@ def manageCase(request):
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
     elif manage =='sort':
-        sequence = request.POST['Sequence']
+        sequence = request.POST['sequence']
         sequencels = sequence.split('#')
         i = 0
         for casename in sequencels:
             caseobj = Case.objects.get(Title = casename)
             caseobj.Sequence = i
             i += 1
-            caseobj.svae()
+            caseobj.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -1229,15 +1261,24 @@ def saveCaseFirstPic(request):
     picName = picName.replace(' ', '_')
     pic.name = addName + picName
     caseobj = Case.objects.get(Title = casename)
-    casefirstpicobj = CaseFirstPic()
-    casefirstpicobj.Case = caseobj
-    casefirstpicobj.ImageName = pic.name
-    casefirstpicobj.Picture = pic
-    casefirstpicobj.save()
+    casefirstpicobjls = CaseFirstPic.objects.filter(Case = caseobj)
+    if len(casefirstpicobjls) == 0:
+        casefirstpicobj = CaseFirstPic()
+        casefirstpicobj.Case = caseobj
+        casefirstpicobj.ImageName = pic.name
+        casefirstpicobj.Picture = pic
+        casefirstpicobj.save()
+    else:
+        os.remove(os.path.join(settings.MEDIA_ROOT, casefirstpicobjls[0].Picture.name))
+        casefirstpicobjls[0].Case = caseobj
+        casefirstpicobjls[0].ImageName = pic.name
+        casefirstpicobjls[0].Picture = pic
+        casefirstpicobjls[0].save()
     path = '/getPic/' + pic.name
     jsonObject = json.dumps({'picname':path},ensure_ascii = False)
     #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
     return HttpResponse(jsonObject,content_type="application/json")
+
 
 def saveCasePic(request):
     userPermission = request.session.get('permission', '')
@@ -1257,7 +1298,7 @@ def saveCasePic(request):
     userobj = User.objects.get(id = userID)
     cachecasepicobj = CacheCasePic()
     cachecasepicobj.ImageName = pic.name
-    cachecasepicobj.UserID
+    cachecasepicobj.UserID = userobj
     cachecasepicobj.Picture = pic
     cachecasepicobj.save()
     path = '/getPic/' + pic.name
@@ -1270,11 +1311,11 @@ def saveCaseInfo(request):
     userID = request.session.get('userid', '')
     if userPermission < 1:
         return HttpResponse('Without Permission')   
-    
+
     casename = request.POST['casename']
     content = request.POST['content']
     caseobj = Case.objects.get(Title = casename)
-    caseobj.content = content
+    caseobj.Content = content
     caseobj.save()
     userobj = User.objects.get(id = userID)
     #提取出新闻里面的所有图片的src的值
@@ -1294,10 +1335,10 @@ def saveCaseInfo(request):
     nochangepicturenamels = []#此变量表示交集
     casepicnamedeletels = []#用于保存‘已保存图片’中需要删除的图片名。
     for casepicname in casepicnamels:
-        if newspicname in picturenamels:
-            nochangepicturenamels.append(newspicname)
+        if casepicname in picturenamels:
+            nochangepicturenamels.append(casepicname)
         else:
-            casepicnamedeletels.append(newspicname)
+            casepicnamedeletels.append(casepicname)
     #‘新上传图片’在此交集的删除
     for nochangepicturename in nochangepicturenamels:
         if nochangepicturename in picturenamels:
@@ -1312,8 +1353,8 @@ def saveCaseInfo(request):
     #把新图片从缓存移到储存表中
     for picturename in picturenamels:
         cachecasepicobj = CacheCasePic.objects.get(ImageName = picturename)
-        casepicobj = NewsPic()
-        casepicobj.News = newsobj
+        casepicobj = CasePic()
+        casepicobj.Case = caseobj
         casepicobj.Picture = cachecasepicobj.Picture
         casepicobj.ImageName = picturename
         casepicobj.save()
@@ -1335,7 +1376,7 @@ def manageShop(request):
     if userPermission < 1:
         return HttpResponse('Without Permission')
 
-    manage = request.POST('manage')
+    manage = request.POST['manage']
     if manage == 'get':
         shopname = request.POST.get('shopname','')
         if shopname == '':
@@ -1348,8 +1389,11 @@ def manageShop(request):
             return HttpResponse(jsonObject,content_type="application/json")
         else:
             shopobj = Shop.objects.get(Title = shopname)
-            shopfirstpicobj = ShopFirstPic.objects.get(Shop = shopobj)
-            path = '/getPic/' + shopfirstpicobj.ImageName
+            shopfirstpicobjls = ShopFirstPic.objects.filter(Shop = shopobj)
+            if len(shopfirstpicobjls) == 0 :
+                path = ''
+            else:
+                path = '/getPic/' + shopfirstpicobjls[0].ImageName
             jsonObject = json.dumps({'pic':path, 'shopname':shopobj.Title, 'content':shopobj.Content},ensure_ascii = False)
             #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
             return HttpResponse(jsonObject,content_type="application/json")
@@ -1366,8 +1410,14 @@ def manageShop(request):
     elif manage =='delete':
         shopname = request.POST['shopname']
         shopobj = Shop.objects.get(Title = shopname)
-        ShopFirstPic.objects.filter(Shop = shopobj).delete()
-        ShopPic.objects.filter(Shop = shopobj).delete()
+        shopfirstpicobjls = ShopFirstPic.objects.filter(Shop = shopobj)
+        for shopfirstpicobj in shopfirstpicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, shopfirstpicobj.Picture.name))
+            shopfirstpicobj.delete()
+        shoppicobjls = ShopPic.objects.filter(Shop = shopobj)
+        for shoppicobj in shoppicobjls:
+            os.remove(os.path.join(settings.MEDIA_ROOT, shoppicobj.Picture.name))
+            shoppicobj.delete()
         shopobj.delete()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
@@ -1382,14 +1432,14 @@ def manageShop(request):
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
     elif manage =='sort':
-        sequence = request.POST['Sequence']
+        sequence = request.POST['sequence']
         sequencels = sequence.split('#')
         i = 0
         for shopname in sequencels:
             shopobj = Shop.objects.get(Title = shopname)
             shopobj.Sequence = i
             i += 1
-            shopobj.svae()
+            shopobj.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -1411,11 +1461,19 @@ def saveShopFirstPic(request):
     picName = picName.replace(' ', '_')
     pic.name = addName + picName
     shopobj = Shop.objects.get(Title = shopname)
-    shopfirstpicobj = ShopFirstPic()
-    shopfirstpicobj.Shop = shopobj
-    shopfirstpicobj.ImageName = pic.name
-    shopfirstpicobj.Picture = pic
-    shopfirstpicobj.save()
+    shopfirstpicobjls = ShopFirstPic.objects.filter(Shop = shopobj)
+    if len(shopfirstpicobjls) == 0:
+        shopfirstpicobj = ShopFirstPic()
+        shopfirstpicobj.Shop = shopobj
+        shopfirstpicobj.ImageName = pic.name
+        shopfirstpicobj.Picture = pic
+        shopfirstpicobj.save()
+    else:
+        os.remove(os.path.join(settings.MEDIA_ROOT, shopfirstpicobjls[0].Picture.name))
+        shopfirstpicobjls[0].Shop = shopobj
+        shopfirstpicobjls[0].ImageName = pic.name
+        shopfirstpicobjls[0].Picture = pic
+        shopfirstpicobjls[0].save()
     path = '/getPic/' + pic.name
     jsonObject = json.dumps({'picname':path},ensure_ascii = False)
     #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
@@ -1439,7 +1497,7 @@ def saveShopPic(request):
     userobj = User.objects.get(id = userID)
     cacheshoppicobj = CacheShopPic()
     cacheshoppicobj.ImageName = pic.name
-    cacheshoppicobj.UserID
+    cacheshoppicobj.UserID = userobj
     cacheshoppicobj.Picture = pic
     cacheshoppicobj.save()
     path = '/getPic/' + pic.name
@@ -1456,7 +1514,7 @@ def saveShopInfo(request):
     shopname = request.POST['shopname']
     content = request.POST['content']
     shopobj = Shop.objects.get(Title = shopname)
-    shopobj.content = content
+    shopobj.Content = content
     shopobj.save()
     userobj = User.objects.get(id = userID)
     #提取出新闻里面的所有图片的src的值
@@ -1476,10 +1534,10 @@ def saveShopInfo(request):
     nochangepicturenamels = []#此变量表示交集
     shoppicnamedeletels = []#用于保存‘已保存图片’中需要删除的图片名。
     for shoppicname in shoppicnamels:
-        if newspicname in picturenamels:
-            nochangepicturenamels.append(newspicname)
+        if shoppicname in picturenamels:
+            nochangepicturenamels.append(shoppicname)
         else:
-            shoppicnamedeletels.append(newspicname)
+            shoppicnamedeletels.append(shoppicname)
     #‘新上传图片’在此交集的删除
     for nochangepicturename in nochangepicturenamels:
         if nochangepicturename in picturenamels:
@@ -1494,8 +1552,8 @@ def saveShopInfo(request):
     #把新图片从缓存移到储存表中
     for picturename in picturenamels:
         cacheshoppicobj = CacheShopPic.objects.get(ImageName = picturename)
-        shoppicobj = NewsPic()
-        shoppicobj.News = newsobj
+        shoppicobj = ShopPic()
+        shoppicobj.Shop = shopobj
         shoppicobj.Picture = cacheshoppicobj.Picture
         shoppicobj.ImageName = picturename
         shoppicobj.save()
@@ -1561,7 +1619,7 @@ def getPic(request, ImgName):
             cachenewspicobj = CacheNewsPic.objects.get(ImageName = ImgName)
             return HttpResponse(cachenewspicobj.Picture, 'image')
     elif item == 'hp':#HonorPic
-        honorpicobj = HonorPic.objects.get(ImageName = ImageName)
+        honorpicobj = HonorPic.objects.get(ImageName = ImgName)
         return HttpResponse(honorpicobj.Picture, 'image')
     elif item == 'cfp':#CaseFirstPic
         casefirstpicobj = CaseFirstPic.objects.get(ImageName = ImgName)

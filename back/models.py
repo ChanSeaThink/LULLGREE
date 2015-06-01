@@ -258,7 +258,7 @@ class CacheCasePic(models.Model):
     Picture:项目图片；
     '''
     ImageName = models.CharField(max_length= 150)
-    UserID = models.IntegerField('User')
+    UserID = models.ForeignKey('User')
     Picture = models.ImageField(upload_to='case_picture')
 
 #店铺展示相关的数据表格=========================================================
@@ -279,12 +279,10 @@ class ShopFirstPic(models.Model):
     每个店面的封面图片。
 
     Shop:店面；
-    Title:店面标题；
     Picture:图片；
     ImageName:图片名称；
     '''
     Shop = models.ForeignKey('Shop')
-    Title = models.CharField(max_length = 200)
     Picture = models.ImageField(upload_to='shop_first_picture')
     ImageName = models.CharField(max_length= 150)
 
@@ -296,7 +294,7 @@ class ShopPic(models.Model):
     Picture:图片；
     ImageName:图片名称；
     '''
-    Show = models.ForeignKey('Shop')
+    Shop = models.ForeignKey('Shop')
     Picture = models.ImageField(upload_to='shop_picture')
     ImageName = models.CharField(max_length= 150)
 
@@ -309,5 +307,5 @@ class CacheShopPic(models.Model):
     Picture:项目图片；
     '''
     ImageName = models.CharField(max_length= 150)
-    UserID = models.IntegerField('User')
+    UserID = models.ForeignKey('User')
     Picture = models.ImageField(upload_to='shop_picture')
