@@ -1939,7 +1939,12 @@ window.onload=function(){
 			$("#details .news_edit").delegate(".button","click",function(){
 				if($(this).text()=="删除"){
 					var number=$("#details .news_edit table table tr").index($(this).parent().parent());
-					number+=(c-1)*10-1;
+					if(c){
+						number+=(c-1)*10-1;
+					}
+					else{
+						number-=1;
+					}
 					var title=$(this).closest("tr").find("td:eq(0)").text();
 					var time=$(this).closest("tr").find("td:eq(1)").text();
 					$("#full .news_edit .delete .news_title").text(title);
@@ -1950,7 +1955,12 @@ window.onload=function(){
 				}
 				else if($(this).text()=="修改"){
 					var number=$("#details .news_edit table table tr").index($(this).parent().parent());
-					number+=(c-1)*10-1;
+					if(c){
+						number+=(c-1)*10-1;
+					}
+					else{
+						number-=1;
+					}
 					$("#full .news_edit .delete .number").text(number);
 					var title=$(this).closest("tr").find("td:eq(0)").text();
 					var time=$(this).closest("tr").find("td:eq(1)").text();
@@ -1982,16 +1992,21 @@ window.onload=function(){
 					$("#full .news_edit .delete").hide();
 					$("#waiting").show();
 					var title=$("#full .news_edit .delete .news_title").text();
-					var time=$("#full .news_edit .delete .news_date").text();
+					var t=$("#full .news_edit .delete .news_date").text();
 					var number=parseInt($("#full .news_edit .delete .number").text());
 					$.ajax({
 						url:"manageNews",
 						type:"post",
-						data:{manage:"delete",newstitle:title,time:time},
+						data:{manage:"delete",newstitle:title,time:t},
 						success:function(data){
 							newsData.newscount-=1;
 							newsData.news.splice(number,1);
-							NewsShow(newsData,c);
+							if(c){
+								NewsShow(newsData,c);
+							}
+							else{
+								NewsShow(newsData,1);
+							}
 							$("#details .news_edit .alter").hide();
 							$("#waiting").hide();
 						},
@@ -2062,7 +2077,12 @@ window.onload=function(){
 							$("#details .news_edit .alter").hide();
 							$("#details .news_edit .add .click_edit").show();
 							newsData.news[number]=newsData.news[number].replace(/.+\#/,title+"#");
-							NewsShow(newsData,c);
+							if(c){
+								NewsShow(newsData,c);
+							}
+							else{
+								NewsShow(newsData,1);
+							}
 							$("#waiting").hide();
 						},
 						error:function(){}
@@ -2317,7 +2337,7 @@ window.onload=function(){
 					url:"manageCompanyCulture",
 					type:"post",
 					data:{part:"companyinfo",manage:"get"},
-					success:function(data){
+					success:function(data){alert(data.content)
 						var s=data.content;
 						if(s.length==0){
 							$("#details .culture_summary #intro").html("<p> </p><p><br></p>");
@@ -2327,7 +2347,8 @@ window.onload=function(){
 						}
 						$("#details .culture_summary .click_edit").show();
 					},
-					error:function(){}
+					error:function(){
+					}
 				});
 			});
 		//文章编辑框
