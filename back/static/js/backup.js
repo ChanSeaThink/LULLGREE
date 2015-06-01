@@ -863,6 +863,9 @@ window.onload=function(){
 		//点击进入页面时发送ajax
 			$("#function .products_details").click(function(){
 				$("#details .products_details .click_edit").show();
+				$("#details .products_details select:eq(1)").html("");
+				$("#details .products_details select:eq(2)").html("");
+				$("#details .products_details .details").hide();
 				$("#details .edit_box").remove();
 				$.ajax({
 					url:"getClassOne",
@@ -879,7 +882,6 @@ window.onload=function(){
 							s.appendChild(option);
 						}
 						$("#details .products_details select:eq(0)").html(s.innerHTML);
-						$("#details .products_details select:eq(0)").change();
 					},
 					error:function(){
 						//alert("页面获取失败");
@@ -888,10 +890,10 @@ window.onload=function(){
 			});
 		//点击一级选项时发送ajax请求二级选项
 			$("#details .products_details").delegate("select:eq(0)","change",function(){
+				$("#details .products_details .details").hide();
 				if($("option:selected",this).text()=="请选择分类"){
 					$("#details .products_details select:eq(1)").html("");
 					$("#details .products_details select:eq(2)").html("");
-					$("#details .products_details .details").hide();
 					return;
 				}
 				var fc=$("option:selected",this).text();
@@ -910,6 +912,7 @@ window.onload=function(){
 							s.appendChild(option);
 						}
 						$("#details .products_details select:eq(1)").html(s.innerHTML);
+						$("#details .products_details select:eq(2)").html("");
 					},
 					error:function(){
 						//alert("二级分类获取失败");
@@ -918,12 +921,11 @@ window.onload=function(){
 			});
 		//点击二级选项时发送ajax请求对应产品
 			$("#details .products_details").delegate("select:eq(1)","change",function(){
+				$("#details .products_details .details").hide();
 				if($("option:selected",this).text()=="请选择分类"){
-					$("#details .products_details .details").hide();
 					$("#details .products_details select:eq(2)").html("");
 					return;
 				}
-				$("#details .products_details .details_add").show();
 				var fc=$("#details .products_details select:eq(0) option:selected").text();
 				var sc=$("option:selected",this).text();
 				$.ajax({
@@ -941,6 +943,7 @@ window.onload=function(){
 							s.appendChild(option);
 						}
 						$("#details .products_details select:eq(2)").html(s.innerHTML);
+						$("#details .products_details .series .details").show();
 					},
 					error:function(){
 						//alert("二级分类获取失败");
