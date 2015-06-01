@@ -1936,6 +1936,7 @@ window.onload=function(){
 				$("#details .news_edit table table").html(s);
 			})
 		//点击功能按钮
+		c=0;
 			$("#details .news_edit").delegate(".button","click",function(){
 				if($(this).text()=="删除"){
 					var number=$("#details .news_edit table table tr").index($(this).parent().parent());
