@@ -110,6 +110,16 @@ def product(requrst):
         productpicobj = ProductPic.objects.get(Product = productobj, Sequence = 0)
         path = '/getPic/' + productpicobj.ImageName
         productls.append(dict(classtwo = classtwoobj.ClassName, path = path, name = productobj.ProductName))
+
+    bestls = []
+    for classoneobj in classoneobjls:
+        name = classoneobj.ClassName
+        bestprols = []
+        bestproductobjls = BestProduct.objects.filter(ClassOne = classoneobj)
+        for bestproductobj in bestproductobjls:
+            classtwo = bestproductobj.ClassTwo.ClassName
+            name = bestproductobj.ProductName
+            path = '/getPic/' + ProductPic.objects.filter()
     return render_to_response('gree_products.html', {"classls":classls, 'productls':productls})
 
 def news(requrst):
