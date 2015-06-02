@@ -245,13 +245,14 @@ window.onload=function(){
 			$("#b_pic_box img").attr({"src":s});
 		});
 	//图片自调整函数
-		function PicAdjust(w1,h1,selector){
+		//function PicAdjust(w1,h1,selector){
 			//w1:固定宽度 h1:固定高度 w2:实图宽度 h2:实图高度
 			var w2,h2;
-			var r1=w1/h1;
+			//var r1=w1/h1;
 			var r2;
-			$(selector).delegate("img","load",function(){
-				w2=$(this).width();
+			$("#box div").delegate("img","load",function(){
+				var r1=140/100;
+				w2=$(this).width();alert(w2)
 				h2=$(this).height();
 				r2=w2/h2;
 				if(r2<r1){
@@ -259,14 +260,13 @@ window.onload=function(){
 				}
 				else{
 					$(this).width(w1);
-					var h=w1*h2/w2;
-					$(this).css({"padding-top":((h1-h)/2)+"px"});
+					var h=w1*h2/w2;alert((h1-h)/2)
+					$(this).css({"padding-bottom":((h1-h)/2)+"px"});
 				}
 			});
-		}
-		PicAdjust(140,100,"#box");
-		PicAdjust(140,100,"#box");
-		PicAdjust(100,100,"#pics");
-		PicAdjust(370,370,"#b_pic_box");
-		PicAdjust(160,160,"#susume");
+		//}
+		//PicAdjust(140,100,"#box");
+		//PicAdjust(100,100,"#pics");
+		//PicAdjust(370,370,"#b_pic_box");
+		//PicAdjust(160,160,"#susume");
 }
