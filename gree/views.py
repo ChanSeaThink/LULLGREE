@@ -119,8 +119,11 @@ def product(requrst):
         for bestproductobj in bestproductobjls:
             classtwo = bestproductobj.ClassTwo.ClassName
             name = bestproductobj.ProductName
-            path = '/getPic/' + ProductPic.objects.filter()
-    return render_to_response('gree_products.html', {"classls":classls, 'productls':productls})
+            productpicobjls = ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = bestproductobj.ClassTwo, Product = bestproductobj.Product).order_by('Sequence')
+            path = '/getPic/' + productpicobjls[0].ImageName
+            bestprols.append(dict(classtwo=classtwo, name=name, path=path))
+        bestls.append(dict(name = name, bestprols= bestprols))
+    return render_to_response('gree_products.html', {"classls":classls, 'productls':productls, 'bestls':bestls})
 
 def news(requrst):
     newsobjls = News.objects.all()[0:10]
