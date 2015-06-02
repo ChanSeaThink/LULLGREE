@@ -63,14 +63,7 @@
 		</div>
 		<div id="products_box">
 			<div></div>
-			<div id="box">
-				{% for product in productls %}
-				<div data-class="{{ product.classtwo }}">
-					<img src="{{ product.path }}">
-					<p>{{ product.name }}</p>
-				</div>
-				{% endfor %}
-			</div>
+			<div id="box"></div>
 			<div></div>
 		</div>
 		<div class="clear"></div>
@@ -117,8 +110,8 @@
 			<div class="sell_well">
 				<p>{{ classone.name }}</p>
 				{% for bs in classone.bestprols %}
-				<div>
-					<img src="{{ bs.path }}" data-class="{{ bs.classtwo }}">
+				<div data-class="{{ bs.classtwo }}">
+					<img src="{{ bs.path }}">
 					<div><p>{{ bs.name }}</p></div>
 				</div>
 				{% endfor %}

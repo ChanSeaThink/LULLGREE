@@ -92,15 +92,20 @@
 		display:inline-block;
 		margin-left:15px;
 		font-size:15px;
+		max-width:600px;
+		overflow-x:hidden;
+		white-space:nowrap;
 	}
 	#class_box>ul>li>span{
 		font-size:16px;
 		padding-bottom:2px;
 	}
 	#class_box{
+		margin:0 auto;
 		width:900px;
 		margin-top:30px;
 		margin-bottom:-4px;
+		text-align:left;
 	}
 	.second_class{
 		display:none;
@@ -128,7 +133,7 @@
 	#sc4{margin-left:-210px;}
 	#sc5{margin-left:-600px;}
 	#class_box>ul>li{
-		float:left;
+		display:inline-block;
 		padding:5px 10px;
 		margin:0 10px;
 		text-align:center;
@@ -143,12 +148,12 @@
 		cursor:pointer;
 	}
 	#cleft{
-		border-right:8px solid black;
+		border-right:8px solid #616161;
 		border-top:8px solid transparent;
 		border-bottom:8px solid transparent;
 	}
 	#cright{
-		border-left:8px solid black;
+		border-left:8px solid #616161;
 		border-top:8px solid transparent;
 		border-bottom:8px solid transparent;
 	}
@@ -175,7 +180,7 @@
 		border-left:30px solid white;
 	}
 	#products_box>div:first-child{
-		display:inline-block;
+		display:none;
 		position:relative;
 		top:-45px;
 		border-right:30px solid rgba(255,255,255,0.5);
@@ -183,7 +188,7 @@
 		border-bottom:30px solid transparent;
 	}
 	#products_box>div:last-child{
-		display:inline-block;
+		display:none;
 		position:relative;
 		top:-45px;
 		border-left:30px solid rgba(255,255,255,0.5);
@@ -346,15 +351,16 @@
 	}
 	.sell_well>div{
 		display:inline-block;
+		vertical-align:top;
 		position:relative;
 		margin:0 10px;
 		width:160px;
 		height:160px;
+		border:1px solid #a1a1a1;
 	}
 	.sell_well img{
-		border:1px;
-		width:160px;
-		height:160px;
+		max-width:160px;
+		max-height:160px;
 	}
 	.sell_well div div{
 		display:none;

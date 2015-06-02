@@ -1,8 +1,8 @@
 window.onload=function(){
 		var len=$("#box>div").length;
-		if(len<7){
-			$("#products_box>div:eq(0)").hide();
-			$("#products_box>div:eq(2)").hide();
+		if(len>7){
+			$("#products_box>div:eq(0)").css("display","inline-block");
+			$("#products_box>div:eq(2)").css("display","inline-block");
 		}
 	//点击产品发送ajax请求
 		var flag=0;
@@ -68,10 +68,11 @@ window.onload=function(){
 							$("#products_box>div:eq(2)").hide();
 						}
 						else{
-							$("#products_box>div:eq(0)").show();
-							$("#products_box>div:eq(2)").show();
+							$("#products_box>div:eq(0)").css("display","inline-block");
+							$("#products_box>div:eq(2)").css("display","inline-block");
 						}
 						$("#box").html(s);
+						PicAdjust(140,100,"#box");
 						pmove();
 					},
 					error:function(){}
@@ -102,10 +103,11 @@ window.onload=function(){
 							$("#products_box>div:eq(2)").hide();
 						}
 						else{
-							$("#products_box>div:eq(0)").show();
-							$("#products_box>div:eq(2)").show();
+							$("#products_box>div:eq(0)").css("display","inline-block");
+							$("#products_box>div:eq(2)").css("display","inline-block");
 						}
 						$("#box").html(s);
+						PicAdjust(140,100,"#box");
 						pmove();
 					},
 					error:function(){}
@@ -137,6 +139,43 @@ window.onload=function(){
 					$("#b_pic_box img").attr({"src":data.picsrc[0]});
 					$("#spcf").html(data.table);
 					$("#article").html(data.content);
+					PicAdjust(100,100,"#pics");
+					PicAdjust(370,370,"#b_pic_box");
+					ppmove();
+					$("#products_show").show();
+				},
+				error:function(){}
+			});
+		});
+		$(".sell_well>div").click(function(){
+			var co=$(this).siblings("p").text();
+			var sc=$(this).attr("data-class");
+			var pname=$("p",this).text();
+			$.ajax({
+				url:"getProduct",
+				type:"post",
+				data:{classone:co,classtwo:sc,productname:pname},
+				success:function(data){
+					$("#pics").html("");
+					$("#b_pic_box img").attr({"src":""});
+					$("#spcf").html("");
+					$("#article").html("");
+					$("#products_nav .class:eq(1)").text(co);
+					$("#products_nav .pname:eq(1)").text(pname);
+					$("#products_nav .class").show();
+					$("#products_nav .pname").show();
+					$("#susume").hide();
+					var s="";
+					for(var i=0;i<data.picsrc.length;i++){
+						s+="<img src='"+data.picsrc[i]+"'>"+"\n";
+					}
+					$("#pics").html(s);
+					$("#b_pic_box img").attr({"src":data.picsrc[0]});
+					$("#spcf").html(data.table);
+					$("#article").html(data.content);
+					window.scrollTo(0,0);
+					PicAdjust(100,100,"#pics");
+					PicAdjust(370,370,"#b_pic_box");
 					ppmove();
 					$("#products_show").show();
 				},
@@ -198,9 +237,6 @@ window.onload=function(){
 		function pmove(){
 			var pn=Math.ceil($("#box>div").length/6);
 			var pcount=0;
-			var l1=$("#products_box>div:eq(0)").offset().left;
-			var l2=$("#products_box>div:eq(6)").offset().left;
-			alert(l2-l1);
 			$("#products_box>div:eq(0)").unbind("click");
 			$("#products_box>div:eq(0)").click(function(){
 				if(pcount-1<0){
@@ -245,28 +281,21 @@ window.onload=function(){
 			$("#b_pic_box img").attr({"src":s});
 		});
 	//图片自调整函数
-		//function PicAdjust(w1,h1,selector){
+		function PicAdjust(w1,h1,selector){
 			//w1:固定宽度 h1:固定高度 w2:实图宽度 h2:实图高度
 			var w2,h2;
-			//var r1=w1/h1;
+			var r1=w1/h1;
 			var r2;
-			$("#box div").delegate("img","load",function(){
-				var r1=140/100;
-				w2=$(this).width();alert(w2)
-				h2=$(this).height();
+			for(var i=0;i<$(selector).find("img").length;i++){
+				w2=$(selector).find("img").eq(i).width();
+				h2=$(selector).find("img").eq(i).height();
 				r2=w2/h2;
-				if(r2<r1){
-					$(this).height(h1);
+				if(r2>r1){
+					var h=w1*h2/w2;
+					$(selector).find("img").eq(i).css({"padding":((h1-h)/2)+"px 0"});
 				}
-				else{
-					$(this).width(w1);
-					var h=w1*h2/w2;alert((h1-h)/2)
-					$(this).css({"padding-bottom":((h1-h)/2)+"px"});
-				}
-			});
-		//}
-		//PicAdjust(140,100,"#box");
-		//PicAdjust(100,100,"#pics");
-		//PicAdjust(370,370,"#b_pic_box");
-		//PicAdjust(160,160,"#susume");
+			}
+		}
+
+		PicAdjust(160,160,"#susume");
 }
