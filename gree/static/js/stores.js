@@ -4,13 +4,11 @@ window.onload=function(){
 		$("#stores_box>div:eq(0)").hide();
 		$("#stores_box>div:eq(2)").hide();
 	}
-	var flag=0;
-		$(".second_class li").click(function(){
-			flag=1;
-			$("#flag").remove();
-			$(this).parent().prev().append("<span id='flag'> ＞"+$(this).text()+"</span>");
-		});
+	
+	//点击店铺返回文章
 		$("#box>div").click(function(){
+			var src=$("img",this).attr("src");
+			$("#o_pic img").attr({"src":src});
 			var s=$(this).find("p").text();
 			$("#stores_nav span:last").text($(this).find("p").text());
 			$("#stores_title").html(s);

@@ -211,6 +211,12 @@
 		color:#202020;
 		padding:40px 0;
 		}
+	#o_pic{
+		text-align:center;
+	}
+	#o_pic img{
+		max-width:800px;
+	}
 	#content
 		{
 		margin:0 auto;
