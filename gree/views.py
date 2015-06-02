@@ -53,3 +53,28 @@ def index(requrst):
                 productls.append(dict(Title = bestproductobj.ProductName, PicPath = path))
 
         return render_to_response('gree_index.html', {'classonestr': classonestr, 'classonels':classonels, 'oneclassone':oneclassone,'productls':productls})
+
+def product(requrst):
+    return render_to_response('gree_products.html')
+
+def news(requrst):
+    return render_to_response('gree_news.html')
+
+def shop(requrst):
+    return render_to_response('gree_stores.html')
+
+def case(requrst):
+    return render_to_response('gree_engineering.html')
+
+def job(requrst):
+    return render_to_response('gree_recruitment.html')
+
+def culture(requrst):
+    return render_to_response('gree_culture.html')
+
+def contact(requrst):
+    return render_to_response('gree_contact.html')
+
+
+
+

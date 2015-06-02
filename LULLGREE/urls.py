@@ -45,5 +45,12 @@ urlpatterns = patterns('',
     url(r'^initialise$', 'back.views.initialise'),#初始化几张特殊的表格。
     url(r'^getPic/(?P<ImgName>.*\.(jpg|png|gif|jpeg|ico)$)', 'back.views.getPic'),
     #以上都是后台的链接，以下是前台的链接。
-    url(r'^$', 'gree.views.index')
+    url(r'^$', 'gree.views.index'),
+    url(r'^product$', 'gree.views.product'),
+    url(r'^news$', 'gree.views.news'),
+    url(r'^shop$', 'gree.views.shop'),
+    url(r'^case$', 'gree.views.case'),
+    url(r'^job$', 'gree.views.job'),
+    url(r'^culture$', 'gree.views.culture'),
+    url(r'^contact$', 'gree.views.contact'), 
 )
