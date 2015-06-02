@@ -94,16 +94,17 @@ window.onload=function(){
 	//产品详情请求
 		$("#box>div").click(function(){
 			var sc=$(this).attr("data-class");
-			var pname=$("p",this).text();alert(pname)
+			var pname=$("p",this).text();
 			$.ajax({
 				url:"getProduct",
 				type:"post",
 				data:{classone:fc,classtwo:sc,productname:pname},
-				success:function(data){},
+				success:function(data){
+					$("#susume").hide();
+					$("#products_show").show();
+				},
 				error:function(){}
 			});
-			$("#susume").hide();
-			$("#p_details").show();
 		});
 
 	//表格格式
@@ -156,7 +157,7 @@ window.onload=function(){
 		//alert($("#subtitle .second_class").eq(4).width());
 	//*/
 
-	//移动动画
+	//产品移动动画
 		var n=Math.ceil($("#box>div").length/6);
 		var count=0;
 		$("#products_box>div:eq(0)").click(function(){
@@ -173,4 +174,6 @@ window.onload=function(){
 			count++;
 			$("#box>div").animate({left:"-=1014px"});
 		});
+
+	//产品展示图片移动动画
 }
