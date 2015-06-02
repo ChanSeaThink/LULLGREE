@@ -92,21 +92,21 @@
     		<img src="{% static "img/index/diamond.png" %}" alt="企业荣誉">
     		<p class="p1">世界名牌</p>
     		<p class="p2">
-    			<a href="">从这里了解我们></a>
+    			<a href="/culture">从这里了解我们></a>
     		</p>
     	</div>
     	<div>
     		<img src="{% static "img/index/shop.png" %}" alt="店面展示">
     		<p class="p1">店面展示</p>
     		<p class="p2">
-    			<a href="">门店众多，给予您优质服务></a>
+    			<a href="/shop">门店众多，给予您优质服务></a>
     		</p>
     	</div>
     	<div>
     		<img src="{% static "img/index/video.png" %}" alt="工程案例">
     		<p class="p1">工程案例</p>
     		<p class="p2">
-    			<a href="">为您提供合适的工程计划></a>
+    			<a href="/case">为您提供合适的工程计划></a>
     		</p>
     	</div>
     	<div>
@@ -154,7 +154,20 @@
     	</ul>
     	<p>版权所有 CopyRight(C)2013-2015 东莞市忠胜格力产品销售中心</p>
     </div>
-    <script type="text/javascript">
+    <script>
+    //调整外框适应一级分类宽度
+        var w=$("#catalog").width();
+        $("#box").width(w+60);
+    //调整图片适应136X204的规格
+        var len=$("#products_top>div img").length;
+    	for(var i=0;i<len;i++){
+    		var h=$("#products_top>div img").eq(i).height();
+    		var w=$("#products_top>div img").eq(i).width();
+    		if(h/w<1.5){
+    			var space=(204-h)/2;
+    			$("#products_top>div img").eq(i).css({"padding":space+"px 0"});
+    		}
+    	}
     </script>
 </body>
 </html>

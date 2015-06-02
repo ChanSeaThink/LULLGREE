@@ -186,7 +186,6 @@
 		margin:0 auto 20px auto;
 		position:relative;
 		top:-12px;
-		width:400px;
 		height:18px;
 		background-color:white;
 	}
@@ -211,14 +210,16 @@
 	#products_top>div,#products_bottom>div{
 		position:relative;
 		float:left;
-		width:20%;
-		margin-left:4%;
+		width:160px;
+		margin-left:32px;
 		background-color:#fafafa;
 		cursor:pointer;
 	}
 	#p_details img{
-		width:85%;
+		max-width:136px;
+		max-height:204px;
 		margin:12px 0px 7px 12px;
+		background-color:white;
 	}
 	#p_details div p{
 		text-align:center;
