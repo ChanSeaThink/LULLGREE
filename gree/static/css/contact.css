@@ -87,7 +87,7 @@
 		border-left:5px solid #226ddd;
 	}
 	#details{
-		padding:60px 0 160px 0;
+		padding:60px 0 60px 0;
 		margin-top:60px;
 		background-color:#f1f1f1;
 	}
@@ -97,13 +97,13 @@
 	}
 	#contact_way div:first-child{
 		font-size:25px;
+		text-align:center;
 	}
 	#contact_way div:last-child{
+		display:table;
 		padding-top:10px;
-		width:400px;
+		margin:0 auto;
 		margin-top:30px;
-		margin-left:60px;
-		border:2px solid #a1a1a1;
 		color:#616161;
 	}
 	#contact_way p{

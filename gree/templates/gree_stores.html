@@ -14,38 +14,33 @@
 </head>
 <body>
 	<div id="top">
-		<!--
-		<div id="title">
-			<img id="logo" src="./img/gree_logo.png">
-			<span>东莞市忠胜格力产品销售中心</span>
-		</div>
-		-->
 		<div class="clear"></div>
 	</div>
 	<div id="nav">
 		<ul id="first_ul">
-			<li><a href="./gree_index.html">首页</a></li>
-			<li>
-				<a href="./gree_products.html">产品中心</a>
-			</li>
-			<li>
-				<a href="./gree_news.html">新闻中心</a>
-			</li>
+    		<li>
+    			<a href="/">首页</a>
+    		<li>
+    			<a href="/product">产品中心</a>
+    		</li>
+    		<li>
+    			<a href="/news">新闻中心</a>
+    		</li>
      		<li>
-    			<span>店面展示</span>
+    			<a href="/shop">店面展示</a>
      		 </li>
     		<li>
-     			<a href="./gree_engineering.html">工程案例</a>
+     			<a href="/case">工程案例</a>
     		</li>
-			<li>
-				<a href="./gree_recruitment.html">人才招聘</a>
-			</li>
-			<li>
-				<a href="./gree_culture.html">企业文化</a>
-			</li>
-			<li>
-				<a href="./gree_contact.html">联系我们</a>
-			</li>
+    		<li>
+    			<a href="/job">人才招聘</a>
+    		</li>
+    		<li>
+				<a href="/culture">企业文化</a>
+    		</li>
+    		<li>
+    			<a href="/contact">联系我们</a>
+    		</li>
 			<p class="clear"></p>
 		</ul>
 	</div>
@@ -105,50 +100,15 @@
 	</div>
     <div id="foot_bar">
     	<ul>
-    		<li><a href="./gree_culture.html">关于我们</a></li>
+    		<li><a href="/culture">关于我们</a></li>
     		<li>&nbsp;|&nbsp;</li>
-    		<li><a href="./gree_contact.html">联系我们</a></li>
+    		<li><a href="/contact">联系我们</a></li>
     		<li>&nbsp;|&nbsp;</li>
-    		<li><a href="">文件下载</a></li>
-    		<li>&nbsp;|&nbsp;</li>
-    		<li><a href="./gree_recruitment.html">人才招聘</a></li>
-    		<li>&nbsp;|&nbsp;</li>
-    		<li><a href="">友情链接</a></li>
+    		<li><a href="/job">人才招聘</a></li>
     	</ul>
     	<p>版权所有 CopyRight(C)2013-2015 东莞市忠胜格力产品销售中心</p>
     </div>
 	<script>
-	var data={stores:[
-		{storename:"X1",pic:"pic1"},
-		{storename:"X2",pic:"pic2"},
-		{storename:"X3",pic:"pic3"},
-		{storename:"X4",pic:"pic4"},
-		{storename:"X5",pic:"pic5"},
-		{storename:"X6",pic:"pic6"},
-		{storename:"X7",pic:"pic7"},
-		{storename:"X8",pic:"pic8"},
-		{storename:"X9",pic:"pic9"},
-		{storename:"X10",pic:"pic10"},
-		{storename:"X11",pic:"pic11"},
-		{storename:"X12",pic:"pic12"},
-		]}
-		$.ajax({
-			url:"getStore",
-			type:"post",
-			data:{amount:"all"},
-			success:function(data){
-				var s="";
-				var len=data.stores.length;
-				for(var i=0;i<len;i++){
-					s+="<div><img src='"+data.stores[i].pic+"'><p>"+data.stores[i].storename+"</p></div>";
-				}
-				if(len<7){
-					$("#stores_box>div").hide();
-				}
-				$("#stores_box>p").html(s);
-			},
-			error:function(){}
-		});
 	</script>
 </body>
 </html>
