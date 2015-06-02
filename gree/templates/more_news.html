@@ -1,0 +1,8 @@
+{% for news in newsls %}
+<div class="news_box">
+	<p class="date"><span class="day">{{ news.D }}</span><span class="ym">{{ news.YM }}</span></p>
+	<p class="news_title">{{ news.Title }}</p>
+	<p class="summary">{{ news.ShortContent }}</p>
+	<div class="clear"></div>
+</div>
+{% endfor %}
