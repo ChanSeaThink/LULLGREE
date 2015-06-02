@@ -3,6 +3,7 @@
 	body{overflow-x:hidden;}
 	ul{list-style-type:none;}
 	td{}
+	select{min-width:120px;}
 	.clear{clear:both;}
 	#left{
 		position:fixed;
@@ -92,7 +93,7 @@
 		border-right:1px solid #e1e1e1;
 		cursor:default;
 	}
-	/*----------------------full------------------------*/
+/*----------------------full------------------------*/
 	#full{
 		text-align:center;
 	}
@@ -150,9 +151,10 @@
 	#full .data{
 		display:none;
 	}
-	/*---------------------主内容块---------------------*/
+/*---------------------主内容块---------------------*/
 	/*编辑框*/
 	.edit_box{
+		position:relative;
 		min-width:500px;
 		max-width:900px;
 		border:1px solid #a1a1a1;
@@ -209,7 +211,7 @@
 	#text_box img{
 		max-width:500px;
 	}
-	/*--------------------隐藏的编辑框-------------------*/
+/*--------------------隐藏的编辑框-------------------*/
 	.edit{
 		display:none;
 	}
@@ -217,7 +219,7 @@
 		display:inline-block;
 		text-align:center;
 	}
-	/*---------------------------------------*/
+/*---------------------------------------*/
 	#details{
 		padding-top:32px;
 		font-size:14px;
@@ -246,7 +248,7 @@
 		border:1px solid #34333f;
 		cursor:pointer;
 	}
-	/*------------------welcome_phrase-------------------*/
+/*------------------welcome_phrase-------------------*/
 	#details .welcome_phrase{
 		text-align:center;
 	}
@@ -255,7 +257,7 @@
 		font-size:46px;
 		color:#226ddd;
 	}
-	/*------------------account_manage-------------------*/
+/*------------------account_manage-------------------*/
 	#details .account_manage .title{
 		padding-bottom:20px;
 		margin-right:40px;
@@ -277,7 +279,7 @@
 	#details .account_manage td p{
 		margin-bottom:15px;
 	}
-	/*------------------my_account-------------------*/
+/*------------------my_account-------------------*/
 	#details .my_account .title{
 		text-align:center;
 		padding-bottom:20px;
@@ -301,22 +303,22 @@
 		position:absolute;
 		color:red;
 	}
-	/*-------------------------------------*/
+/*-------------------------------------*/
 	#details .index_pic{}
 	#details .index_pic div{
 	}
-	/*-----------------index_phrase--------------------*/
+/*-----------------index_phrase--------------------*/
 	#details .index_phrase .button{
 		margin-left:10px;
 	}
-	/*-------------------products_type------------------*/
+/*-------------------products_type------------------*/
 	#details .products_type input{
 		width:200px;
 	}
 	#details .products_type .button{
 		margin-left:10px;
 	}
-	/*------------------products_details-------------------*/
+/*------------------products_details-------------------*/
 	.products_pics{
 	}
 	.products_pics div{
@@ -384,7 +386,7 @@
 		cursor:default;
 	}
 	*/
-	/*------------------products_susume-------------------*/
+/*------------------products_susume-------------------*/
 	#details .products_susume table table td{
 		padding-left:20px;
 		padding-bottom:10px;
@@ -404,8 +406,8 @@
 	#details .products_susume .button{
 		margin:0px 5px;
 	}
-	/*------------------news_pic-------------------*/
-	/*------------------news_edit-------------------*/
+/*------------------news_pic-------------------*/
+/*------------------news_edit-------------------*/
 	#details .news_edit table table td{
 		padding-left:20px;
 		padding-bottom:10px;
@@ -431,14 +433,14 @@
 		text-align:center;
 		cursor:pointer;
 	}
-	/*------------------recruitment_type-------------------*/
+/*------------------recruitment_type-------------------*/
 	#details .recruitment_type input{
 		width:200px;
 	}
 	#details .recruitment_type .button{
 		margin-left:10px;
 	}
-	/*------------------recruitment_require-------------------*/
+/*------------------recruitment_require-------------------*/
 	#rr_table input{
 		display:none;
 	}
@@ -452,14 +454,15 @@
 	#rr_table .button{
 		margin:0px 5px;
 	}
-	/*------------------culture_summary-------------------*/
+/*------------------culture_summary-------------------*/
 	#intro{
+		width:900px;
 		font-size:12px;
 		color:#34333f;
 		line-height:35px;
 		text-align:center;
 	}
-	/*------------------culture_spirit-------------------*/
+/*------------------culture_spirit-------------------*/
 	#spirit p{
 		width:400px;
 		font-size:15px;
@@ -476,15 +479,15 @@
 		display:inline-block;
 		text-indent:50px;
 	}
-	/*------------------culture_speech-------------------*/
+/*------------------culture_speech-------------------*/
 	#speech{
-		width:800px;
+		width:900px;
 		text-indent:30px;
 		font-size:15px;
 		color:#34333f;
 		line-height:35px;
 	}
-	/*------------------culture_honor-------------------*/
+/*------------------culture_honor-------------------*/
 	#honor_pics div{
 		display:inline-block;
 		width:100px;
@@ -497,7 +500,7 @@
 	#details .culture_honor .button{
 		margin-left:10px;
 	}
-	/*--------------------stores_show-------------------*/
+/*--------------------stores_show-------------------*/
 	#details .stores_show .details{
 		display:none;
 	}
@@ -509,7 +512,7 @@
 		min-width:200px;
 		max-height:100px;
 	}
-	/*--------------------engineering_show-------------------*/
+/*--------------------engineering_show-------------------*/
 	#details .engineering_show .details{
 		display:none;
 	}
@@ -521,20 +524,12 @@
 		min-width:200px;
 		max-height:100px;
 	}
-	/*--------------------contact_details--------------------*/
+/*--------------------contact_details--------------------*/
 	#contact_way{
 		width:900px;
 		margin:0 auto;
 	}
-	#contact_way div:first-child{
-		font-size:25px;
-	}
-	#contact_way div:last-child{
-		padding-top:10px;
-		width:400px;
-		margin-top:30px;
-		margin-left:60px;
-		border:2px solid #a1a1a1;
+	#contact_way{
 		color:#616161;
 	}
 	#contact_way p{
