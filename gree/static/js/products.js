@@ -55,6 +55,36 @@ window.onload=function(){
 				});
 			}
 		});
+		$("#subtitle>ul>li").click(function(){
+			var fc=$(this).find("span").text();
+			data={products:[
+				{picname:"XX1",productname:"YY1"},
+				{picname:"XX2",productname:"YY2"},
+				{picname:"XX3",productname:"YY3"},
+				{picname:"XX4",productname:"YY4"},
+				{picname:"XX5",productname:"YY5"},
+				{picname:"XX6",productname:"YY6"},
+				{picname:"XX7",productname:"YY7"},
+				{picname:"XX8",productname:"YY8"},
+				{picname:"XX9",productname:"YY9"},
+				{picname:"XX10",productname:"YY10"},
+				{picname:"XX12",productname:"YY11"},
+				{picname:"XX12",productname:"YY12"},
+			]};
+			$.ajax({
+				url:"/getProduct",
+				type:"post",
+				data:{classone:fc},
+				success:function(data){
+					var s="";
+					for(var i=0;i<data.products.length;i++){
+						s+="<div><img src='"+data.products[i].picname+"'><p>"+data.products[i].productname+"</p></div>"+"\n";
+					}
+					$("#box").html(s);
+				},
+				error:function(){}
+			});
+		});
 		//二级分类请求
 		$(".second_class li").click(function(){
 			flag=1;
@@ -65,7 +95,6 @@ window.onload=function(){
 		$(".products_box img").click(function(){
 			$("#p_details").show();
 		});
-		$("#subtitle li:eq(0)").click();
 
 	//表格格式
 		var trCount=0;
@@ -81,6 +110,34 @@ window.onload=function(){
 				$("#spcf tr:eq("+i+")").css("background-color","#f1f1f1");
 			}
 		}
+
+	/*二级分类位置自适应
+		len=$("#subtitle .second_class").length;
+		var count=1;
+		for(var i=0;i<len;i++){
+			var s=$("#subtitle .second_class").eq(i).width()+12;
+			var h=$("#subtitle .second_class").eq(i).height();
+			var w=$("#subtitle .second_class").eq(i).siblings("span").width();
+			if(h<30){
+				$("#subtitle .second_class").eq(i).css({"margin-left":(w/2-s/2)+"px"});
+			}
+			else{
+				adjust(h,i);
+			}
+			alert($("#subtitle .second_class").eq(i).css("margin-left"))
+		}
+		function adjust(h,i){
+			if(h>30){
+				$("#subtitle .second_class").eq(i).css({"margin-left":(-100*count)+"px"});
+				count++;
+				var h2=$("#subtitle .second_class").eq(i).height();
+				if(h2>30){
+					adjust(h2,i);
+				}
+			}
+		}
+		//alert($("#subtitle .second_class").eq(4).width());
+	//*/
 
 	//移动动画
 		var n=Math.ceil($("#box>div").length/6);
