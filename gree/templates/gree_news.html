@@ -71,57 +71,17 @@
 			</div>
 		</div>
 		<div id="news_list">
+            {% for news in newsls %}
 			<div class="news_box">
-				<p class="date"><span class="day">15</span><span class="ym">2015 4</span></p>
-				<p class="news_title">格力参展117届春季广交会 绿色科技惊艳全球</p>
-				<p class="summary">4月15日,中国第117届中国进出口商品交易会(广交会)在广州进出口商品交易会展馆举行，这场综合性...</p>
+				<p class="date"><span class="day">{{ news.D }}</span><span class="ym">{{ news.YM }}</span></p>
+				<p class="news_title">{{ news.Title }}</p>
+				<p class="summary">{{ news.ShortContent }}</p>
 				<div class="clear"></div>
 			</div>
-			<div class="news_box">
-				<p class="date"><span class="day">08</span><span class="ym">2015 4</span></p>
-				<p class="news_title">2015中国制冷展今起开幕 制冷风向标格力参展看点多</p>
-				<p class="summary">4月8日，跻身全球三大暖通制冷空调展之列、亚洲规模最大的同类专业展览会——中国制冷展（第26届）在上海...</p>
-				<div class="clear"></div>
-			</div>
-			<div class="news_box">
-				<p class="date"><span class="day">08</span><span class="ym">2015 4</span></p>
-				<p class="news_title">格力工业制品首次亮相中国制冷展</p>
-				<p class="summary">4月8日-10日，第二十六届中国制冷展在上海新国际展览中心举办。格力电器除了展出光伏直驱变频离心机...</p>
-				<div class="clear"></div>
-			</div>
-			<div class="news_box">
-				<p class="date"><span class="day">08</span><span class="ym">2015 4</span></p>
-				<p class="news_title">格力点亮2015中国制冷展 成国内唯一获AHRI表彰企业</p>
-				<p class="summary">4月8日，第二十六届中国制冷展在上海新国际展览中心隆重开幕，以“绿色科技·光耀未来”为主题的格力展区人头攒动，“美国AHRI认证杰出成就奖”授予仪式吸引了大批媒体与业内人士驻足。</p>
-				<div class="clear"></div>
-			</div>
-			<div class="news_box">
-				<p class="date"><span class="day">08</span><span class="ym">2015 4</span></p>
-				<p class="news_title">第二届金叶轮奖暖通空调设计大赛于上海启动</p>
-				<p class="summary">4月8日，由中国勘察设计协会建筑环境与设备分会、国家节能环保制冷设备工程技术研究中心主办，珠海格力电器股份有限公司协办的“变?赢未来”——第二届“金叶轮奖”暖通空调设计大赛在第二十六届中国制冷展的格力展位隆重启动。</p>
-				<div class="clear"></div>
-			</div>
-			<div class="news_box">
-				<p class="date"><span class="day">07</span><span class="ym">2015 4</span></p>
-				<p class="news_title">2015制冷展，重点看什么？</p>
-				<p class="summary">有世界三大制冷展之称的第26届中国制冷展将于4月8日在上海新国际展览中心开幕。作为全球同行业中规模最大的展会，本届展会将有超过1500家企业参展，汇聚了全球制冷暖通空调行业的所有知名品牌，</p>
-				<div class="clear"></div>
-			</div>
-			<div class="news_box">
-				<p class="date"><span class="day">02</span><span class="ym">2015 4</span></p>
-				<p class="news_title">格力董明珠：“中国制造2025”代言人</p>
-				<p class="summary">即将到来的“十三五”时期被看做是中国发展最为关键的五年。承担着全面建成小康社会、深化改革、转变经济发展方式等重大历史使命，“十三五”规划的编制工作意义重大，影响深远，同时也面临着莫大的考验</p>
-				<div class="clear"></div>
-			</div>
-			<div class="news_box">
-				<p class="date"><span class="day">01</span><span class="ym">2015 4</span></p>
-				<p class="news_title">董明珠受聘为“十三五”国家发展规划专家委员会委员</p>
-				<p class="summary">近日，国家发展和改革委员会网站公布了“十三五”国家发展规划专家委员会名单，来自政府部门、权威智库、高校和知名企业的52位专家委员组成了豪华专家团，珠海格力集团有限公司、珠海格力电器股份有限公司董事长董明珠作为唯一女企业家委员位列其中。</p>
-				<div class="clear"></div>
-			</div>
+            {% endfor %}
 		</div>
 	</div>
-	<div id="page" data-n="100"></div>
+	<div id="page" data-n="{{ newscount }}"></div>
     <div id="foot_bar">
     	<ul>
     		<li><a href="/culture">关于我们</a></li>

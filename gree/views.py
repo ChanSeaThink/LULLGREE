@@ -63,7 +63,23 @@ def product(requrst):
     return render_to_response('gree_products.html')
 
 def news(requrst):
-    return render_to_response('gree_news.html')
+    newsobjls = News.objects.all()[0:10]
+    newscount = len(News.objects.all())
+    newsls = []
+    for newsobj in newsobjls:
+        date = str(newsobj.CreateDate)
+        datels = date.split('-')
+        D = datels[2]
+        YM = datels[0] + ' ' + datels[1]
+        newsls.append(dict(D = D, YM = YM, Title = newsobj.Title, ShortContent = newsobj.ShortContent))
+    return render_to_response('gree_news.html', {'newscount':newscount, 'newsls':newsls})
+
+def getNews(requrst):
+    name = requrst.POST['Title']
+    newsobj = News.objects.get(Title = name)
+    jsonObject = json.dumps({'content':newsobj.LongContent},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
 
 def shop(requrst):
     shopobjls = Shop.objects.all().order_by('Sequence')
