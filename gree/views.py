@@ -93,7 +93,24 @@ def index(requrst):
                                                       'news2':news2})
 
 def product(requrst):
-    return render_to_response('gree_products.html')
+    classoneobjls = ClassOne.objects.all().order_by('Sequence')
+    classls = []
+    for classoneobj in classoneobjls:
+        classtwols = []
+        classtwoobjls = ClassTwo.objects.filter(PreClass = classoneobj).order_by('Sequence')
+        for classtwoobj in classtwoobjls:
+            classtwols.append(classtwoobj.ClassName)
+        classls.append(dict(name = classoneobj.ClassName, classtwols = classtwols))
+
+    productls = []
+    classoneobj = ClassOne.objects.get(Sequence = 0)
+    classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, Sequence = 0)
+    productobjls = Products.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).order_by('Sequence')
+    for productobj in productobjls:
+        productpicobj = ProductPic.objects.get(Product = productobj, Sequence = 0)
+        path = '/getPic/' + productpicobj.ImageName
+        productls.append(dict(classtwo = classtwoobj.ClassName, path = path, name = productobj.ProductName))
+    return render_to_response('gree_products.html', {"classls":classls, 'productls':productls})
 
 def news(requrst):
     newsobjls = News.objects.all()[0:10]

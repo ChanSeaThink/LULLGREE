@@ -47,97 +47,27 @@
 		<h1><span>&nbsp;PRODUCTS</span> / 产品中心</h1>
 		<div></div>
 		<ul>
+			{% for classone in classls %}
 			<li>
-				<span>家用空调</span>
+				<span>{{ classone.name }}</span>
 				<ul class="second_class">
-					<li>挂机</li>
-					<li>柜机</li>
+					{% for classname in classone.classtwols %}
+					<li>{{ classname }}</li>
+					{% endfor %}
 				</ul>
 			</li>
-			<li>
-				<span>生活电器</span>
-				<ul class="second_class">
-					<li>电饭煲</li>
-					<li>电磁炉</li>
-					<li>电压力锅</li>
-					<li>除湿机</li>
-					<li>电风扇</li>
-					<li>电暖器</li>
-					<li>干衣机</li>
-					<li>加湿机</li>
-					<li>空气净化器</li>
-					<li>热水壶</li>
-					<li>空调扇</li>
-				</ul>
-			</li>
-			<li>
-				<span>晶弘冰箱</span>
-				<ul class="second_class">
-					<li>双开门</li>
-					<li>三门</li>
-					<li>对开门</li>
-					<li>意式</li>
-					<li>多门</li>
-				</ul>
-			</li>
-			<li>
-				<span>空气能热水器</span>
-				<ul class="second_class">
-					<li>海洋之韵</li>
-					<li>全能王-舒尊</li>
-					<li>泉之恋</li>
-					<li>善水方</li>
-					<li>水之恋</li>
-					<li>水之韵</li>
-					<li>御享</li>
-					<li>御雅</li>
-				</ul>
-			</li>
-			<li>
-				<span>中央空调</span>
-				<ul class="second_class">
-					<li>Free家用多联机</li>
-					<li>GMV-Star家用多联机</li>
-					<li>GMV-Unic全能一体机</li>
-					<li>客餐厅独立家用中央空调</li>
-					<li>光伏直驱变频多联机</li>
-					<li>卧室独立家用中央空调</li>
-					<li>翼之恋隐形家用中央空调</li>
-				</ul>
-			</li>
+			{% endfor %}
 		</ul>
 		<div></div>
 		<div id="products_box">
 			<div></div>
 			<div id="box">
-				<div data-class="立式">
-					<img src="产品封面图">
-					<p>产品1</p>
+				{% for product in productls %}
+				<div data-class="{{ product.classtwo }}">
+					<img src="{{ product.path }}">
+					<p>{{ product.name }}</p>
 				</div>
-				<div data-class="立式">
-					<img src="产品封面图">
-					<p>产品2</p>
-				</div>
-				<div data-class="立式">
-					<img src="产品封面图">
-					<p>产品3</p>
-				</div>
-				<div data-class="立式">
-					<img src="产品封面图">
-					<p>产品4</p>
-				</div>
-				<div data-class="立式">
-					<img src="产品封面图">
-					<p>产品5</p>
-				</div>
-				<div data-class="立式">
-					<img src="产品封面图">
-					<p>产品6</p>
-				</div>
-				<div data-class="立式">
-					<img src="产品封面图">
-					<p>产品7</p>
-				</div>
+				{% endfor %}
 			</div>
 			<div></div>
 		</div>
@@ -181,41 +111,17 @@
 			</div>
 		</div>
 		<div id="susume">
+			{% for classone in bestls%}
 			<div class="sell_well">
-				<p>家用空调</p>
-				<img src="">
-				<img src="">
-				<img src="">
-				<img src="">
+				<p>{{ classone.name }}</p>
+				{% for bs in classone.bestprols %}
+				<div>
+				<img src="{{ bs.path }}" data-class="{{ bs.classtwo }}">
+				<p>{{ bs.name }}</p>
+				</div>
+				{% endfor %}
 			</div>
-			<div class="sell_well">
-				<p>生活电器</p>
-				<img src="">
-				<img src="">
-				<img src="">
-				<img src="">
-			</div>
-			<div class="sell_well">
-				<p>晶弘冰箱</p>
-				<img src="">
-				<img src="">
-				<img src="">
-				<img src="">
-			</div>
-			<div class="sell_well">
-				<p>空气能热水器</p>
-				<img src="">
-				<img src="">
-				<img src="">
-				<img src="">
-			</div>
-			<div class="sell_well">
-				<p>中央空调</p>
-				<img src="">
-				<img src="">
-				<img src="">
-				<img src="">
-			</div>
+			{% endfor %}
 		</div>
 	</div>
     <div id="foot_bar">
