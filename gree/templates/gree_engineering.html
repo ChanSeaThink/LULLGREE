@@ -48,34 +48,12 @@
 		<div id="engineer_box">
 			<div></div>
 			<div id="box">
+                {% for case in casels %}
 				<div>
-					<img src="工程封面图">
-					<p>工程1</p>
+					<img src="{{ case.path }}">
+					<p>{{ case.Title }}</p>
 				</div>
-				<div>
-					<img src="工程封面图">
-					<p>工程2</p>
-				</div>
-				<div>
-					<img src="工程封面图">
-					<p>工程3</p>
-				</div>
-				<div>
-					<img src="工程封面图">
-					<p>工程4</p>
-				</div>
-				<div>
-					<img src="工程封面图">
-					<p>工程5</p>
-				</div>
-				<div>
-					<img src="工程封面图">
-					<p>工程6</p>
-				</div>
-				<div>
-					<img src="工程封面图">
-					<p>工程7</p>
-				</div>
+                {% endfor %}
 			</div>
 			<div></div>
 		</div>

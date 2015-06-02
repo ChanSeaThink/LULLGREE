@@ -52,7 +52,10 @@ def index(requrst):
                 path = '/getPic/' +  ProductPic.objects.filter(Product = bestproductobj.Product)[0].ImageName
                 productls.append(dict(Title = bestproductobj.ProductName, PicPath = path))
 
-        return render_to_response('gree_index.html', {'classonestr': classonestr, 'classonels':classonels, 'oneclassone':oneclassone,'productls':productls})
+        return render_to_response('gree_index.html', {'classonestr': classonestr, 
+                                                      'classonels':classonels, 
+                                                      'oneclassone':oneclassone,
+                                                      'productls':productls})
 
 def product(requrst):
     return render_to_response('gree_products.html')
@@ -64,16 +67,33 @@ def shop(requrst):
     return render_to_response('gree_stores.html')
 
 def case(requrst):
-    return render_to_response('gree_engineering.html')
+    caseobjls = Case.objects.all().order_by('Sequence')
+    casels = []
+    for caseobj in caseobjls:
+        try:
+            picname = CaseFirstPic.objects.get(Case = caseobj).ImageName
+        except CaseFirstPic.DoesNotExist:
+            picname = ''
+        casels.append(dict(Title = caseobj.Title, path = '/getPic/' + picname))
+    return render_to_response('gree_engineering.html', {'casels':casels})
 
 def job(requrst):
-    return render_to_response('gree_recruitment.html')
+    jobobjls = Job.objects.all()
+    return render_to_response('gree_recruitment.html', {'jobls':jobobjls})
 
 def culture(requrst):
-    return render_to_response('gree_culture.html')
+    honorpicobjls = HonorPic.objects.all()
+    picpathls = []
+    for honorpicobj in honorpicobjls:
+        picpathls.append('/getPic/' + honorpicobj.ImageName)
+    return render_to_response('gree_culture.html', {'companyinfo':Culture.objects.get(Part = 'companyinfo').Content,
+                                                    'greemind':Culture.objects.get(Part = 'greemind').Content,
+                                                    'leaderword':Culture.objects.get(Part = 'leaderword').Content,
+                                                    'picpathls':picpathls})
 
 def contact(requrst):
-    return render_to_response('gree_contact.html')
+    contactusobj = ContactUs.objects.all()[0]
+    return render_to_response('gree_contact.html', {'content':contactusobj.Content})
 
 
 

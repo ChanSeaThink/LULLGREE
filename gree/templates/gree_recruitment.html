@@ -52,62 +52,20 @@
 		</p>
 		<div id="rec_nav2">
 			<ul>
-				<li><a>空调维修师</a></li>
-				<li><a>空调安装师</a></li>
+                {% for job in jobls %}
+				<li><a>{{ job.Title }}</a></li>
+                {% endfor %}
 			</ul>
 		</div>
+        {% for job in jobls %}
 		<div class="view">
 			<a></a>
 			<div class="rec_box">
-				<h3>空调维修师</h3>
-				<!--<div class="apply">立刻申请</div>-->
-				<p><span>职位名称：</span><span>空调维修师</span></p>
-				<p><span>职位类型：</span><span>全职</span></p>
-				<p><span>工作经验：</span><span>2年</span></p>
-				<p><span>学历要求：</span><span>初中毕业</span></p>
-				<p><span>工作地区：</span><span>广东</span></p>
-				<p><span>招聘人数：</span><span>20</span></p>
-				<p><span>月薪：</span><span>免谈</span></p>
-				<div>
-					<div>职位描述</div>
-					<p>安装、保养，工具自带，公司包住不包吃，有伙食补贴，待遇面议</p>
-				</div>
-				<div>
-					<div>职位要求</div>
-					<p>1、具备两年以上安装工作经验。</p>
-					<p>2、服从工作安排。</p>
-					<p>3、具有良好的服务意识，工作认真负责。</p>
-					<p>4、诚实老实，不怕吃苦，勤奋好学。</p>
-					<p>5、较强的事故判断和处理能力，动手能力强。</p>
-				</div>
+				<h3>{{ job.Title }}</h3>
+				<div>{{ job.Content|safe }}</div>
 			</div>
 		</div>
-		<div class="view">
-			<a></a>
-			<div class="rec_box">
-				<h3>空调安装师</h3>
-				<!--<div class="apply">立刻申请</div>-->
-				<p><span>职位名称：</span><span>空调安装师</span></p>
-				<p><span>职位类型：</span><span>全职</span></p>
-				<p><span>工作经验：</span><span>2年</span></p>
-				<p><span>学历要求：</span><span>初中毕业</span></p>
-				<p><span>工作地区：</span><span>广东</span></p>
-				<p><span>招聘人数：</span><span>20</span></p>
-				<p><span>月薪：</span><span>免谈</span></p>
-				<div>
-					<div>职位描述</div>
-					<p>安装、保养，工具自带，公司包住不包吃，有伙食补贴，待遇面议</p>
-				</div>
-				<div>
-					<div>职位要求</div>
-					<p>1、具备两年以上安装工作经验。</p>
-					<p>2、服从工作安排。</p>
-					<p>3、具有良好的服务意识，工作认真负责。</p>
-					<p>4、诚实老实，不怕吃苦，勤奋好学。</p>
-					<p>5、较强的事故判断和处理能力，动手能力强。</p>
-				</div>
-			</div>
-		</div>
+        {% endfor %}
 		<div class="clear"></div>
 	</div>
     <div id="foot_bar">
