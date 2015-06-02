@@ -125,18 +125,18 @@
     	<div class="details" id="n_details">
     		<div id="news_main">
     			<div>
-    				<a class="news_text ntright" href="{% static "gree_news.html" %}">
-    					<p class="news_title">创新不断 格力获广东省2014年科学技术奖特等奖</p>
-    					<p class="news_summary">2月27日下午，格力电器董事长董明珠代表格力电器在深圳领取了“2014年度广东省科学技术奖”。格力此次获奖的项目是“新型高效磁阻电机的研发及其在变频压缩机和空调中的应用”。近几年，中国变频空调的普及速度加快，为了保证变频空调的高能效以及抗退磁...</p>
+    				<a class="news_text ntright" href="{{ news1.Url }}">
+    					<p class="news_title">{{ news1.Title }}</p>
+    					<p class="news_summary">{{ news1.ShortContent }}</p>
     					<div>查看详情></div>
     				</a>
-    				<img src="{% static "img/index/news1.jpg" %}" alt=" ">
+    				<img src="{{ news1.PicPath }}" alt=" ">
     			</div>
     			<div>
-    				<img src="{% static "img/index/news2.jpg" %}" alt=" ">
-    				<a class="news_text ntleft" href="{% static "gree_news.html" %}">
-    					<p class="news_title">格力工业制品首次亮相中国制冷展</p>
-    					<p class="news_summary">4月8日-10日，第二十六届中国制冷展在上海新国际展览中心举办。格力电器除了展出光伏直驱变频离心机、磁悬浮变频离心式冷水机组、GWV致越全能一体机等系列节能环保产品外，格力工业制品产品也将首次亮相中国制冷展。...</p>
+    				<img src="{{ news2.PicPath }}" alt=" ">
+    				<a class="news_text ntleft" href="{{ news2.Url }}">
+    					<p class="news_title">{{ news2.Title }}</p>
+    					<p class="news_summary">{{ news2.ShortContent }}</p>
     					<div>查看详情></div>
     				</a>
     			</div>

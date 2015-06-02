@@ -7,9 +7,34 @@ from django.template.loader import get_template
 import json
 # Create your views here.
 def index(requrst):
+    newsobjls = News.objects.all()
+    news1 = {}
+    news2 = {}
+    if len(newsobjls) == 1:
+        picname = NewsPic.objects.filter(News = newsobjls[0])[0].ImageName
+        picpath = '/getPic/' + picname
+        title = newsobjls[0].Title
+        shortcontent  = newsobjls[0].ShortContent
+        url = '/news'
+        news1 = dict(Url = url, Title = title, PicPath = picpath, ShortContent = shortcontent)
+    else:
+        picname = NewsPic.objects.filter(News = newsobjls[0])[0].ImageName
+        picpath = '/getPic/' + picname
+        title = newsobjls[0].Title
+        shortcontent  = newsobjls[0].ShortContent
+        url = '/news'
+        news1 = dict(Url = url, Title = title, PicPath = picpath, ShortContent = shortcontent)
+
+        picname1 = NewsPic.objects.filter(News = newsobjls[1])[0].ImageName
+        picpath1 = '/getPic/' + picname
+        title1 = newsobjls[1].Title
+        shortcontent1  = newsobjls[1].ShortContent
+        url1 = '/news'
+        news2 = dict(Url = url1, Title = title1, PicPath = picpath1, ShortContent = shortcontent1)
+
     classoneobjls = ClassOne.objects.all().order_by('Sequence')
     if len(classoneobjls) == 0:
-        return render_to_response('gree_index.html')
+        return render_to_response('gree_index.html', {'news1':news1, 'news2':news2})
     elif len(classoneobjls) == 1:
         bestproductobjls = BestProduct.objects.all()
         productls = []
@@ -18,7 +43,11 @@ def index(requrst):
             productpicobjls = ProductPic.objects.filter(Product = bestproductobjls[0].Product) 
             path = '/getPic/' + productpicobjls[0].ImageName
             productls.append(dict(Title = productname, PicPath = path))
-        return render_to_response('gree_index.html', {'classonestr': classoneobjls[0].ClassName, 'oneclassone':classoneobjls[0], 'productls':productls})
+        return render_to_response('gree_index.html', {'classonestr': classoneobjls[0].ClassName, 
+                                                      'oneclassone':classoneobjls[0], 
+                                                      'productls':productls, 
+                                                      'news1':news1, 
+                                                      'news2':news2})
     else:
         length = len(classoneobjls)
         classonestrls = []
@@ -59,7 +88,9 @@ def index(requrst):
         return render_to_response('gree_index.html', {'classonestr': classonestr, 
                                                       'classonels':classonels, 
                                                       'oneclassone':oneclassone,
-                                                      'productls':productls})
+                                                      'productls':productls,
+                                                      'news1':news1, 
+                                                      'news2':news2})
 
 def product(requrst):
     return render_to_response('gree_products.html')
