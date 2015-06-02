@@ -45,20 +45,22 @@
 	</div>
 	<div id="subtitle">
 		<h1><span>&nbsp;PRODUCTS</span> / 产品中心</h1>
-		<div></div>
-		<ul>
-			{% for classone in classls %}
-			<li>
-				<span>{{ classone.name }}</span>
-				<ul class="second_class">
-					{% for classname in classone.classtwols %}
-					<li>{{ classname }}</li>
-					{% endfor %}
-				</ul>
-			</li>
-			{% endfor %}
-		</ul>
-		<div></div>
+		<div id="class_box">
+			<div id="cleft"></div>
+			<ul>
+				{% for classone in classls %}
+				<li>
+					<span>{{ classone.name }}</span>
+					<ul class="second_class">
+						{% for classname in classone.classtwols %}
+						<li>{{ classname }}</li>
+						{% endfor %}
+					</ul>
+				</li>
+				{% endfor %}
+			</ul>
+			<div id="cright"></div>
+		</div>
 		<div id="products_box">
 			<div></div>
 			<div id="box">
@@ -116,8 +118,8 @@
 				<p>{{ classone.name }}</p>
 				{% for bs in classone.bestprols %}
 				<div>
-				<img src="{{ bs.path }}" data-class="{{ bs.classtwo }}">
-				<p>{{ bs.name }}</p>
+					<img src="{{ bs.path }}" data-class="{{ bs.classtwo }}">
+					<p>{{ bs.name }}</p>
 				</div>
 				{% endfor %}
 			</div>

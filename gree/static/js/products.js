@@ -8,14 +8,14 @@ window.onload=function(){
 		var flag=0;
 		var fc="";
 	//一级分类请求
-		$("#subtitle>ul>li").click(function(){
+		$("#class_box>ul>li").click(function(){
 				if(flag==0){
 					$("#flag").remove();
 				}
 				else if(flag==1){
 					flag=0;
 				}
-				$("#subtitle>ul>li").css({
+				$("#class_box>ul>li").css({
 					"background-color":"white",
 					"color":"#22222a"
 				});
@@ -27,21 +27,21 @@ window.onload=function(){
 					"border-bottom":"none"
 				});
 			//处理mouseout的不同性
-				$("#subtitle>ul>li").unbind("mouseout");
-				$("#subtitle>ul>li").mouseout(function(){
+				$("#class_box>ul>li").unbind("mouseout");
+				$("#class_box>ul>li").mouseout(function(){
 					$(">span",this).css({
 						"border-bottom":"none"
 					});
 					$(".second_class",this).hide();
 				});
 				$(this).unbind("mouseout");
-				$("#subtitle>ul>li").mouseout();
+				$("#class_box>ul>li").mouseout();
 				$(this).mouseout(function(){
 					$(".second_class",this).hide();
 				});
 				//处理mouseover的不同性
-				$("#subtitle>ul>li").unbind("mouseover");
-				$("#subtitle>ul>li").mouseover(function(){
+				$("#class_box>ul>li").unbind("mouseover");
+				$("#class_box>ul>li").mouseover(function(){
 					$(">span",this).css({
 						"border-bottom":"2px solid"
 					});
@@ -77,7 +77,7 @@ window.onload=function(){
 					error:function(){}
 				});
 		});
-		$("#subtitle>ul>li:eq(0)").click();
+		$("#class_box>ul>li:eq(0)").click();
 	//二级分类请求
 		$(".second_class li").click(function(){
 			//页面变化
@@ -198,6 +198,9 @@ window.onload=function(){
 		function pmove(){
 			var pn=Math.ceil($("#box>div").length/6);
 			var pcount=0;
+			var l1=$("#products_box>div:eq(0)").offset().left;
+			var l2=$("#products_box>div:eq(6)").offset().left;
+			alert(l2-l1);
 			$("#products_box>div:eq(0)").unbind("click");
 			$("#products_box>div:eq(0)").click(function(){
 				if(pcount-1<0){
@@ -257,7 +260,7 @@ window.onload=function(){
 				else{
 					$(this).width(w1);
 					var h=w1*h2/w2;
-					$(this).css({"padding-top":(h1-h)/2+"px"});
+					$(this).css({"padding-top":((h1-h)/2)+"px"});
 				}
 			});
 		}
