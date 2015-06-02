@@ -49,34 +49,12 @@
 		<div id="stores_box">
 			<div></div>
 			<div id="box">
-				<div>
-					<img src="店铺封面图">
-					<p>店铺1</p>
-				</div>
-				<div>
-					<img src="店铺封面图">
-					<p>店铺2</p>
-				</div>
-				<div>
-					<img src="店铺封面图">
-					<p>店铺3</p>
-				</div>
-				<div>
-					<img src="店铺封面图">
-					<p>店铺4</p>
-				</div>
-				<div>
-					<img src="店铺封面图">
-					<p>店铺5</p>
-				</div>
-				<div>
-					<img src="店铺封面图">
-					<p>店铺6</p>
-				</div>
-				<div>
-					<img src="店铺封面图">
-					<p>店铺7</p>
-				</div>
+				{% for shop in shopls %}
+                <div>
+                    <img src="{{ shop.path }}">
+                    <p>{{ shop.Title }}</p>
+                </div>
+                {% endfor %}
 			</div>
 			<div></div>
 		</div>

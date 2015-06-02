@@ -1,6 +1,8 @@
 # -*- coding: utf8 -*-
 from django.shortcuts import render_to_response
+from django.http import HttpResponse
 from back.models import *
+import json
 # Create your views here.
 def index(requrst):
     classoneobjls = ClassOne.objects.all().order_by('Sequence')
@@ -64,7 +66,22 @@ def news(requrst):
     return render_to_response('gree_news.html')
 
 def shop(requrst):
-    return render_to_response('gree_stores.html')
+    shopobjls = Shop.objects.all().order_by('Sequence')
+    shopls = []
+    for shopobj in shopobjls:
+        try:
+            picname = ShopFirstPic.objects.get(Shop = shopobj).ImageName
+        except ShopFirstPic.DoesNotExist:
+            picname = ''
+        shopls.append(dict(Title = shopobj.Title, path = '/getPic/' + picname))
+    return render_to_response('gree_stores.html', {'shopls':shopls})
+
+def getStore(requrst):
+    name = requrst.POST['storename']
+    shopobj = Shop.objects.get(Title = name)
+    jsonObject = json.dumps({'content':shopobj.Content},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
 
 def case(requrst):
     caseobjls = Case.objects.all().order_by('Sequence')
@@ -76,6 +93,13 @@ def case(requrst):
             picname = ''
         casels.append(dict(Title = caseobj.Title, path = '/getPic/' + picname))
     return render_to_response('gree_engineering.html', {'casels':casels})
+
+def getEngineer(requrst):
+    name = requrst.POST['engineername']
+    caseobj = Case.objects.get(Title = name)
+    jsonObject = json.dumps({'content':caseobj.Content},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
 
 def job(requrst):
     jobobjls = Job.objects.all()

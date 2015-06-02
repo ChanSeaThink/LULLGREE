@@ -2,8 +2,8 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from back.models import *
-import Image, ImageDraw, ImageFont, ImageFilter, random#PIL插件的文件
-import time, os, re
+import Image, ImageDraw, ImageFont, ImageFilter#PIL插件的文件
+import time, os, re, random
 from hashlib import sha1
 from datetime import datetime, date
 from django.conf import settings
@@ -1219,6 +1219,12 @@ def manageCase(request):
             os.remove(os.path.join(settings.MEDIA_ROOT, casepicobj.Picture.name))
             casepicobj.delete()
         caseobj.delete()
+        caseobjls = Case.objects.all().order_by('Sequence')
+        i = 0
+        for case in caseobjls:
+            case.Sequence = i
+            i += 1
+            case.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -1419,6 +1425,12 @@ def manageShop(request):
             os.remove(os.path.join(settings.MEDIA_ROOT, shoppicobj.Picture.name))
             shoppicobj.delete()
         shopobj.delete()
+        shopobjls = Shop.objects.all().order_by('Sequence')
+        i = 0
+        for shop in shopobjls:
+            shop.Sequence = i
+            i += 1
+            shop.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
