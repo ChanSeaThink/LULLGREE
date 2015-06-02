@@ -6,9 +6,9 @@ window.onload=function(){
 		}
 	//点击产品发送ajax请求
 		var flag=0;
-		//一级分类请求
-		$("#subtitle>ul>li").on({
-			"click":function(){
+		var fc="";
+	//一级分类请求
+		$("#subtitle>ul>li").click(function(){
 				if(flag==0){
 					$("#flag").remove();
 				}
@@ -26,9 +26,7 @@ window.onload=function(){
 				$(">span",this).css({
 					"border-bottom":"none"
 				});
-				//$(".all").hide();
-				$("."+this.id).show();
-				//处理mouseout的不同性
+			//处理mouseout的不同性
 				$("#subtitle>ul>li").unbind("mouseout");
 				$("#subtitle>ul>li").mouseout(function(){
 					$(">span",this).css({
@@ -53,46 +51,58 @@ window.onload=function(){
 				$(this).mouseover(function(){
 					$(".second_class",this).show();
 				});
-			}
+			//发送产品请求
+				fc=$(this).find("span:eq(0)").text();
+				$.ajax({
+					url:"/getProduct",
+					type:"post",
+					data:{classone:fc},
+					success:function(data){
+						var s="";
+						for(var i=0;i<data.products.length;i++){
+							s+="<div><img src='"+data.products[i].picname+"'><p>"+data.products[i].productname+"</p></div>"+"\n";
+						}
+						$("#box").html(s);
+					},
+					error:function(){}
+				});
 		});
-		$("#subtitle>ul>li").click(function(){
-			var fc=$(this).find("span").text();
-			data={products:[
-				{picname:"XX1",productname:"YY1"},
-				{picname:"XX2",productname:"YY2"},
-				{picname:"XX3",productname:"YY3"},
-				{picname:"XX4",productname:"YY4"},
-				{picname:"XX5",productname:"YY5"},
-				{picname:"XX6",productname:"YY6"},
-				{picname:"XX7",productname:"YY7"},
-				{picname:"XX8",productname:"YY8"},
-				{picname:"XX9",productname:"YY9"},
-				{picname:"XX10",productname:"YY10"},
-				{picname:"XX12",productname:"YY11"},
-				{picname:"XX12",productname:"YY12"},
-			]};
+		$("#subtitle>ul>li:eq(0)").click();
+	//二级分类请求
+		$(".second_class li").click(function(){
+			//页面变化
+				flag=1;
+				$("#flag").remove();
+				$(this).parent().prev().after("<span id='flag'> ＞"+$(this).text()+"</span>");
+			//请求产品
+				fc=$(this).parent().closest("li").find("span:eq(0)").text();
+				var sc=$(this).text();
+				$.ajax({
+					url:"/getProduct",
+					type:"post",
+					data:{classone:fc,classtwo:sc},
+					success:function(data){
+						var s="";
+						for(var i=0;i<data.products.length;i++){
+							s+="<div><img src='"+data.products[i].picname+"'><p>"+data.products[i].productname+"</p></div>"+"\n";
+						}
+						$("#box").html(s);
+					},
+					error:function(){}
+				});
+			});
+	//产品详情请求
+		$("#box>div").click(function(){
+			var sc=$(this).attr("data-class");
+			var pname=$("p",this).text();alert(pname)
 			$.ajax({
-				url:"/getProduct",
+				url:"getProduct",
 				type:"post",
-				data:{classone:fc},
-				success:function(data){
-					var s="";
-					for(var i=0;i<data.products.length;i++){
-						s+="<div><img src='"+data.products[i].picname+"'><p>"+data.products[i].productname+"</p></div>"+"\n";
-					}
-					$("#box").html(s);
-				},
+				data:{classone:fc,classtwo:sc,productname:pname},
+				success:function(data){},
 				error:function(){}
 			});
-		});
-		//二级分类请求
-		$(".second_class li").click(function(){
-			flag=1;
-			$("#flag").remove();
-			$(this).parent().prev().append("<span id='flag'> ＞"+$(this).text()+"</span>");
-		});
-		//产品详情请求
-		$(".products_box img").click(function(){
+			$("#susume").hide();
 			$("#p_details").show();
 		});
 
@@ -111,20 +121,27 @@ window.onload=function(){
 			}
 		}
 
-	/*二级分类位置自适应
+	//*二级分类位置自适应
 		len=$("#subtitle .second_class").length;
 		var count=1;
 		for(var i=0;i<len;i++){
 			var s=$("#subtitle .second_class").eq(i).width()+12;
 			var h=$("#subtitle .second_class").eq(i).height();
 			var w=$("#subtitle .second_class").eq(i).siblings("span").width();
+			var left=$("#subtitle .second_class").eq(i).siblings("span").offset().left;
 			if(h<30){
-				$("#subtitle .second_class").eq(i).css({"margin-left":(w/2-s/2)+"px"});
+				var mleft=(w-s)/2;
+				if(mleft+left<0){
+					$("#subtitle .second_class").eq(i).css({"margin-left":(-left+200)+"px"});
+				}
+				else{
+					$("#subtitle .second_class").eq(i).css({"margin-left":mleft+"px"});
+				}
 			}
 			else{
-				adjust(h,i);
+				$("#subtitle .second_class").eq(i).width(500);
+				//adjust(h,i);
 			}
-			alert($("#subtitle .second_class").eq(i).css("margin-left"))
 		}
 		function adjust(h,i){
 			if(h>30){
