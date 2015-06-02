@@ -222,12 +222,19 @@
 	#s_pics{
 		padding-top:10px;
 	}
+	#pics{
+		display:inline-block;
+		width:328px;
+		overflow-x:hidden;
+		white-space: nowrap;
+	}
 	#s_pics img{
+		position:relative;
 		margin:0 3px;
 		width:100px;
 		height:100px;
 	}
-	#s_pics>div{
+	#s_pics>div:first-child,#s_pics>div:last-child{
 		width:17px;
 		height:100px;
 		display:inline-block;
