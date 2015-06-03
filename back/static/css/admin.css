@@ -32,8 +32,12 @@ body{}
 	to {-webkit-transform:rotateY(0deg)}
 }
 #title{
+	position:relative;
+	top:-1px;
 	background-color:#226ddd;
 	height:40px;
+	border-top-left-radius:20px;
+	border-top-right-radius:20px;
 	color:white;
 }
 #title p{
@@ -68,8 +72,8 @@ body{}
 	color:red;
 }
 #account input,#password input,#n_password input{
-	padding-top:7px;
 	width:180px;
+	height:30px;
 	border:none;
 	background-color:transparent;
 }

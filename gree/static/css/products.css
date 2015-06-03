@@ -92,19 +92,27 @@
 		display:inline-block;
 		margin-left:15px;
 		font-size:15px;
-		max-width:600px;
+		min-width:500px;
 		overflow-x:hidden;
 		white-space:nowrap;
+		vertical-align:bottom;
+	}
+	#class_box>ul>li{
+		display:inline-block;
+		padding:5px 10px;
+		margin-right:20px;
+		text-align:center;
+		cursor:pointer;
 	}
 	#class_box>ul>li>span{
 		font-size:16px;
-		padding-bottom:2px;
 	}
 	#class_box{
+		position:relative;
+		left:-9999px;
 		margin:0 auto;
 		width:900px;
 		margin-top:30px;
-		margin-bottom:-4px;
 		text-align:left;
 	}
 	.second_class{
@@ -132,13 +140,6 @@
 	#sc3{margin-left:-10px;}
 	#sc4{margin-left:-210px;}
 	#sc5{margin-left:-600px;}
-	#class_box>ul>li{
-		display:inline-block;
-		padding:5px 10px;
-		margin:0 10px;
-		text-align:center;
-		cursor:pointer;
-	}
 	#subtitle>ul>li:hover .second_class{
 	}
 	#cleft,#cright{
