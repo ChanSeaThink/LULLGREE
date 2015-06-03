@@ -10,7 +10,9 @@ def index(requrst):
     newsobjls = News.objects.all()
     news1 = {}
     news2 = {}
-    if len(newsobjls) == 1:
+    if len(newsobjls) == 0:
+        pass
+    elif len(newsobjls) == 1:
         picname = NewsPic.objects.filter(News = newsobjls[0])[0].ImageName
         picpath = '/getPic/' + picname
         title = newsobjls[0].Title
