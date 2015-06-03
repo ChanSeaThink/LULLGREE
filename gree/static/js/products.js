@@ -48,7 +48,7 @@ window.onload=function(){
 		fcmove();
 	//点击产品发送ajax请求
 		var flag=0;
-		var fc="";
+		var fc="",sc="";
 	//一级分类请求
 		$("#class_box>ul>li").click(function(){
 				if(flag==0){
@@ -94,16 +94,17 @@ window.onload=function(){
 					$(".second_class",this).show();
 				});
 			//发送产品请求
-				fc=$(this).find("span:eq(0)").text();
+				var fc1=$(this).find("span:eq(0)").text();
+				var sc1=$(this).find("ul>li:eq(0)").text();
 				$.ajax({
 					url:"/getProducts",
 					type:"post",
-					data:{classone:fc},
+					data:{classone:fc1},
 					success:function(data){
 						var s="";
 						var len=data.products.length;
 						for(var i=0;i<len;i++){
-							s+="<div><img src='"+data.products[i].picname+"'><p>"+data.products[i].productname+"</p></div>"+"\n";
+							s+="<div><img src='"+data.products[i].picsrc+"'><p>"+data.products[i].productname+"</p></div>"+"\n";
 						}
 						if(len<7){
 							$("#products_box>div:eq(0)").hide();
@@ -114,6 +115,8 @@ window.onload=function(){
 							$("#products_box>div:eq(2)").css("display","inline-block");
 						}
 						$("#box").html(s);
+						fc=fc1;
+						sc=sc1;
 						PicAdjust(140,100,"#box");
 						pmove();
 					},
@@ -122,23 +125,24 @@ window.onload=function(){
 		});
 		$("#class_box>ul>li:eq(0)").click();
 	//二级分类请求
-		$(".second_class li").click(function(){
+		$(".second_class li").click(function(event){
+			event.stopPropagation();
 			//页面变化
 				flag=1;
 				$("#flag").remove();
 				$(this).parent().prev().after("<span id='flag'> ＞"+$(this).text()+"</span>");
 			//请求产品
-				fc=$(this).parent().closest("li").find("span:eq(0)").text();
-				var sc=$(this).text();
+				var fc1=$(this).parent().closest("li").find("span:eq(0)").text();
+				var sc1=$(this).text();
 				$.ajax({
 					url:"/getProducts",
 					type:"post",
-					data:{classone:fc,classtwo:sc},
+					data:{classone:fc1,classtwo:sc1},
 					success:function(data){
 						var s="";
 						var len=data.products.length;
 						for(var i=0;i<len;i++){
-							s+="<div><img src='"+data.products[i].picname+"'><p>"+data.products[i].productname+"</p></div>"+"\n";
+							s+="<div><img src='"+data.products[i].picsrc+"'><p>"+data.products[i].productname+"</p></div>"+"\n";
 						}
 						if(len<7){
 							$("#products_box>div:eq(0)").hide();
@@ -149,6 +153,8 @@ window.onload=function(){
 							$("#products_box>div:eq(2)").css("display","inline-block");
 						}
 						$("#box").html(s);
+						fc=fc1;
+						sc=sc1;
 						PicAdjust(140,100,"#box");
 						pmove();
 					},
@@ -157,10 +163,9 @@ window.onload=function(){
 		});
 	//产品详情请求
 		$("#box").delegate(">div","click",function(){
-			var sc=$(this).attr("data-class");
 			var pname=$("p",this).text();
 			$.ajax({
-				url:"getProducts",
+				url:"/getProducts",
 				type:"post",
 				data:{classone:fc,classtwo:sc,productname:pname},
 				success:function(data){
