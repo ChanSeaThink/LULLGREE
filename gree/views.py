@@ -18,7 +18,7 @@ def index(requrst):
             picname = NewsPic.objects.filter(News = newsobjls[0])[0].ImageName
             picpath = '/getPic/' + picname
         except IndexError:
-            picname = ''
+            pass
         title = newsobjls[0].Title
         shortcontent  = newsobjls[0].ShortContent
         url = '/news'
