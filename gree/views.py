@@ -118,10 +118,10 @@ def product(requrst):
         bestproductobjls = BestProduct.objects.filter(ClassOne = classoneobj)
         for bestproductobj in bestproductobjls:
             classtwo = bestproductobj.ClassTwo.ClassName
-            name = bestproductobj.ProductName
+            pname = bestproductobj.ProductName
             productpicobjls = ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = bestproductobj.ClassTwo, Product = bestproductobj.Product).order_by('Sequence')
             path = '/getPic/' + productpicobjls[0].ImageName
-            bestprols.append(dict(classtwo=classtwo, name=name, path=path))
+            bestprols.append(dict(classtwo=classtwo, name=pname, path=path))
         bestls.append(dict(name = name, bestprols= bestprols))
     return render_to_response('gree_products.html', {"classls":classls, 'bestls':bestls})
 
@@ -129,6 +129,7 @@ def getProducts(requrst):
     classone = requrst.POST.get('classone', '')
     classtwo = requrst.POST.get('classtwo', '')
     productname = requrst.POST.get('productname', '')
+
     if classone != '' and classtwo == '' and productname == '':
         products = []
         classoneobj = ClassOne.objects.get(ClassName = classone)
@@ -138,6 +139,7 @@ def getProducts(requrst):
             productpicobj = ProductPic.objects.get(Product = productobj, Sequence = 0)
             path = '/getPic/' + productpicobj.ImageName
             products.append(dict(picsrc = path, productname = productobj.ProductName))
+        print products
         jsonObject = json.dumps({'products':products},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -156,7 +158,7 @@ def getProducts(requrst):
     elif classone != '' and classtwo != '' and productname != '':
         classoneobj = ClassOne.objects.get(ClassName = classone)
         classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
-        productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwo, ProductName = productname)
+        productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwoobj, ProductName = productname)
         picsrc = []
         productpicobjls = ProductPic.objects.filter(Product = productobj).order_by('Sequence')
         for productpicobj in productpicobjls:
