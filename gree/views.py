@@ -26,7 +26,7 @@ def index(requrst):
         news1 = dict(Url = url, Title = title, PicPath = picpath, ShortContent = shortcontent)
 
         picname1 = NewsPic.objects.filter(News = newsobjls[1])[0].ImageName
-        picpath1 = '/getPic/' + picname
+        picpath1 = '/getPic/' + picname1
         title1 = newsobjls[1].Title
         shortcontent1  = newsobjls[1].ShortContent
         url1 = '/news'
