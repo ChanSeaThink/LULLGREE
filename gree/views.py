@@ -142,9 +142,29 @@ def getProducts(requrst):
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
     elif classone != '' and classtwo != '' and productname == '':
-        pass
+        products = []
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
+        productobjls = Products.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).order_by('Sequence')
+        for productobj in productobjls:
+            productpicobj = ProductPic.objects.get(Product = productobj, Sequence = 0)
+            path = '/getPic/' + productpicobj.ImageName
+            products.append(dict(picsrc = path, productname = productobj.ProductName))
+        jsonObject = json.dumps({'products':products},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
     elif classone != '' and classtwo != '' and productname != '':
-        pass
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, ClassName = classtwo)
+        productobj = Products.objects.get(ClassOne = classoneobj, ClassTwo = classtwo, ProductName = productname)
+        picsrc = []
+        productpicobjls = ProductPic.objects.filter(Product = productobj).order_by('Sequence')
+        for productpicobj in productpicobjls:
+            path = '/getPic/' + productpicobj.ImageName
+            picsrc.append(path)
+        jsonObject = json.dumps({'picsrc':picsrc, 'table':productobj.ProductInfo, 'content':productobj.ProductInfoContent},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
     else:
         return HttpResponse('请求有错。请刷新页面。')
 
@@ -154,6 +174,12 @@ products:[
 {picsrc:"产品1图片链接",productname:"产品1名字"},
 {picsrc:"产品2图片链接",productname:"产品2名字"}
 ]
+}
+
+{
+picsrc:["产品图片1链接","产品图片2链接"],
+table:"产品html格式表格的字符串",
+content:"产品说明文章"
 }
 '''
 
