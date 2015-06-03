@@ -102,14 +102,14 @@ def product(requrst):
             classtwols.append(classtwoobj.ClassName)
         classls.append(dict(name = classoneobj.ClassName, classtwols = classtwols))
 
-    productls = []
+    '''productls = []
     classoneobj = ClassOne.objects.get(Sequence = 0)
     classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, Sequence = 0)
     productobjls = Products.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).order_by('Sequence')
     for productobj in productobjls:
         productpicobj = ProductPic.objects.get(Product = productobj, Sequence = 0)
         path = '/getPic/' + productpicobj.ImageName
-        productls.append(dict(classtwo = classtwoobj.ClassName, path = path, name = productobj.ProductName))
+        productls.append(dict(classtwo = classtwoobj.ClassName, path = path, name = productobj.ProductName))'''
 
     bestls = []
     for classoneobj in classoneobjls:
@@ -123,7 +123,39 @@ def product(requrst):
             path = '/getPic/' + productpicobjls[0].ImageName
             bestprols.append(dict(classtwo=classtwo, name=name, path=path))
         bestls.append(dict(name = name, bestprols= bestprols))
-    return render_to_response('gree_products.html', {"classls":classls, 'productls':productls, 'bestls':bestls})
+    return render_to_response('gree_products.html', {"classls":classls, 'bestls':bestls})
+
+def getProducts(requrst):
+    classone = requrst.POST.get('classone', '')
+    classtwo = requrst.POST.get('classtwo', '')
+    productname = requrst.POST.get('productname', '')
+    if classone != '' and classtwo == '' and productname == '':
+        products = []
+        classoneobj = ClassOne.objects.get(ClassName = classone)
+        classtwoobj = ClassTwo.objects.get(PreClass = classoneobj, Sequence = 0)
+        productobjls = Products.objects.filter(ClassOne = classoneobj, ClassTwo = classtwoobj).order_by('Sequence')
+        for productobj in productobjls:
+            productpicobj = ProductPic.objects.get(Product = productobj, Sequence = 0)
+            path = '/getPic/' + productpicobj.ImageName
+            products.append(dict(picsrc = path, productname = productobj.ProductName))
+        jsonObject = json.dumps({'products':products},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    elif classone != '' and classtwo != '' and productname == '':
+        pass
+    elif classone != '' and classtwo != '' and productname != '':
+        pass
+    else:
+        return HttpResponse('请求有错。请刷新页面。')
+
+'''
+{
+products:[
+{picsrc:"产品1图片链接",productname:"产品1名字"},
+{picsrc:"产品2图片链接",productname:"产品2名字"}
+]
+}
+'''
 
 def news(requrst):
     newsobjls = News.objects.all()[0:10]

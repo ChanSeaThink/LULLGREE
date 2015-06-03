@@ -47,6 +47,7 @@ urlpatterns = patterns('',
     #以上都是后台的链接，以下是前台的链接。
     url(r'^$', 'gree.views.index'),
     url(r'^product$', 'gree.views.product'),
+    url(r'^getProducts$', 'gree.views.getProducts'),
     url(r'^news$', 'gree.views.news'),
     url(r'^getNews$', 'gree.views.getNews'),
     url(r'^moreNews$', 'gree.views.moreNews'),
