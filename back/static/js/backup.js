@@ -6,17 +6,17 @@ window.onload=function(){
 
     //选项选择和点击时的效果
     	$("#list li").mouseover(function(){
-    		$(this).css("background-color","rgba(65,65,65,0.2)");
+    		$(this).css("background-color","#4187F1");
     	});
     	$("#list li").mouseout(function(){
     		$(this).css("background-color","transparent");
     	});
     	$("#list li").click(function(){
-    		$("#list li").css({"background-color":"transparent","color":"#f1f1f1"});
-    		$(this).css({"background-color":"white","color":"#34333f"});
+    		$("#list li").css({"background-color":"transparent","color":"#f1f1f1","border-left":"6px solid transparent"});
+    		$(this).css({"background-color":"white","color":"#34333f","border-left":"6px solid #226ddd"});
     		$("#list li").unbind("mouseover");
     		$("#list li").mouseover(function(){
-    			$(this).css("background-color","rgba(65,65,65,0.2)");
+    			$(this).css("background-color","#4187F1");
     		});
     		$(this).unbind("mouseover");
     		$("#list li").unbind("mouseout");
@@ -30,15 +30,15 @@ window.onload=function(){
     	});
     	$("#function li").click(function(){
     		$("#function li").css({"background-color":"transparent"});
-    		$(this).css({"background-color":"white"});
+    		$(this).css({"background-color":"white","color":"#34333f"});
     		$("#function li").unbind("mouseover");
     		$("#function li").mouseover(function(){
-    			$(this).css("background-color","rgba(65,65,65,0.1)");
+    			$(this).css({"background-color":"#4187F1","color":"white"});
     		});
     		$(this).unbind("mouseover");
     		$("#function li").unbind("mouseout");
     		$("#function li").mouseout(function(){
-    			$(this).css("background-color","transparent");
+    			$(this).css({"background-color":"transparent","color":"#34333f"});
     		});
     		$(this).unbind("mouseout");
     	});
@@ -60,9 +60,9 @@ window.onload=function(){
     			}
     			liRecord=this.className;
     			$("#details ."+liRecord).show();
-    			$("#list li").css({"background-color":"transparent","color":"#f1f1f1"});
+    			$("#list li").css({"background-color":"transparent","color":"#f1f1f1","border-left":"6px solid transparent"});
     			$("#list li").mouseover(function(){
-    				$(this).css("background-color","rgba(65,65,65,0.2)");
+    				$(this).css("background-color","#4187F1");
     			});
     			$("#list li").mouseout(function(){
     				$(this).css("background-color","transparent");
@@ -2048,12 +2048,12 @@ window.onload=function(){
 					$("#waiting").show();
 					var title=$("#full .news_edit .delete .news_title").text();
 					var t=$("#full .news_edit .delete .news_date").text();
-					var number=parseInt($("#full .news_edit .delete .number").text());
+					var number=parseInt($("#full .news_edit .delete .number").text());alert(2)
 					$.ajax({
 						url:"manageNews",
 						type:"post",
 						data:{manage:"delete",newstitle:title,time:t},
-						success:function(data){
+						success:function(data){alert(1)
 							newsData.newscount-=1;
 							newsData.news.splice(number,1);
 							if(c){

@@ -34,7 +34,8 @@
 		padding-top:32px;
 	}
 	#list li{
-		width:100%;
+		border-left:6px solid transparent;
+		width:134px;
 		font-size:15px;
 		padding:10px 0;
 		text-indent:30px;
@@ -57,7 +58,7 @@
 		height:60px;
 	}
 	#top>div:hover{
-		background-color:#a1a1a1;
+		background-color:#4187F1;
 	}
 	#top>div>div{
 		text-align:center;
@@ -209,7 +210,7 @@
 		border:none;
 	}
 	#text_box img{
-		max-width:500px;
+		max-width:800px;
 	}
 /*--------------------隐藏的编辑框-------------------*/
 	.edit{
@@ -219,7 +220,7 @@
 		display:inline-block;
 		text-align:center;
 	}
-/*---------------------------------------*/
+/*-------------------details--------------------*/
 	#details{
 		padding-top:32px;
 		font-size:14px;
@@ -242,11 +243,27 @@
 	#details .index_pic img,#details .products_pic img,#details .news_pic img{
 		width:400px;
 	}
+	#details table table{border-collapse:collapse;}
+	#details table table tr{
+		border:1px solid #616161;
+	}
+	#details table table td{
+		padding-top:10px;
+	}
+	#details table table tr:first-child td{
+		background-color:#616161;
+		color:white;
+	}
 	.button{
 		padding:2px 6px 3px 6px;
 		font-size:14px;
 		border:1px solid #34333f;
 		cursor:pointer;
+	}
+	.button:hover{
+		background-color:#4187F1;
+		color:white;
+		border:1px solid #4187F1;
 	}
 /*------------------welcome_phrase-------------------*/
 	#details .welcome_phrase{
@@ -267,7 +284,7 @@
 	}
 	#details .account_manage table table td{
 		padding-left:20px;
-		padding-right:50px;
+		padding-right:20px;
 		padding-bottom:10px;
 	}
 	#details .account_manage table table tr td{
@@ -336,7 +353,8 @@
 		padding-top:20px;
 	}
 	#details .products_details table table td{
-		padding-right:20px;
+		padding-right:10px;
+		padding-left:20px;
 		padding-bottom:10px;
 		text-align:center;
 	}
@@ -352,6 +370,7 @@
 		margin-right:48px;
 	}
 	#details .products_details .spec_table{
+		margin-top:20px;
 		display:none;
 	}
 	#details .products_details .spec_table .spec2{
@@ -389,6 +408,7 @@
 /*------------------products_susume-------------------*/
 	#details .products_susume table table td{
 		padding-left:20px;
+		padding-right:10px;
 		padding-bottom:10px;
 	}
 	#details .products_susume table table tr td{
@@ -410,6 +430,7 @@
 /*------------------news_edit-------------------*/
 	#details .news_edit table table td{
 		padding-left:20px;
+		padding-right:20px;
 		padding-bottom:10px;
 	}
 	#details .news_edit table table tr:first-child td{

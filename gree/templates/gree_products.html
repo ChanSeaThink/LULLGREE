@@ -71,11 +71,11 @@
 	<div id="p_details">
 		<p id="products_nav">
 			<span class="not_link">当前位置 : </span>
-			<span class="link">产品中心</span>
+			<span class="not_link">产品中心</span>
 			<span class="not_link class"> &gt; </span>
-			<span class="link class">家用空调</span>
+			<span class="not_link class">家用空调</span>
 			<span class="not_link pname"> &gt; </span>
-			<span class="link pname">Q铂 KFR-50LW</span>
+			<span class="not_link pname">Q铂 KFR-50LW</span>
 		</p>
 		<div id="products_show">
 			<div id="pictures">
@@ -108,7 +108,7 @@
 		<div id="susume">
 			{% for classone in bestls%}
 			<div class="sell_well">
-				<p>{{ classone.name }}</p>
+				<p>| {{ classone.name }}</p>
 				{% for bs in classone.bestprols %}
 				<div data-class="{{ bs.classtwo }}">
 					<img src="{{ bs.path }}">

@@ -90,7 +90,7 @@
 	}
 	#class_box>ul{
 		display:inline-block;
-		margin-left:15px;
+		margin-left:30px;
 		font-size:15px;
 		min-width:500px;
 		overflow-x:hidden;
@@ -172,7 +172,7 @@
 		text-indent:0px;
 		text-align:center;
 		overflow-x:hidden;
-		white-space: nowrap;
+		white-space:nowrap;
 	}
 	#products_box>div:first-child:hover{
 		border-right:30px solid white;
@@ -202,6 +202,8 @@
 		width:140px;
 		padding-top:30px;
 		margin:0px 12px;
+		vertical-align:top;
+		cursor:pointer;
 	}
 	#box div:hover p{
 		color:#226ddd;
@@ -214,6 +216,8 @@
 		margin-top:15px;
 		font-size:13px;
 		color:white;
+		width:140px;
+		white-space:normal;
 	}
 	#p_details{
 		padding:80px 0;
@@ -263,9 +267,14 @@
 		overflow-x:hidden;
 		white-space: nowrap;
 	}
-	#s_pics img{
+	#pics div{
+		display:inline-block;
 		position:relative;
 		margin:0 3px;
+		width:100px;
+		height:100px;
+	}
+	#pics img{
 		max-width:100px;
 		max-height:100px;
 	}
