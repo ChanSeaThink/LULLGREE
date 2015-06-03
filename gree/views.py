@@ -13,22 +13,34 @@ def index(requrst):
     if len(newsobjls) == 0:
         pass
     elif len(newsobjls) == 1:
-        picname = NewsPic.objects.filter(News = newsobjls[0])[0].ImageName
-        picpath = '/getPic/' + picname
+        picpath = ''
+        try:
+            picname = NewsPic.objects.filter(News = newsobjls[0])[0].ImageName
+            picpath = '/getPic/' + picname
+        except IndexError:
+            picname = ''
         title = newsobjls[0].Title
         shortcontent  = newsobjls[0].ShortContent
         url = '/news'
         news1 = dict(Url = url, Title = title, PicPath = picpath, ShortContent = shortcontent)
     else:
-        picname = NewsPic.objects.filter(News = newsobjls[0])[0].ImageName
-        picpath = '/getPic/' + picname
+        picpath = ''
+        try:
+            picname = NewsPic.objects.filter(News = newsobjls[0])[0].ImageName
+            picpath = '/getPic/' + picname
+        except IndexError:
+            pass
         title = newsobjls[0].Title
         shortcontent  = newsobjls[0].ShortContent
         url = '/news'
         news1 = dict(Url = url, Title = title, PicPath = picpath, ShortContent = shortcontent)
 
-        picname1 = NewsPic.objects.filter(News = newsobjls[1])[0].ImageName
-        picpath1 = '/getPic/' + picname1
+        picpath1 = ''
+        try:
+            picname1 = NewsPic.objects.filter(News = newsobjls[1])[0].ImageName
+            picpath1 = '/getPic/' + picname1
+        except:
+            pass
         title1 = newsobjls[1].Title
         shortcontent1  = newsobjls[1].ShortContent
         url1 = '/news'
