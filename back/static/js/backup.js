@@ -1043,7 +1043,7 @@ window.onload=function(){
 						s+="<tr class='spec_tr'><td><span class='spec1'>"+spec[i]+"</span><input class='spec2' type='text'></td><td><span class='spec1'>"+value[i]+"</span><input class='spec2' type='text'></td><td><span class='button spec1'>修改</span><span class='button spec1'>删除</span><span class='button spec2'>确定</span><span class='button spec2'>取消</span></td></tr>";
 					}
 					s+="<tr class='edit add_spec'><td><input type='text'></td><td><input type='text'></td><td><span class='button'>确定</span><span class='button'>取消</span></td></tr>";
-					s+="<tr><td></td><td></td><td><span class='button'>添加</span><span class='button'>排序</span></td></tr>";
+					s+="<tr class='add_sort'><td></td><td></td><td><span class='button'>添加</span><span class='button'>排序</span></td></tr>";
 					$("#details .products_details .spec_table").html(s);
 					$(this).siblings("table").show();
 				}
@@ -1143,6 +1143,7 @@ window.onload=function(){
 				}
 				else if($(this).text()=="添加"){
 					$("#details .products_details .edit").hide();
+					$("#details .products_details .add_sort").hide();
 					$("#details .products_details .spec_table .spec2").hide();
 					$("#details .products_details .spec_table .spec1").show();
 					$("#details .products_details .add_spec").show();
@@ -1170,6 +1171,7 @@ window.onload=function(){
 				}
 				else if($(this).text()=="修改"){
 					$("#details .products_details .edit").hide();
+					$("#details .products_details .add_sort").show();
 					$(this).closest("tr").find(".spec1").hide();
 					$(this).closest("tr").find(".spec2:eq(0)").val($(this).closest("tr").find(".spec1:eq(0)").text());
 					$(this).closest("tr").find(".spec2:eq(1)").val($(this).closest("tr").find(".spec1:eq(1)").text()).select();
@@ -1184,6 +1186,9 @@ window.onload=function(){
 					if($(this).hasClass("spec2")){
 						$(this).closest("tr").find(".spec2").hide();
 						$(this).closest("tr").find(".spec1").show();
+					}
+					else if($(this).closest("tr").hasClass("add_spec")){
+					$("#details .products_details .add_sort").show();
 					}
 				}
 			});
