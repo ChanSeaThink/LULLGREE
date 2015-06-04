@@ -18,20 +18,21 @@
 		top:-19px;
 		font-size:25px;
 	}
-	#search{
-		display:none;
-		float:right;
-		margin:17px 0px 3px 0px;
+	#qq{
+		position:fixed;
+		right:50px;
+		bottom:100px;
+		padding:5px 15px;
+		background-color:#226ddd;
+		cursor:pointer;
 	}
-	#search img{
-		width:30px;
-		height:30px;
-		float:right;
-		background-color:#414141;
+	#qq span{
+		color:white;
 	}
-	#search input{
-		width:120px;
-		height:26px;
+	#qq img{
+		width:24px;
+		height:24px;
+		vertical-align:middle;
 	}
 	#nav{
 		background-color:rgba(65,65,65,0.6);

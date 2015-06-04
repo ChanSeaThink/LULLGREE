@@ -1042,7 +1042,8 @@ window.onload=function(){
 					for(var i=0;i<count2-count1-1;i++){
 						s+="<tr class='spec_tr'><td><span class='spec1'>"+spec[i]+"</span><input class='spec2' type='text'></td><td><span class='spec1'>"+value[i]+"</span><input class='spec2' type='text'></td><td><span class='button spec1'>修改</span><span class='button spec1'>删除</span><span class='button spec2'>确定</span><span class='button spec2'>取消</span></td></tr>";
 					}
-					s+="<tr class='edit add_spec'><td><input type='text'></td><td><input type='text'></td><td><span class='button'>确定</span><span class='button'>取消</span></td></tr>"
+					s+="<tr class='edit add_spec'><td><input type='text'></td><td><input type='text'></td><td><span class='button'>确定</span><span class='button'>取消</span></td></tr>";
+					s+="<tr><td></td><td></td><td><span class='button'>添加</span><span class='button'>排序</span></td></tr>";
 					$("#details .products_details .spec_table").html(s);
 					$(this).siblings("table").show();
 				}
@@ -1129,41 +1130,51 @@ window.onload=function(){
 				}
 			});
 			$("#details .products_details .edit_spec").delegate(".button","click",function(){
-				if($(this).siblings("select").find("option:selected").text()=="选择参数分类"){
+				if($(this).text()=="使用同类型产品模版"){
+					if($("#details .products_details select:eq(2)").get(0).selectedIndex==1){
+						alert("该产品已是模版");
+						return;
+					}
+					$("#bottom").show();
+					$("#full .products_details .template").show();
+				}
+				else if($(this).siblings("select").find("option:selected").text()=="选择参数分类"){
 					return;
 				}
-				if($(this).text()=="添加"){
+				else if($(this).text()=="添加"){
 					$("#details .products_details .edit").hide();
 					$("#details .products_details .spec_table .spec2").hide();
 					$("#details .products_details .spec_table .spec1").show();
 					$("#details .products_details .add_spec").show();
+					$("#details .products_details .add_spec input:eq(0)").select();
 				}
-				if($(this).text()=="排序"){
-					if($(this).siblings("table").find("tr").length<4){
+				else if($(this).text()=="排序"){
+					if($(this).closest("table").find("tr").length<5){
 						return;
 					}
 					$("#bottom").show();
 					var list="";
-					for(var i=1;i<$(this).siblings("table").find("tr").length-1;i++){
-						var spec=$(this).siblings("table").find("tr:eq("+i+") td:eq(0) span").text();
-						var value=$(this).siblings("table").find("tr:eq("+i+") td:eq(1) span").text();
+					for(var i=1;i<$(this).closest("table").find("tr").length-2;i++){
+						var spec=$(this).closest("table").find("tr:eq("+i+") td:eq(0) span").text();
+						var value=$(this).closest("table").find("tr:eq("+i+") td:eq(1) span").text();
 						list+="<p><input type='radio' name='series'><span>"+spec+"</span> <span>"+value+"</span></p>";
 					}
 					$("#full .products_details .sort3 div").html(list);
 					$("#full .products_details .sort3").show();
 				}
-				if($(this).text()=="删除"){
+				else if($(this).text()=="删除"){
 					$("#bottom").show();
 					var s=$(this).closest("tr").find("span.spec1:eq(0)").text();
 					$("#full .products_details .delete3 .spec_name").text(s);
 					$("#full .products_details .delete3").show();
 				}
-				if($(this).text()=="修改"){
+				else if($(this).text()=="修改"){
 					$("#details .products_details .edit").hide();
 					$(this).closest("tr").find(".spec1").hide();
 					$(this).closest("tr").find(".spec2:eq(0)").val($(this).closest("tr").find(".spec1:eq(0)").text());
 					$(this).closest("tr").find(".spec2:eq(1)").val($(this).closest("tr").find(".spec1:eq(1)").text()).select();
 					$(this).closest("tr").find(".spec2").show();
+					$(this).closest("tr").find(".spec2:eq(1)").select();
 				}
 			});
 		//确定取消按钮
@@ -1436,10 +1447,12 @@ window.onload=function(){
 						var value=$(this).closest("tr").find(".spec2:eq(1)").val();
 						var otable=$("#details .products_details .save_table").html();
 						var table=$("#details .products_details .save_table table");
-						for(var i=0;i<table.find("tr").length;i++){
-							if(table.find("tr:eq("+i+") td:eq(0)").text()==spec){
-								alert("参数类型重复！");
-								return;
+						if(ospec!=spec){
+							for(var i=0;i<table.find("tr").length;i++){
+								if(table.find("tr:eq("+i+") td:eq(0)").text()==spec){
+									alert("参数类型重复！");
+									return;
+								}
 							}
 						}
 						for(var i=0;i<table.find("tr").length;i++){
@@ -1612,6 +1625,47 @@ window.onload=function(){
 						error:function(){
 							//$("#details .products_details .save_table").html(otable);
 						}
+					});
+				}
+			});
+			$("#full .products_details .template .button").click(function(){
+				if($(this).text()=="确定"){
+					$("#bottom").hide();
+					$("#full .products_details .template").hide();
+					$("#waiting").show();
+					var fc=$("#details .products_details select:eq(0) option:selected").text();
+					var sc=$("#details .products_details select:eq(1) option:selected").text();
+					var s=$("#details .products_details select:eq(2) option:eq(1)").text();
+					var pname=$("#details .products_details select:eq(2) option:selected").text();
+					$.ajax({
+						url:"getProductInfo",
+						type:"post",
+						data:{"classone":fc,"classtwo":sc,"product":s},
+						success:function(data){
+							if(data.content){
+								$("#details .products_details .save_table").html(data.content);
+								var len=$("#details .products_details .save_table tr").length;
+								for(var i=0;i<len;i++){
+									$("#details .products_details .save_table tr").eq(i).find("td:eq(1)").text("");
+								}
+							}
+							else{
+								var tablehtml="<table border='1'><tr class='table_title'><td colspan='4'>主体</td></tr><tr class='table_title'><td colspan='4'>功能</td></tr><tr class='table_title'><td colspan='4'>规格</td></tr></table>";
+								$("#details .products_details .save_table").html(tablehtml);
+							}
+							var newtable=$("#details .products_details .save_table").html();
+							$.ajax({
+								url:"manageProductInfo",
+								type:"post",
+								data:{classone:fc,classtwo:sc,productname:pname,content:newtable},
+								success:function(data){
+									$("#select_spec").change();
+									$("#waiting").hide();
+								},
+								error:function(){}
+							});
+						},
+						error:function(){}
 					});
 				}
 			});
@@ -1965,6 +2019,7 @@ window.onload=function(){
 			}
 		//点击进入页面时发送ajax
 			$("#function .news_edit").click(function(){
+				$("#details .news_edit .alter").hide();
 				$("#details .news_edit .click_edit").hide();
 				$("#details .edit_box").remove();
 				$(this).find(".click_edit").show();

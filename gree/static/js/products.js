@@ -5,12 +5,13 @@ window.onload=function(){
 			$("#products_box>div:eq(2)").css("display","inline-block");
 		}
 	//一级类分段显示
+		var fccount=0;
 		function fcmove(){
 			var fcn=$("#class_box>ul>li").length;
 			var fcp=Math.ceil($("#class_box>ul>li").length/5);
-			var fccount=0;
 			var mlength=new Array();
 			var i=0;
+			var nleft=0;
 			for(i=0;i<fcp;i++){
 				var l1=$("#class_box>ul>li").eq(i*5).offset().left;
 				var l2;
@@ -21,8 +22,12 @@ window.onload=function(){
 				else{
 					mlength[i]=$("#class_box>ul").offset().left+$("#class_box>ul")[0].scrollWidth-$("#class_box>ul>li").eq(i*5).offset().left;
 				}
+				if(i<fccount){
+					nleft+=mlength[i];
+				}
 			}
-			$("#class_box>ul").width(mlength[0]);
+			$("#class_box>ul").width(mlength[fccount]);
+			$("#class_box>ul>li:eq(0)").css("margin-left",-nleft+"px");
 			$("#class_box").css("left",0);
 			if(fcn<=5){
 				$("#cleft,#cright").hide();
@@ -197,7 +202,7 @@ window.onload=function(){
 					$("#susume").hide();
 					var s="";
 					for(var i=0;i<data.picsrc.length;i++){
-						s+="<img src='"+data.picsrc[i]+"'>"+"\n";
+						s+="<div><img src='"+data.picsrc[i]+"'></div>"+"\n";
 					}
 					$("#pics").html(s);
 					$("#b_pic_box img").attr({"src":data.picsrc[0]});
@@ -215,7 +220,7 @@ window.onload=function(){
 			});
 		});
 		$(".sell_well>div").click(function(){
-			var co=$(this).siblings("p").text();
+			var co=$(this).siblings("p").find("span").text();
 			var sc=$(this).attr("data-class");
 			var pname=$("p",this).text();
 			$.ajax({
@@ -253,6 +258,11 @@ window.onload=function(){
 			});
 		});
 
+	//导航“产品中心”
+		$("#products_nav .susume").click(function(){
+			$("#susume").show();
+			$("#products_show").hide();
+		});
 	//表格格式
 		function TableStyle(){
 			var trCount=0;

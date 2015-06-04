@@ -71,7 +71,7 @@
 	<div id="p_details">
 		<p id="products_nav">
 			<span class="not_link">当前位置 : </span>
-			<span class="not_link">产品中心</span>
+			<span class="link susume">产品中心</span>
 			<span class="not_link class"> &gt; </span>
 			<span class="not_link class">家用空调</span>
 			<span class="not_link pname"> &gt; </span>
@@ -108,7 +108,7 @@
 		<div id="susume">
 			{% for classone in bestls%}
 			<div class="sell_well">
-				<p>| {{ classone.name }}</p>
+				<p>| <span>{{ classone.name }}</span></p>
 				{% for bs in classone.bestprols %}
 				<div data-class="{{ bs.classtwo }}">
 					<img src="{{ bs.path }}">

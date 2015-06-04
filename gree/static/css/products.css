@@ -211,6 +211,7 @@
 	#products_box img{
 		max-width:140px;
 		max-height:100px;
+		background-color:white;
 	}
 	#box p{
 		margin-top:15px;
@@ -265,14 +266,17 @@
 		display:inline-block;
 		width:328px;
 		overflow-x:hidden;
+		overflow-y:hidden;
 		white-space: nowrap;
 	}
 	#pics div{
 		display:inline-block;
 		position:relative;
+		top:3px;
 		margin:0 3px;
 		width:100px;
 		height:100px;
+		outline:1px solid #a1a1a1;
 	}
 	#pics img{
 		max-width:100px;
@@ -358,6 +362,7 @@
 		margin-bottom:20px;
 		font-size:20px;
 		color:#226ddd;
+		cursor:default;
 	}
 	.sell_well>div{
 		display:inline-block;
@@ -367,6 +372,7 @@
 		width:160px;
 		height:160px;
 		border:1px solid #a1a1a1;
+		cursor:pointer;
 	}
 	.sell_well img{
 		max-width:160px;

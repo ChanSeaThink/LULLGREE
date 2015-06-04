@@ -13,16 +13,16 @@
 </head>
 <body>
     <div id="top">
-    	<div id="search">
-    		<input type="text">
-    		<img src="">
-    	</div>
     	<div id="title">
     		<img id="logo" src="{% static "img/index/gree_logo.png" %}">
     		<span>东莞市忠胜格力产品销售中心</span>
     	</div>
     	<div class="clear"></div>
     </div>
+    <a id="qq" href="http://wpa.qq.com/msgrd?v=3&uin=396004075&Site=%E4%B8%9C%E8%8E%9E%E5%B8%82%E5%BF%A0%E8%83%9C%E6%A0%BC%E5%8A%9B%E4%BA%A7%E5%93%81%E9%94%80%E5%94%AE%E5%85%AC%E5%8F%B8&Menu=yes">
+        <img src="{% static "img/index/bubble.png" %}">
+        <span>在线咨询</span>
+    </a>
     <div id="nav">
     	<ul id="first_ul">
     		<li>首页</li>
@@ -89,30 +89,32 @@
     <div id="intro">
     	<div> </div>
     	<div>
-    		<img src="{% static "img/index/diamond.png" %}" alt="企业荣誉">
+    		<a href="/culture"><img src="{% static "img/index/diamond.png" %}" alt="企业荣誉"></a>
     		<p class="p1">世界名牌</p>
     		<p class="p2">
     			<a href="/culture">从这里了解我们></a>
     		</p>
     	</div>
     	<div>
-    		<img src="{% static "img/index/shop.png" %}" alt="店面展示">
+    		<a href="shop"><img src="{% static "img/index/shop.png" %}" alt="店面展示"></a>
     		<p class="p1">店面展示</p>
     		<p class="p2">
     			<a href="/shop">门店众多，给予您优质服务></a>
     		</p>
     	</div>
     	<div>
-    		<img src="{% static "img/index/video.png" %}" alt="工程案例">
+    		<a href="/case"><img src="{% static "img/index/video.png" %}" alt="工程案例"></a>
     		<p class="p1">工程案例</p>
     		<p class="p2">
     			<a href="/case">为您提供合适的工程计划></a>
     		</p>
     	</div>
     	<div>
-    		<img src="{% static "img/index/world.png" %}" alt="销售网络">
+    		<a href="/contact"><img src="{% static "img/index/world.png" %}" alt="销售网络"></a>
     		<p class="p1">销售网络</p>
-    		<p class="p2">我们的销售点遍布全国></p>
+    		<p class="p2">
+                <a href="/contact">我们的销售点遍布全国></a>
+            </p>
     	</div>
     	<div> </div>
     	<p class="clear"></p>
@@ -155,19 +157,9 @@
     	<p>版权所有 CopyRight(C)2013-2015 东莞市忠胜格力产品销售中心</p>
     </div>
     <script>
-    //调整外框适应一级分类宽度
-        var w=$("#catalog").width();
-        $("#box").width(w+60);
-    //调整图片适应136X204的规格
-        var len=$("#products_top>div img").length;
-    	for(var i=0;i<len;i++){
-    		var h=$("#products_top>div img").eq(i).height();
-    		var w=$("#products_top>div img").eq(i).width();
-    		if(h/w<1.5){
-    			var space=(204-h)/2;
-    			$("#products_top>div img").eq(i).css({"padding":space+"px 0"});
-    		}
-    	}
+        //调整外框适应一级分类宽度
+            var w=$("#catalog").width();
+            $("#box").width(w+60);
     </script>
 </body>
 </html>
