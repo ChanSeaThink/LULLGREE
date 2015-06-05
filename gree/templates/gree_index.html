@@ -61,7 +61,7 @@
     	<div class="details" id="p_details">
     		<div id="products_top">
                 {% for pro in productls %}
-    			<div>
+    			<div data-class1='{{ pro.classone }}' data-class2='{{ pro.classtwo }}'>
     				<img src="{{ pro.PicPath }}">
     				<div>
     					<p>{{ pro.Title }}</p>

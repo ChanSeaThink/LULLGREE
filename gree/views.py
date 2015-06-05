@@ -52,11 +52,16 @@ def index(requrst):
     elif len(classoneobjls) == 1:
         bestproductobjls = BestProduct.objects.all()
         productls = []
-        if len(bestproductobjls) > 0:
-            productname = bestproductobjls[0].ProductName
-            productpicobjls = ProductPic.objects.filter(Product = bestproductobjls[0].Product) 
-            path = '/getPic/' + productpicobjls[0].ImageName
-            productls.append(dict(Title = productname, PicPath = path))
+        for bestproductobj in bestproductobjls:
+            productname = bestproductobj.ProductName
+            productpicobjls = ProductPic.objects.filter(Product = bestproductobj.Product)
+            path = ''
+            try:
+                picname = productpicobjls[0].ImageName
+                path = '/getPic/' + picname
+            except IndexError:
+                pass
+            productls.append(dict(Title = productname, PicPath = path, classone = bestproductobj.ClassOne.ClassName, classtwo = bestproductobj.ClassTwo.ClassName))
         return render_to_response('gree_index.html', {'classonestr': classoneobjls[0].ClassName, 
                                                       'oneclassone':classoneobjls[0], 
                                                       'productls':productls, 
@@ -88,16 +93,16 @@ def index(requrst):
             oneclassone = classoneobjls[length - 1]
 
         productls = []
-        if length > 4:
-            bestproductobjls = BestProduct.objects.all()[0:4]
-            for bestproductobj in bestproductobjls:
-                path = '/getPic/' +  ProductPic.objects.filter(Product = bestproductobj.Product)[0].ImageName
-                productls.append(dict(Title = bestproductobj.ProductName, PicPath = path))
-        else:
-            bestproductobjls = BestProduct.objects.all()
-            for bestproductobj in bestproductobjls:
-                path = '/getPic/' +  ProductPic.objects.filter(Product = bestproductobj.Product)[0].ImageName
-                productls.append(dict(Title = bestproductobj.ProductName, PicPath = path))
+        bestproductobjls = BestProduct.objects.filter(ClassOne = classoneobjls[0])
+        for bestproductobj in bestproductobjls:
+            productpicobjls = ProductPic.objects.filter(Product = bestproductobj.Product)
+            path = ''
+            try:
+                picname = productpicobjls[0].ImageName
+                path = '/getPic/' +  picname
+            except IndexError:
+                pass
+            productls.append(dict(Title = bestproductobj.ProductName, PicPath = path, classone = bestproductobj.ClassOne.ClassName, classtwo = bestproductobj.ClassTwo.ClassName))
 
         return render_to_response('gree_index.html', {'classonestr': classonestr, 
                                                       'classonels':classonels, 
@@ -182,21 +187,6 @@ def getProducts(requrst):
         return HttpResponse(jsonObject,content_type="application/json")
     else:
         return HttpResponse('请求有错。请刷新页面。')
-
-'''
-{
-products:[
-{picsrc:"产品1图片链接",productname:"产品1名字"},
-{picsrc:"产品2图片链接",productname:"产品2名字"}
-]
-}
-
-{
-picsrc:["产品图片1链接","产品图片2链接"],
-table:"产品html格式表格的字符串",
-content:"产品说明文章"
-}
-'''
 
 def news(requrst):
     newsobjls = News.objects.all()[0:10]
