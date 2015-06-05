@@ -1,8 +1,8 @@
 window.onload=function(){
 		var len=$("#box>div").length;
-		if(len<7){
-			$("#engineer_box>div:eq(0)").hide();
-			$("#engineer_box>div:eq(2)").hide();
+		if(len>6){
+			$("#engineer_box>div:eq(0)").css("display","inline-block");
+			$("#engineer_box>div:eq(2)").css("display","inline-block");
 		}
 		$("#box>div").click(function(){
 			var src=$("img",this).attr("src");

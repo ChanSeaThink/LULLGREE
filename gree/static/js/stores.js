@@ -1,8 +1,8 @@
 window.onload=function(){
 	var len=$("#box>div").length;
-	if(len<7){
-		$("#stores_box>div:eq(0)").hide();
-		$("#stores_box>div:eq(2)").hide();
+	if(len>6){
+		$("#stores_box>div:eq(0)").css("display","inline-block");
+		$("#stores_box>div:eq(2)").css("display","inline-block");
 	}
 	
 	//点击店铺返回文章

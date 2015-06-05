@@ -185,6 +185,7 @@ window.onload=function(){
 			$(".edit_box").remove();
 			$(this).parent().append("<div class='edit_box .details'><div class='edit_function'><span>插入图片</span><span class='pub'>发布文章</span><p class='clear'></p></div><input id='news_title' maxlength='30' placeholder='标题'><div id='text_box' contenteditable><p> </p><p><br></p></div><form id='picform'><input type='file' id='file'></form></div>");
 			$(this).hide();
+			$("#text_box").focus();
 		});
 	//写作编辑框自动调整长度功能
 		var heightMark=300;
@@ -556,6 +557,7 @@ window.onload=function(){
 					if($(this).text()=="添加"){
 						$("#details .products_type .add1 input").val("");
 						$("#details .products_type .add1").show();
+						$("#details .products_type .add1 input").select();
 					}
 					else if($(this).text()=="排序"){
 						if($(this).closest("tr").find("option").length<3){
@@ -578,8 +580,9 @@ window.onload=function(){
 							$("#full .products_type .delete1").show();
 						}
 						else if($(this).text()=="修改"){
-							$("#details .products_type .alter1 input").val(sclass).select();
+							$("#details .products_type .alter1 input").val(sclass);
 							$("#details .products_type .alter1").show();
+							$("#details .products_type .alter1 input").select();
 						}
 					}
 				}
@@ -588,6 +591,7 @@ window.onload=function(){
 					if($(this).text()=="添加"){
 						$("#details .products_type .add2 input").val("");
 						$("#details .products_type .add2").show();
+						$("#details .products_type .add2 input").select();
 					}
 					else if($(this).text()=="排序"){
 						if($(this).closest("tr").find("option").length<3){
@@ -610,8 +614,9 @@ window.onload=function(){
 							$("#full .products_type .delete2").show();
 						}
 						else if($(this).text()=="修改"){
-							$("#details .products_type .alter2 input").val(sclass).select();
+							$("#details .products_type .alter2 input").val(sclass);
 							$("#details .products_type .alter2").show();
+							$("#details .products_type .alter2 input").select();
 						}
 					}
 				}
@@ -964,6 +969,7 @@ window.onload=function(){
 				$("#details .products_details .click_edit").show();
 				$("#details .edit_box").remove();
 				$("#details .products_details .edit").hide();
+				$("#details .products_details .series .details").show();
 				$("#details .products_details #select_spec option:eq(0)").attr({"selected":true});
 				$("#details .products_details #select_spec").change();
 				if($("option:selected",this).text()=="请选择产品"){
@@ -1059,6 +1065,7 @@ window.onload=function(){
 					if($(this).text()=="添加"){
 						$("#details .products_details .add_product input").val("");
 						$("#details .products_details .add_product").show();
+						$("#details .products_details .add_product input:eq(0)").select();
 					}
 					else if($(this).text()=="排序"){
 						if($(this).closest("tr").find("option").length<3){
@@ -1073,7 +1080,7 @@ window.onload=function(){
 						$("#full .products_details .sort1 div").html(list);
 						$("#full .products_details .sort1").show();
 					}
-					else if(sclass!="请选择分类"){
+					else if(sclass!="请选择产品"){
 						if($(this).text()=="删除"){
 							$("#bottom").show();
 							var fc=$(this).closest("tr").find("option:selected").text();
@@ -1081,9 +1088,10 @@ window.onload=function(){
 							$("#full .products_details .delete1").show();
 						}
 						else if($(this).text()=="编辑"){
-							$("#details .products_details .edit_product input:eq(0)").val(sclass.replace(/_.+/,"")).select();
+							$("#details .products_details .edit_product input:eq(0)").val(sclass.replace(/_.+/,""));
 							$("#details .products_details .edit_product input:eq(1)").val(sclass.replace(/.+_/,""));
 							$("#details .products_details .edit_product").show();
+							$("#details .products_details .edit_product input:eq(0)").select();
 						}
 					}
 				}
@@ -2108,12 +2116,12 @@ window.onload=function(){
 					$("#waiting").show();
 					var title=$("#full .news_edit .delete .news_title").text();
 					var t=$("#full .news_edit .delete .news_date").text();
-					var number=parseInt($("#full .news_edit .delete .number").text());alert(2)
+					var number=parseInt($("#full .news_edit .delete .number").text());
 					$.ajax({
 						url:"manageNews",
 						type:"post",
 						data:{manage:"delete",newstitle:title,time:t},
-						success:function(data){alert(1)
+						success:function(data){
 							newsData.newscount-=1;
 							newsData.news.splice(number,1);
 							if(c){
@@ -2272,6 +2280,7 @@ window.onload=function(){
 					$("#details .recruitment_type .edit").hide();
 					$("#details .recruitment_type .add input").val("");
 					$("#details .recruitment_type .add").show();
+					$("#details .recruitment_type .add input").select();
 				}
 				else if(sclass!="请选择分类"){
 					if($(this).text()=="删除"){
@@ -2284,6 +2293,7 @@ window.onload=function(){
 						$("#details .recruitment_type .edit").hide();
 						$("#details .recruitment_type .alter input").val(sclass).select();
 						$("#details .recruitment_type .alter").show();
+						$("#details .recruitment_type .alter input").select();
 					}
 				}
 			});
@@ -2844,6 +2854,7 @@ window.onload=function(){
 				if($(this).text()=="添加"){
 					$("#details .stores_show .add input").val("");
 					$("#details .stores_show .add").show();
+					$("#details .stores_show .add input").select();
 				}
 				else if($(this).text()=="排序"){
 					if($(this).closest("tr").find("option").length<3){
@@ -2867,8 +2878,9 @@ window.onload=function(){
 					}
 					else if($(this).text()=="编辑"){
 						$("#details .stores_show .edit").hide();
-						$("#details .stores_show .alter input").val(sclass).select();
+						$("#details .stores_show .alter input").val(sclass);
 						$("#details .stores_show .alter").show();
+						$("#details .stores_show .alter input").select();
 					}
 				}
 			});
@@ -3185,6 +3197,7 @@ window.onload=function(){
 				if($(this).text()=="添加"){
 					$("#details .engineering_show .add input").val("");
 					$("#details .engineering_show .add").show();
+					$("#details .engineering_show .add input").select();
 				}
 				else if($(this).text()=="排序"){
 					if($(this).closest("tr").find("option").length<3){
@@ -3208,8 +3221,9 @@ window.onload=function(){
 					}
 					else if($(this).text()=="编辑"){
 						$("#details .engineering_show .edit").hide();
-						$("#details .engineering_show .alter input").val(sclass).select();
+						$("#details .engineering_show .alter input").val(sclass);
 						$("#details .engineering_show .alter").show();
+						$("#details .engineering_show .alter input").select();
 					}
 				}
 			});

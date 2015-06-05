@@ -1,6 +1,6 @@
 window.onload=function(){
 		var len=$("#box>div").length;
-		if(len>7){
+		if(len>6){
 			$("#products_box>div:eq(0)").css("display","inline-block");
 			$("#products_box>div:eq(2)").css("display","inline-block");
 		}
@@ -184,6 +184,7 @@ window.onload=function(){
 				});
 		});
 	//产品详情请求
+		var iflag=0;
 		$("#box").delegate(">div","click",function(){
 			var pname=$("p",this).text();
 			$.ajax({
@@ -211,6 +212,18 @@ window.onload=function(){
 					TableStyle();
 					ppmove();
 					$("#products_show").show();
+					var theight=0;
+					for(var i=0;i<$("#spcf tr").length;i++){
+						theight+=$("#spcf tr").eq(i).height();
+						if(theight>490){
+							iflag=i;
+							$("#spcf tr").eq(i-1).find("td:eq(1)").append("<span class='button'>显示</span>");
+							for(var j=i;j<$("#spcf tr").length;j++){
+								$("#spcf tr").eq(j).hide();
+							}
+							break;
+						}
+					}
 					$("#pics img:last").load(function(){
 						PicAdjust(100,100,"#pics");
 						PicAdjust(370,370,"#b_pic_box");
@@ -249,6 +262,18 @@ window.onload=function(){
 					window.scrollTo(0,0);
 					ppmove();
 					$("#products_show").show();
+					var theight=0;
+					for(var i=0;i<$("#spcf tr").length;i++){
+						theight+=$("#spcf tr").eq(i).height();
+						if(theight>490){
+							iflag=i;
+							$("#spcf tr").eq(i-1).find("td:eq(1)").append("<span class='button'>显示</span>");
+							for(var j=i;j<$("#spcf tr").length;j++){
+								$("#spcf tr").eq(j).hide();
+							}
+							break;
+						}
+					}
 					$("#pics img:last").load(function(){
 						PicAdjust(100,100,"#pics");
 						PicAdjust(370,370,"#b_pic_box");
@@ -257,7 +282,21 @@ window.onload=function(){
 				error:function(){}
 			});
 		});
-
+	//表格隐藏显示按钮
+		$("#spcf").on("click",".button",function(){
+			if($(this).text()=="显示"){
+				for(var i=iflag;i<$("#spcf tr").length;i++){
+					$("#spcf tr").eq(i).show();
+				}
+				$(this).text("隐藏");
+			}
+			else{
+				for(var i=iflag;i<$("#spcf tr").length;i++){
+					$("#spcf tr").eq(i).hide();
+				}
+				$(this).text("显示");
+			}
+		});
 	//导航“产品中心”
 		$("#products_nav .susume").click(function(){
 			$("#susume").show();
@@ -267,6 +306,7 @@ window.onload=function(){
 		function TableStyle(){
 			var trCount=0;
 			$(".table_title td").css("background-color","#226ddd");
+			$("tr.table_child td:eq(0)").attr({"width":"25%"});
 			for(var i=0;i<$("#spcf tr").length;i++){
 				if($("#spcf tr:eq("+i+")").hasClass("table_title")){
 					trCount=0;
@@ -275,7 +315,10 @@ window.onload=function(){
 					trCount++;
 				}
 				if(trCount&&trCount%2==0){
-					$("#spcf tr:eq("+i+")").css("background-color","#f1f1f1");
+					$("#spcf tr:eq("+i+")").css({"background-color":"#f1f1f1"});
+				}
+				else{
+					$("#spcf tr:eq("+i+")").css("background-color","#fff");
 				}
 			}
 		}
