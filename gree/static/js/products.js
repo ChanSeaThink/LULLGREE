@@ -306,7 +306,7 @@ window.onload=function(){
 		function TableStyle(){
 			var trCount=0;
 			$(".table_title td").css("background-color","#226ddd");
-			$("tr.table_child td:eq(0)").attr({"width":"25%"});
+			//$("tr.table_child td:eq(0)").attr({"width":"25%"});
 			for(var i=0;i<$("#spcf tr").length;i++){
 				if($("#spcf tr:eq("+i+")").hasClass("table_title")){
 					trCount=0;

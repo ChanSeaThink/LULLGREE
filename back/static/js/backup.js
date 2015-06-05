@@ -2291,7 +2291,7 @@ window.onload=function(){
 					}
 					else if($(this).text()=="修改"){
 						$("#details .recruitment_type .edit").hide();
-						$("#details .recruitment_type .alter input").val(sclass).select();
+						$("#details .recruitment_type .alter input").val(sclass);
 						$("#details .recruitment_type .alter").show();
 						$("#details .recruitment_type .alter input").select();
 					}

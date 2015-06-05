@@ -181,8 +181,9 @@
 	.date{
 		float:left;
 		padding:0 1px;
+		padding-top:5px;
 		margin:0 10px;
-		width:60px;
+		width:65px;
 		height:60px;
 		text-align:center;
 		background-color:#226ddd;
@@ -196,6 +197,7 @@
 		font-weight:bold;
 	}
 	.date .ym{
+		white-space:nowrap;
 	}
 	.news_title{
 		margin-top:5px;
