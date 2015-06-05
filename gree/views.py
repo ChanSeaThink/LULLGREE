@@ -240,11 +240,13 @@ def shop(requrst):
     shopobjls = Shop.objects.all().order_by('Sequence')
     shopls = []
     for shopobj in shopobjls:
+        path = ''
         try:
             picname = ShopFirstPic.objects.get(Shop = shopobj).ImageName
+            path = '/getPic/' + picname
         except ShopFirstPic.DoesNotExist:
-            picname = ''
-        shopls.append(dict(Title = shopobj.Title, path = '/getPic/' + picname))
+            pass
+        shopls.append(dict(Title = shopobj.Title, path = path))
     return render_to_response('gree_stores.html', {'shopls':shopls})
 
 def getStore(requrst):
@@ -258,11 +260,13 @@ def case(requrst):
     caseobjls = Case.objects.all().order_by('Sequence')
     casels = []
     for caseobj in caseobjls:
+        path = ''
         try:
             picname = CaseFirstPic.objects.get(Case = caseobj).ImageName
+            path = '/getPic/' + picname
         except CaseFirstPic.DoesNotExist:
-            picname = ''
-        casels.append(dict(Title = caseobj.Title, path = '/getPic/' + picname))
+            pass
+        casels.append(dict(Title = caseobj.Title, path = path))
     return render_to_response('gree_engineering.html', {'casels':casels})
 
 def getEngineer(requrst):
