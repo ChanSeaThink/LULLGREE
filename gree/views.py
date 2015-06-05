@@ -153,7 +153,6 @@ def getProducts(requrst):
             productpicobj = ProductPic.objects.get(Product = productobj, Sequence = 0)
             path = '/getPic/' + productpicobj.ImageName
             products.append(dict(picsrc = path, productname = productobj.ProductName))
-        print products
         jsonObject = json.dumps({'products':products},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")

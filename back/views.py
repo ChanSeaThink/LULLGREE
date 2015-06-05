@@ -1178,7 +1178,6 @@ def manageCase(request):
     manage = request.POST['manage']
     if manage == 'get':
         casename = request.POST.get('casename','')
-        print casename
         if casename == '':
             caseobjls = Case.objects.all().order_by('Sequence')
             case = []
