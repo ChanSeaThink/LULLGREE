@@ -1826,6 +1826,7 @@ window.onload=function(){
 		//点击一级选项时发送ajax请求推荐产品
 			$("#details .products_susume select:eq(0)").change(function(){
 				var sclass=$("option:selected",this).text();
+				$("#details .products_susume .details").hide();
 				if(sclass!="请选择分类"){
 					$.ajax({
 						url:"manageBestProducts",
