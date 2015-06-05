@@ -43,13 +43,14 @@
 	}
 	#nav a{
 		color:white;
+		float:left;
+		cursor:pointer;
 	}
 	#nav li{
 		color:white;
 		padding:10px 0px;
 		width:130px;
 		text-align:center;
-		cursor:default;
 	}
 	#nav ul li:hover{
 		background-color:rgba(65,65,65,0.6);
