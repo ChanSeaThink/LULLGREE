@@ -8,6 +8,18 @@ window.onload=function(){
     		$("img",this).attr({"src":s});
     	});
 
+    //点击产品图片跳转
+    	$("#products_top>div").click(function(){
+    		window.localStorage.fc=$(this).attr("data-class1");
+    		window.localStorage.sc=$(this).attr("data-class2");
+    		window.localStorage.pname=$(this).find("p").text();
+    		window.open("/product","_self");
+    	});
+    //点击新闻跳转
+    	$("#news_main a").click(function(){
+    		window.localStorage.newstitle=$(this).find(".news_title").text();
+    		window.open("/product","_self");
+    	});
     //图片自调整函数
     	function PicAdjust(w1,h1,selector){
 			//w1:固定宽度 h1:固定高度 w2:实图宽度 h2:实图高度

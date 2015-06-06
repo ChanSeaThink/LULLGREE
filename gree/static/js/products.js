@@ -1,9 +1,75 @@
 window.onload=function(){
+		if(window.localStorage.fc){
+			var sto=window.localStorage;
+			var indexfc=sto.fc;
+			var indexsc=sto.sc;
+			var indexpname=sto.pname;
+			sto.removeItem("fc");
+			sto.removeItem("sc");
+			sto.removeItem("pname");
+			//首页跳转显示产品
+			if(indexfc){
+				$.ajax({
+					url:"getProducts",
+					type:"post",
+					data:{classone:indexfc,classtwo:indexsc,productname:indexpname},
+					success:function(data){
+						$("#pics").html("");
+						$("#b_pic_box img").attr({"src":""});
+						$("#spcf").html("");
+						$("#article").html("");
+						$("#products_nav .class:eq(1)").text(indexfc);
+						$("#products_nav .pname:eq(1)").text(indexpname);
+						$("#products_nav .class").show();
+						$("#products_nav .pname").show();
+						$("#susume").hide();
+						var s="";
+						for(var i=0;i<data.picsrc.length;i++){
+							s+="<div><img src='"+data.picsrc[i]+"'></div>"+"\n";
+						}
+						$("#pics").html(s);
+						$("#b_pic_box").html("<img src='"+data.picsrc[0]+"'>");
+						$("#spcf").html(data.table);
+						$("#article").html(data.content);
+						TableStyle();
+						ppmove();
+						$("#products_show").show();
+						window.scrollTo(0,480);
+						var theight=0;
+						for(var i=0;i<$("#spcf tr").length;i++){
+							theight+=$("#spcf tr").eq(i).height();
+							if(theight>490){
+								iflag=i;
+								$("#spcf tr").eq(i-1).find("td:eq(1)").append("<span class='button'>显示</span>");
+								for(var j=i;j<$("#spcf tr").length;j++){
+									$("#spcf tr").eq(j).hide();
+								}
+								break;
+							}
+						}
+						var loadcount=0;
+						for(var i=0;i<$("#pics img").length;i++){
+							$("#pics img:eq("+i+")").load(function(){
+								loadcount++;
+								if(loadcount==$("#pics img").length){
+									PicAdjust(100,100,"#pics");
+								}
+							});
+						}
+						$("#b_pic_box img").load(function(){
+							PicAdjust(370,370,"#b_pic_box");
+						});
+					},
+					error:function(){}
+				});
+			}
+		}
 		var len=$("#box>div").length;
 		if(len>6){
 			$("#products_box>div:eq(0)").css("display","inline-block");
 			$("#products_box>div:eq(2)").css("display","inline-block");
 		}
+		$("#susume").show();
 	//一级类分段显示
 		var fccount=0;
 		function fcmove(){
@@ -133,9 +199,15 @@ window.onload=function(){
 						$("#box").html(s);
 						fc=fc1;
 						sc=sc1;
-						$("#box img:last").load(function(){
-							PicAdjust(140,100,"#box");
-						});
+						var loadcount=0;
+						for(var i=0;i<$("#box img").length;i++){
+							$("#box img:eq("+i+")").load(function(){
+								loadcount++;
+								if(loadcount==$("#box img").length){
+									PicAdjust(140,100,"#box");
+								}
+							});
+						}
 						pmove();
 					},
 					error:function(){}
@@ -175,9 +247,15 @@ window.onload=function(){
 						$("#box").html(s);
 						fc=fc1;
 						sc=sc1;
-						$("#box img:last").load(function(){
-							PicAdjust(140,100,"#box");
-						});
+						var loadcount=0;
+						for(var i=0;i<$("#box img").length;i++){
+							$("#box img:eq("+i+")").load(function(){
+								loadcount++;
+								if(loadcount==$("#box img").length){
+									PicAdjust(140,100,"#box");
+								}
+							});
+						}
 						pmove();
 					},
 					error:function(){}
@@ -206,7 +284,7 @@ window.onload=function(){
 						s+="<div><img src='"+data.picsrc[i]+"'></div>"+"\n";
 					}
 					$("#pics").html(s);
-					$("#b_pic_box img").attr({"src":data.picsrc[0]});
+					$("#b_pic_box").html("<img src='"+data.picsrc[0]+"'>");
 					$("#spcf").html(data.table);
 					$("#article").html(data.content);
 					TableStyle();
@@ -224,8 +302,16 @@ window.onload=function(){
 							break;
 						}
 					}
-					$("#pics img:last").load(function(){
-						PicAdjust(100,100,"#pics");
+					var loadcount=0;
+					for(var i=0;i<$("#pics img").length;i++){
+						$("#pics img:eq("+i+")").load(function(){
+							loadcount++;
+							if(loadcount==$("#pics img").length){
+								PicAdjust(100,100,"#pics");
+							}
+						});
+					}
+					$("#b_pic_box img").load(function(){
 						PicAdjust(370,370,"#b_pic_box");
 					});
 				},
@@ -234,12 +320,12 @@ window.onload=function(){
 		});
 		$(".sell_well>div").click(function(){
 			var co=$(this).siblings("p").find("span").text();
-			var sc=$(this).attr("data-class");
+			var sc1=$(this).attr("data-class");
 			var pname=$("p",this).text();
 			$.ajax({
 				url:"getProducts",
 				type:"post",
-				data:{classone:co,classtwo:sc,productname:pname},
+				data:{classone:co,classtwo:sc1,productname:pname},
 				success:function(data){
 					$("#pics").html("");
 					$("#b_pic_box img").attr({"src":""});
@@ -255,13 +341,13 @@ window.onload=function(){
 						s+="<div><img src='"+data.picsrc[i]+"'></div>"+"\n";
 					}
 					$("#pics").html(s);
-					$("#b_pic_box img").attr({"src":data.picsrc[0]});
+					$("#b_pic_box").html("<img src='"+data.picsrc[0]+"'>");
 					$("#spcf").html(data.table);
 					$("#article").html(data.content);
 					TableStyle();
-					window.scrollTo(0,0);
 					ppmove();
 					$("#products_show").show();
+					window.scrollTo(0,480);
 					var theight=0;
 					for(var i=0;i<$("#spcf tr").length;i++){
 						theight+=$("#spcf tr").eq(i).height();
@@ -274,8 +360,16 @@ window.onload=function(){
 							break;
 						}
 					}
-					$("#pics img:last").load(function(){
-						PicAdjust(100,100,"#pics");
+					var loadcount=0;
+					for(var i=0;i<$("#pics img").length;i++){
+						$("#pics img:eq("+i+")").load(function(){
+							loadcount++;
+							if(loadcount==$("#pics img").length){
+								PicAdjust(100,100,"#pics");
+							}
+						});
+					}
+					$("#b_pic_box img").load(function(){
 						PicAdjust(370,370,"#b_pic_box");
 					});
 				},
@@ -390,7 +484,7 @@ window.onload=function(){
 	//产品点击显示大图
 		$("#pics").delegate("img","click",function(){
 			var s=$(this).attr("src");
-			$("#b_pic_box img").attr({"src":s});
+			$("#b_pic_box").html("<img src='"+s+"'>");
 			$("#b_pic_box img").load(function(){
 				PicAdjust(370,370,"#b_pic_box");
 			});
@@ -416,4 +510,5 @@ window.onload=function(){
 			}
 		}
 		PicAdjust(160,160,"#susume");
+
 }

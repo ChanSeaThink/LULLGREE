@@ -1,4 +1,29 @@
 window.onload=function(){
+		if(window.localStorage.newstitle){
+			var sto=window.localStorage;
+			var indextitle=sto.newstitle;
+			sto.removeItem("newstitle");
+		}
+		//首页跳转显示新闻
+			if(indextitle){
+				$("#news_list").hide();
+				$.ajax({
+					url:"getNews",
+					type:"post",
+					data:{title:indextitle},
+					success:function(data){
+						$("#news_title").text(indextitle);
+						$("#news_date").text("发布时间：");
+						$("#text").html(data.content);
+						$("#news_list").hide();
+						$("#page").hide();
+						$("#main").show();
+						$("#news_nav").append("<span class='not_link'> > </span><span class='link'>"+indextitle+"</span>")
+						window.scrollTo(0,0);
+					},
+					error:function(){}
+				});
+			}
 		function showPage(n,id,pn){
 			//根据显示项数目生成Ajax式页码栏
 			if(n<=10){

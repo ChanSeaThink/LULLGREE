@@ -49,11 +49,11 @@
     		<p>包括：{{ classonestr }}等</p>
     		<div id="catalog">
                 {% for classone in classonels %}
-                <a href="">{{ classone.ClassName }}</a>
+                <a href="/product">{{ classone.ClassName }}</a>
                 <span> | </span>
                 {% endfor %}
                 {% if oneclassone %}
-                <a href="">{{ oneclassone.ClassName }}</a>
+                <a href="/product">{{ oneclassone.ClassName }}</a>
                 {% endif %}
     		</div>
     		<div id="box"></div>
