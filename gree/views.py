@@ -139,7 +139,12 @@ def product(requrst):
             classtwo = bestproductobj.ClassTwo.ClassName
             pname = bestproductobj.ProductName
             productpicobjls = ProductPic.objects.filter(ClassOne = classoneobj, ClassTwo = bestproductobj.ClassTwo, Product = bestproductobj.Product).order_by('Sequence')
-            path = '/getPic/' + productpicobjls[0].ImageName
+            path = ''
+            try:
+                pinname = productpicobjls[0].ImageName
+                path = '/getPic/' + pinname
+            except IndexError:
+                pass
             bestprols.append(dict(classtwo=classtwo, name=pname, path=path))
         bestls.append(dict(name = name, bestprols= bestprols))
     return render_to_response('gree_products.html', {"classls":classls, 'bestls':bestls})
