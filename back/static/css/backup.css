@@ -10,7 +10,7 @@
 		width:140px;
 		height:100%;
 		background-color:rgba(65,65,65,0.3);
-		z-index:1;
+		z-index:9;
 	}
 	#left p{
 		padding-top:12px;
@@ -51,6 +51,7 @@
 		width:100%;
 		height:60px;
 		background-color:rgb(197,197,197);
+		z-index:8;
 	}
 	#top>div{
 		float:right;
@@ -77,6 +78,7 @@
 		position:fixed;
 		width:100%;
 		background-color:#f1f1f1;
+		z-index:9;
 	}
 	#function ul{
 		display:none;
@@ -163,6 +165,7 @@
 	}
 	.edit_function{
 		background-color:#e1e1e1;
+		position:relative;
 	}
 	.edit_function span{
 		display:inline-block;
@@ -220,6 +223,7 @@
 		display:inline-block;
 		text-align:center;
 	}
+	.edit_box{}
 /*-------------------details--------------------*/
 	#details{
 		padding-top:32px;
@@ -358,6 +362,9 @@
 		padding-bottom:10px;
 		text-align:center;
 	}
+	#details .products_details>div>table>tbody>tr>td:first-child{
+		min-width:100px;
+	}
 	#details .products_details select{
 	}
 	#details .products_details .details{
@@ -380,6 +387,7 @@
 		border:1px solid #a1a1a1;
 		padding:20px;
 		margin-bottom:20px;
+		max-width:860px;
 	}
 	/*
 	#details .products_details table table{
@@ -484,8 +492,10 @@
 		text-align:center;
 	}
 /*------------------culture_spirit-------------------*/
+	#spirit{
+		width:900px;
+	}
 	#spirit p{
-		width:400px;
 		font-size:15px;
 		color:#34333f;
 		line-height:35px;
@@ -533,6 +543,15 @@
 		min-width:200px;
 		max-height:100px;
 	}
+	#details .stores_show>div>table>tbody>tr>td:first-child{
+		min-width:100px;
+	}
+	#details .stores_show .article>div:first-child{
+		border:1px solid #a1a1a1;
+		padding:20px;
+		margin-bottom:20px;
+		max-width:860px;
+	}
 /*--------------------engineering_show-------------------*/
 	#details .engineering_show .details{
 		display:none;
@@ -544,6 +563,15 @@
 		max-width:400px;
 		min-width:200px;
 		max-height:100px;
+	}
+	#details .engineering_show>div>table>tbody>tr>td:first-child{
+		min-width:100px;
+	}
+	#details .engineering_show .article>div:first-child{
+		border:1px solid #a1a1a1;
+		padding:20px;
+		margin-bottom:20px;
+		max-width:860px;
 	}
 /*--------------------contact_details--------------------*/
 	#contact_way{

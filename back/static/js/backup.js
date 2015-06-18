@@ -183,9 +183,10 @@ window.onload=function(){
 	//编写框生成
 		$(".click_edit").click(function(){
 			$(".edit_box").remove();
-			$(this).parent().append("<div class='edit_box .details'><div class='edit_function'><span>插入图片</span><span class='pub'>发布文章</span><p class='clear'></p></div><input id='news_title' maxlength='30' placeholder='标题'><div id='text_box' contenteditable><p> </p><p><br></p></div><form id='picform'><input type='file' id='file'></form></div>");
+			$(this).parent().append("<div class='edit_box'><div class='edit_function'><span>插入图片</span><span class='pub'>发布文章</span><p class='clear'></p></div><input id='news_title' maxlength='30' placeholder='标题'><div id='text_box' contenteditable><p> </p><p><br></p></div><form id='picform'><input type='file' id='file' accept='image/*'></form></div>");
 			$(this).hide();
-			$("#text_box").focus();
+			setTimeout(function(){$("#text_box").focus();},1000);
+			sTop=$("#details .edit_function").offset().top;
 		});
 	//写作编辑框自动调整长度功能
 		var heightMark=300;
@@ -1739,18 +1740,47 @@ window.onload=function(){
 					$("#file").click();
 				}
 			});
+			$(window).scroll(function(){
+				if(!sTop){
+					return;
+				}
+				//$("#rec_nav2").stop();
+				var wScrollTop=$(window).scrollTop()+90;
+				var r=wScrollTop-sTop;
+				if(r>0){
+					$("#details .products_details .edit_function").offset({top:wScrollTop});
+					$("#details .stores_show .edit_function").offset({top:wScrollTop});
+					$("#details .engineering_show .edit_function").offset({top:wScrollTop});
+				}
+				else{
+					$("#details .products_details .edit_function").offset({top:sTop});
+					$("#details .stores_show .edit_function").offset({top:sTop});
+					$("#details .engineering_show .edit_function").offset({top:sTop});
+				}
+			});
 			$("#details .products_details").delegate("#file","change",function(){
 				var file=document.getElementById("file");
 				var picform=document.getElementById("picform");
+				var fc=$("#details .products_details select:eq(0) option:selected").text();
+				var sc=$("#details .products_details select:eq(1) option:selected").text();
+				var pname=$("#details .products_details select:eq(2) option:selected").text();
 				if(/image/.test(file.files[0].type)){
 					if(file.files[0].name.length>=28){
 						picform.reset();
 						alert("文件名过长");
 						return;
 					}
-					var fc=$("#details .products_details select:eq(0) option:selected").text();
-					var sc=$("#details .products_details select:eq(1) option:selected").text();
-					var pname=$("#details .products_details select:eq(2) option:selected").text();
+					if(file.files[0].size/1024>1024){
+						picform.reset();
+						alert("图片太大，请限制在1M以内");
+						return;
+					}
+					var s=file.files[0].name.replace(/.+\./,"");
+					if(s.toLowerCase()!=s){
+						picform.reset();
+						alert("请把图片后缀名改为小写");
+						return;
+					}
 					var formdata=new FormData();
 					formdata.append("pic",file.files[0]);
 					formdata.append("classone",fc);
@@ -1767,6 +1797,19 @@ window.onload=function(){
 								var img=document.createElement("img");
 								img.src=data.picname;
 								range.insertNode(img);
+								range.setStartAfter(img);
+								img.onload=function(){
+									var t=$('#text_box').get(0);
+									var h=document.body.scrollTop;
+									t.style.height=0+"px";
+									if(t.scrollHeight>300){
+										t.style.height=t.scrollHeight+50+"px";
+										heightMark=t.scrollHeight;
+									}
+									else{
+										t.style.height=t.scrollHeight+"px";
+									}
+								}
 							}
 							else{
 								alert("图片返回失败");
@@ -2167,6 +2210,19 @@ window.onload=function(){
 								var img=document.createElement("img");
 								img.src=data.picname;
 								range.insertNode(img);
+								range.setStartAfter(img);
+								img.onload=function(){
+									var t=$('#text_box').get(0);
+									var h=document.body.scrollTop;
+									t.style.height=0+"px";
+									if(t.scrollHeight>300){
+										t.style.height=t.scrollHeight+50+"px";
+										heightMark=t.scrollHeight;
+									}
+									else{
+										t.style.height=t.scrollHeight+"px";
+									}
+								}
 							}
 							else{
 								alert("图片返回失败");
@@ -2886,7 +2942,7 @@ window.onload=function(){
 				}
 			});
 		//文章编辑框
-			$("#details .stores_show .click_edit").click(function(){
+			$("#details .stores_show").on("click",".click_edit",function(){
 				var s=$("#details .stores_show .c_detail div").html();
 				if(s.replace(/\s/g,"").length!=0){
 					$("#text_box").html(s);
@@ -2899,6 +2955,17 @@ window.onload=function(){
 					if(file.files[0].name.length>=28){
 						picform.reset();
 						alert("文件名过长");
+						return;
+					}
+					if(file.files[0].size/1024>1024){
+						picform.reset();
+						alert("图片太大，请限制在1M以内");
+						return;
+					}
+					var s=file.files[0].name.replace(/.+\./,"");
+					if(s.toLowerCase()!=s){
+						picform.reset();
+						alert("请把图片后缀名改为小写");
 						return;
 					}
 					var cname=$("#details .stores_show select option:selected").text();
@@ -2916,6 +2983,19 @@ window.onload=function(){
 								var img=document.createElement("img");
 								img.src=data.picname;
 								range.insertNode(img);
+								range.setStartAfter(img);
+								img.onload=function(){
+									var t=$('#text_box').get(0);
+									var h=document.body.scrollTop;
+									t.style.height=0+"px";
+									if(t.scrollHeight>300){
+										t.style.height=t.scrollHeight+50+"px";
+										heightMark=t.scrollHeight;
+									}
+									else{
+										t.style.height=t.scrollHeight+"px";
+									}
+								}
 							}
 							else{
 								alert("图片返回失败");
@@ -3229,7 +3309,7 @@ window.onload=function(){
 				}
 			});
 		//文章编辑框
-			$("#details .engineering_show .click_edit").click(function(){
+			$("#details .engineering_show").on("click",".click_edit",function(){
 				var s=$("#details .engineering_show .c_detail div").html();
 				if(s.replace(/\s/g,"").length!=0){
 					$("#text_box").html(s);
@@ -3242,6 +3322,17 @@ window.onload=function(){
 					if(file.files[0].name.length>=28){
 						picform.reset();
 						alert("文件名过长");
+						return;
+					}
+					if(file.files[0].size/1024>1024){
+						picform.reset();
+						alert("图片太大，请限制在1M以内");
+						return;
+					}
+					var s=file.files[0].name.replace(/.+\./,"");
+					if(s.toLowerCase()!=s){
+						picform.reset();
+						alert("请把图片后缀名改为小写");
 						return;
 					}
 					var cname=$("#details .engineering_show select option:selected").text();
@@ -3259,6 +3350,19 @@ window.onload=function(){
 								var img=document.createElement("img");
 								img.src=data.picname;
 								range.insertNode(img);
+								range.setStartAfter(img);
+								img.onload=function(){
+									var t=$('#text_box').get(0);
+									var h=document.body.scrollTop;
+									t.style.height=0+"px";
+									if(t.scrollHeight>300){
+										t.style.height=t.scrollHeight+50+"px";
+										heightMark=t.scrollHeight;
+									}
+									else{
+										t.style.height=t.scrollHeight+"px";
+									}
+								}
 							}
 							else{
 								alert("图片返回失败");

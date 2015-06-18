@@ -1,24 +1,24 @@
 window.onload=function(){
 	$("#go_r").click(function(){
-		$("#lr_box").css("-webkit-animation","rotate 0.5s linear 0 1");
+		$("#lr_box").css("-webkit-animation","rotate 0.5s linear 0s 1");
 		setTimeout(function(){
 		$("#validcode img").click();
 		$("#n_password,#go_l,#regis").show();
 		$("#go_r,#login").hide();
 		$(".input p").text("");
 		$(".input div input,#validcode input").val("");
-		$("#lr_box").css("-webkit-animation","rotate2 0.5s linear 0 1");
+		$("#lr_box").css("-webkit-animation","rotate2 0.5s linear 0s 1");
 		},500);
 	});
 	$("#go_l").click(function(){
-		$("#lr_box").css("-webkit-animation","rotate3 0.5s linear 0 1");
+		$("#lr_box").css("-webkit-animation","rotate3 0.5s linear 0s 1");
 		setTimeout(function(){
 		$("#validcode img").click();
 		$("#go_r,#login").show();
 		$("#n_password,#go_l,#regis").hide();
 		$(".input p").text("");
 		$(".input div input,#validcode input").val("");
-			$("#lr_box").css("-webkit-animation","rotate4 0.5s linear 0 1");
+			$("#lr_box").css("-webkit-animation","rotate4 0.5s linear 0s 1");
 		},500);
 	});
 
